@@ -5,7 +5,7 @@ import AuthService from "../utils/auth";
 import AnnualForm from "../components/Annual/AnnualCard"
 // import { NewRecipe } from "../components/RecipeCards/NewRecipe";
 
-const Home = () => {
+const Annual = () => {
   const navigate = useNavigate();
 
 //   useEffect(() => {
@@ -14,16 +14,16 @@ const Home = () => {
 //     }
 //   }, [navigate]);
 
-  const handleAddRecipeClick = () => {
-    navigate("/add-recipe");
-  };
+//   const handleAddRecipeClick = () => {
+//     navigate("/add-recipe");
+//   };
 
   return (
     <div>
-        <h1>
-        Hello Twink
-        </h1>
+        <div>
+            < AnnualForm />
+        </div>
     </div>
   )};
 
-export default Home;
+export default Annual;

@@ -5,8 +5,8 @@ const Header = () => {
 
   return (
     <header
-      className="bg-info mb-4 display-flex align-center"
-      style={{ backgroundColor: "#aad15f" }}
+      className="bg-info mb-4 display-flex align-center header"
+      style={{ backgroundColor: "red" }}
     >
       <div className="container flex-row">
         <Link className="text-light mr-auto p-2" to="/home">
@@ -141,7 +141,7 @@ const Header = () => {
           </Link>
         ) : (
           <Link
-            className="text-light p-2"
+            className="text-light p-2 nav-buttons"
             to="/"
             onClick={() => setLoggedIn(!loggedIn)}
           >

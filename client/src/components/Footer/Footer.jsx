@@ -23,7 +23,7 @@ const Footer = () => {
             color: "#06052e",
           }}
         >
-          &copy; {new Date().getFullYear()} - Feastbook
+          &copy; {new Date().getFullYear()} - Sundance Lift Maintenance
         </h4>
       </div>
     </footer>

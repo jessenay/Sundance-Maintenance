@@ -9,6 +9,7 @@ import Wildwood from "./pages/Wildwood";
 import Flathead from "./pages/Flathead";
 import Reds from "./pages/Reds";
 import Stairway from "./pages/Stairway";
+import Annual from "./pages/Annual"
 // import Error from "./pages/Error";
 import LoginForm from "./pages/LoginForm.jsx";
 
@@ -50,6 +51,10 @@ const router = createBrowserRouter([
         path: "/stairway",
         element: <Stairway />,
       },
+      {
+        path: "/outlawAnnual",
+        element: <Annual />
+      }
     ],
   },
 ]);
