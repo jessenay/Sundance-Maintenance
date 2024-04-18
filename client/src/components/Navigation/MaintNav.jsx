@@ -23,7 +23,7 @@ const MaintNav = () => {
             Annual
           </h1>
         </Link>
-        <Link className="text-light p-2 nav-buttons" to={`/outlaw`}>
+        <Link className="text-light p-2 nav-buttons" to={`/bullwheels`}>
           <h1
             className="m-0"
             style={{
