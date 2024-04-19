@@ -1,15 +1,15 @@
 import { Link } from "react-router-dom";
 import auth from "../../utils/auth";
 
-const MaintNav = () => {
-
+const MaintNav = ({ liftName }) => {
+console.log("lift name in MaintNav:", liftName);
   return (
     <header
       className="bg-info mb-4 display-flex align-center"
       style={{ backgroundColor: "black" }}
     >
       <div className="container flex-row">
-        <Link className="text-light p-2 nav-buttons" to="/outlawAnnual">
+        <Link className="text-light p-2 nav-buttons" to={`/lift/${liftName}/annual`}>
           <h1
             className="m-0"
             style={{
@@ -23,7 +23,7 @@ const MaintNav = () => {
             Annual
           </h1>
         </Link>
-        <Link className="text-light p-2 nav-buttons" to={`/bullwheels`}>
+        <Link className="text-light p-2 nav-buttons" to={`/lift/${liftName}/bullwheels`}>
           <h1
             className="m-0"
             style={{
@@ -37,7 +37,7 @@ const MaintNav = () => {
             Bullwheels
           </h1>
         </Link>
-        <Link className="text-light p-2 nav-buttons" to={`/jakes`}>
+        <Link className="text-light p-2 nav-buttons" to={`/lift/${liftName}/chairs`}>
           <h1
             className="m-0"
             style={{
@@ -51,7 +51,7 @@ const MaintNav = () => {
             Chairs
           </h1>
         </Link>
-        <Link className="text-light p-2 nav-buttons" to={`/wildwood`}>
+        <Link className="text-light p-2 nav-buttons" to={`/lift/${liftName}/auxillaryMotor`}>
           <h1
             className="m-0"
             style={{
@@ -65,7 +65,7 @@ const MaintNav = () => {
             Auxillary Motor
           </h1>
         </Link>
-        <Link className="text-light p-2 nav-buttons" to={`/flathead`}>
+        <Link className="text-light p-2 nav-buttons" to={`/lift/${liftName}/electricMotor`}>
           <h1
             className="m-0"
             style={{

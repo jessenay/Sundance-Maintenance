@@ -3,14 +3,12 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import App from "./App.jsx";
 import Home from "./pages/Home";
-import Outlaw from "./pages/Outlaw";
-import Jakes from "./pages/Jakes";
-import Wildwood from "./pages/Wildwood";
-import Flathead from "./pages/Flathead";
-import Reds from "./pages/Reds";
-import Stairway from "./pages/Stairway";
+import LiftDetails from "./pages/LiftDetails";
 import Annual from "./pages/Annual";
 import Bullwheels from "./pages/Bullwheels";
+import AuxillaryMotor from "./pages/AuxillaryMotor";
+import ElectricMotor from "./pages/ElectricMotor";
+import Chairs from "./pages/Chairs";
 // import Error from "./pages/Error";
 import LoginForm from "./pages/LoginForm.jsx";
 
@@ -29,37 +27,32 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "/outlaw",
-        element: <Outlaw />,
+        path: "lift/:liftName",
+        element: <LiftDetails />,
+        children: [
+          {
+            path: "annual",
+            element: <Annual />,
+          },
+          {
+            path: "bullwheels",
+            element: <Bullwheels />,
+          },
+          {
+            path: "auxillaryMotor",
+            element: <AuxillaryMotor />,
+          },
+          {
+            path: "electricMotor",
+            element: <ElectricMotor />,
+          },
+          {
+            path: "chairs",
+            element: <Chairs />,
+          },
+
+        ],
       },
-      {
-        path: "/jakes",
-        element: <Jakes />,
-      },
-      {
-        path: "/wildwood",
-        element: <Wildwood />,
-      },
-      {
-        path: "/flathead",
-        element: <Flathead />,
-      },
-      {
-        path: "/reds",
-        element: <Reds />,
-      },
-      {
-        path: "/stairway",
-        element: <Stairway />,
-      },
-      {
-        path: "/outlawAnnual",
-        element: <Annual />
-      },
-      {
-        path: "/bullwheels",
-        element: <Bullwheels />,
-      }
     ],
   },
 ]);

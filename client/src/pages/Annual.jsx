@@ -19,11 +19,12 @@ const Annual = () => {
 //   };
 
   return (
-    <div>
+    <main>
+        <h1>Annual</h1>
         <div>
             < AnnualForm />
         </div>
-    </div>
+    </main>
   )};
 
 export default Annual;

@@ -36,7 +36,7 @@ const Header = () => {
             Home
           </h1>
         </Link>
-        <Link className="text-light p-2 nav-buttons" to={`/outlaw`}>
+        <Link className="text-light p-2 nav-buttons" to={`/lift/outlaw`}>
           <h1
             className="m-0"
             style={{
@@ -50,7 +50,7 @@ const Header = () => {
             Outlaw
           </h1>
         </Link>
-        <Link className="text-light p-2 nav-buttons" to={`/jakes`}>
+        <Link className="text-light p-2 nav-buttons" to={`/lift/jakes`}>
           <h1
             className="m-0"
             style={{
@@ -64,7 +64,7 @@ const Header = () => {
             Jakes
           </h1>
         </Link>
-        <Link className="text-light p-2 nav-buttons" to={`/wildwood`}>
+        <Link className="text-light p-2 nav-buttons" to={`/lift/wildwood`}>
           <h1
             className="m-0"
             style={{
@@ -78,7 +78,7 @@ const Header = () => {
             Wildwood
           </h1>
         </Link>
-        <Link className="text-light p-2 nav-buttons" to={`/flathead`}>
+        <Link className="text-light p-2 nav-buttons" to={`/lift/flathead`}>
           <h1
             className="m-0"
             style={{
@@ -92,7 +92,7 @@ const Header = () => {
             Flathead
           </h1>
         </Link>
-        <Link className="text-light p-2 nav-buttons" to={`/reds`}>
+        <Link className="text-light p-2 nav-buttons" to={`/lift/reds`}>
           <h1
             className="m-0"
             style={{
@@ -106,7 +106,7 @@ const Header = () => {
             Reds
           </h1>
         </Link>
-        <Link className="text-light p-2 nav-buttons" to={`/stairway`}>
+        <Link className="text-light p-2 nav-buttons" to={`/lift/stairway`}>
           <h1
             className="m-0"
             style={{
