@@ -1,4 +1,4 @@
 const Profile = require('./Profile');
-const Lifts = require('./Lifts');
+const Lifts = require('./Lift');
 
 module.exports = { Profile, Lifts };
