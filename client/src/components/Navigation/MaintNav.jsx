@@ -1,185 +1,37 @@
 import { Link } from "react-router-dom";
-import auth from "../../utils/auth";
+import { FETCH_COMPONENTS_BY_LIFT_ID } from "../../utils/queries";
+import { useQuery } from "@apollo/client";
 
-const MaintNav = ({ liftName }) => {
-console.log("lift name in MaintNav:", liftName);
+const slugify = (text) => {
+  return text.toLowerCase().replace(/\s+/g, '-');
+};
+
+const MaintNav = ({ liftId }) => {
+  console.log("lift Id in MaintNav:", liftId);
+
+  const { loading, data, error } = useQuery(FETCH_COMPONENTS_BY_LIFT_ID, { variables: { liftId } });
+
+  console.log("Loading:", loading);
+  console.log("Error:", error);
+  console.log("Data:", data);
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error! {error.message}</div>;
+
+  const components = data.lift?.components || [];
+
   return (
-    <header
-      className="maintNav"
-      style={{ backgroundColor: "black" }}
-    >
+    <header className="maintNav" style={{ backgroundColor: "black" }}>
       <div className="link-container">
-        <Link className="maintNav-buttons" to={`/lift/${liftName}/annual`}>
-          <h1
-            className=""
-            style={{
-              fontSize: "20px",
-              fontFamily: "Poppins",
-              fontWeight: 600,
-              textTransform: "uppercase",
-              color: "white",
-            }}
-          >
-            Annual
-          </h1>
-        </Link>
-        <Link className="text-light p-2 maintNav-buttons" to={`/lift/${liftName}/bullwheels`}>
-          <h1
-            className="m-0"
-            style={{
-              fontSize: "20px",
-              fontFamily: "Poppins",
-              fontWeight: 600,
-              textTransform: "uppercase",
-              color: "white",
-            }}
-          >
-            Bullwheels
-          </h1>
-        </Link>
-        <Link className="text-light p-2 maintNav-buttons" to={`/lift/${liftName}/chairs`}>
-          <h1
-            className="m-0"
-            style={{
-              fontSize: "20px",
-              fontFamily: "Poppins",
-              fontWeight: 600,
-              textTransform: "uppercase",
-              color: "white",
-            }}
-          >
-            Chairs
-          </h1>
-        </Link>
-        <Link className="text-light p-2 maintNav-buttons" to={`/lift/${liftName}/auxillaryMotor`}>
-          <h1
-            className="m-0"
-            style={{
-              fontSize: "20px",
-              fontFamily: "Poppins",
-              fontWeight: 600,
-              textTransform: "uppercase",
-              color: "white",
-            }}
-          >
-            Auxillary Motor
-          </h1>
-        </Link>
-        <Link className="text-light p-2 maintNav-buttons" to={`/lift/${liftName}/electricMotor`}>
-          <h1
-            className="m-0"
-            style={{
-              fontSize: "20px",
-              fontFamily: "Poppins",
-              fontWeight: 600,
-              textTransform: "uppercase",
-              color: "white",
-            }}
-          >
-            Electric Motor
-          </h1>
-        </Link>
-        <Link className="maintNav-buttons" to={`/lift/${liftName}/brakes`}>
-          <h1
-            className=""
-            style={{
-              fontSize: "20px",
-              fontFamily: "Poppins",
-              fontWeight: 600,
-              textTransform: "uppercase",
-              color: "white",
-            }}
-          >
-            Brakes
-          </h1>
-        </Link>
-        <Link className="maintNav-buttons" to={`/lift/${liftName}/emergencyDrive`}>
-          <h1
-            className=""
-            style={{
-              fontSize: "20px",
-              fontFamily: "Poppins",
-              fontWeight: 600,
-              textTransform: "uppercase",
-              color: "white",
-            }}
-          >
-            Emergency Drive
-          </h1>
-        </Link>
-        <Link className="maintNav-buttons" to={`/lift/${liftName}/electrical`}>
-          <h1
-            className=""
-            style={{
-              fontSize: "20px",
-              fontFamily: "Poppins",
-              fontWeight: 600,
-              textTransform: "uppercase",
-              color: "white",
-            }}
-          >
-            Electrical
-          </h1>
-        </Link>
-        <Link className="maintNav-buttons" to={`/lift/${liftName}/haulRope`}>
-          <h1
-            className=""
-            style={{
-              fontSize: "20px",
-              fontFamily: "Poppins",
-              fontWeight: 600,
-              textTransform: "uppercase",
-              color: "white",
-            }}
-          >
-            Haul Rope
-          </h1>
-        </Link>
-        <Link className="maintNav-buttons" to={`/lift/${liftName}/returnTerminal`}>
-          <h1
-            className=""
-            style={{
-              fontSize: "20px",
-              fontFamily: "Poppins",
-              fontWeight: 600,
-              textTransform: "uppercase",
-              color: "white",
-            }}
-          >
-            Return Terminal
-          </h1>
-        </Link>
-        <Link className="maintNav-buttons" to={`/lift/${liftName}/driveTerminal`}>
-          <h1
-            className=""
-            style={{
-              fontSize: "20px",
-              fontFamily: "Poppins",
-              fontWeight: 600,
-              textTransform: "uppercase",
-              color: "white",
-            }}
-          >
-            Drive Terminal
-          </h1>
-        </Link>
-        <Link className="maintNav-buttons" to={`/lift/${liftName}/towers`}>
-          <h1
-            className=""
-            style={{
-              fontSize: "20px",
-              fontFamily: "Poppins",
-              fontWeight: 600,
-              textTransform: "uppercase",
-              color: "white",
-            }}
-          >
-            Towers
-          </h1>
-        </Link>
+        {components.map((component) => (
+          <Link className="maintNav-buttons" to={`/lift/${liftId}/${slugify(component.name)}/${component._id}`} key={component._id}>
+            <h1 style={{ fontSize: "20px", fontFamily: "Poppins", fontWeight: 600, textTransform: "uppercase", color: "white" }}>{component.name}</h1>
+          </Link>
+        ))}
       </div>
     </header>
   );
 };
+
 
 export default MaintNav;

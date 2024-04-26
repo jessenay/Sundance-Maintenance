@@ -12,3 +12,17 @@ export const LOGIN_USER = gql`
     }
   }
 `;
+
+export const ADD_ANNUAL_SERVICE = gql`
+mutation AddAnnualService($componentId: ID!, $task: String!, $dateCompleted: String!, $completedBy: String!, $testValues: String, $notes: String, $procedureLocations: String) {
+  addAnnualService(componentId: $componentId, task: $task, dateCompleted: $dateCompleted, completedBy: $completedBy, testValues: $testValues, notes: $notes, procedureLocations: $procedureLocations) {
+    _id
+    task
+    dateCompleted
+    completedBy
+    testValues
+    notes
+    procedureLocations
+  }
+}
+`;

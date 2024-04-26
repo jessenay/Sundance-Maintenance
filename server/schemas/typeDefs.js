@@ -28,6 +28,16 @@ type Service {
   completedBy: String
 }
 
+type AnnualService {
+  _id: ID!
+  task: String
+  dateCompleted: String
+  completedBy: String
+  testValues: String
+  notes: String
+  procedureLocations: String
+}
+
 type AuthPayload {
   token: String
   user: Profile
@@ -38,15 +48,19 @@ type Query {
   profile: Profile
   lifts: [Lift]
   lift(_id: ID!): Lift
+  components: [Component]
   component(_id: ID!): Component
+  annualServices(componentId: ID!): [AnnualService]
 }
 
 type Mutation {
   createAccount(username: String!, email: String!, password: String!): AuthPayload
   login(email: String!, password: String!): AuthPayload
   addService(componentId: ID!, dateCompleted: String!, reason: String!, workDescription: String!, partsUsed: String!, completedBy: String!): Service
+  addAnnualService(componentId: ID!, task: String!, dateCompleted: String!, completedBy: String!, testValues: String, notes: String, procedureLocations: String): AnnualService
   addLift(name: String!): Lift
   addComponent(name: String!, liftId: ID!): Component
+  addComponentToLifts(name: String!, liftIds: [ID!]!): Component
 }
 `;
 

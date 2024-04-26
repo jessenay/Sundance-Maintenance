@@ -1,16 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+// import RecipeList from "../components/RecipeList";
 import AuthService from "../utils/auth";
-import AuxillaryMotorForm from "../components/Auxillary/AuxillaryMotorCard";
-import { useParams } from "react-router-dom";
+import MidTerminalForm from "../components/MidTerminal/MidTerminalCard";
+// import { NewRecipe } from "../components/RecipeCards/NewRecipe";
 
-const deslugify = (slug) => {
-    return slug.replace(/-/g, ' ');
-  };
+const midTerminal = () => {
+    const navigate = useNavigate();
 
-const AuxillaryMotor = () => {
-const { componentId } = useParams();
-const navigate = useNavigate();
     //   useEffect(() => {
     //     if (!AuthService.loggedIn()) {
     //       navigate("/");
@@ -23,15 +20,15 @@ const navigate = useNavigate();
 
     return (
         <main className="annualContainer">
-            <h1>Auxillary Motor</h1>
+            <h1>Mid Terminal</h1>
             <h2>
                 Reason Codes: 1-Regular Preventative Maintenance 2-Failure of unit or component 3-Inspection 4-Damage/Accident/Incident 5-Other(explain in work description)
             </h2>
             <div>
-                <AuxillaryMotorForm componentId={componentId} />
+                <MidTerminalForm />
             </div>
         </main>
     )
 };
 
-export default AuxillaryMotor;
+export default midTerminal;

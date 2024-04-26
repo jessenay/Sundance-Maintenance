@@ -2,6 +2,7 @@ const { Profile } = require('../models');
 const Component = require('../models/Component');
 const Lift = require('../models/Lift');
 const Service = require('../models/Service');
+const AnnualService = require('../models/AnnualService');
 const { signToken, AuthenticationError } = require('../utils/auth');
 
 const resolvers = {
@@ -20,12 +21,41 @@ const resolvers = {
     lifts: async () => {
       return await Lift.find({});
     },
-    lift: async (_, { id }) => {
-      return await Lift.findById(id);
+    lift: async (_, { _id }) => {
+      return await Lift.findById(_id).populate('components');
     },
-    component: async (_, { id }) => {
-      return await Component.findById(id);
-    }
+    components: async () => {
+      return await Component.find({});
+    },
+    component: async (_, { _id }) => {
+      console.log(`Fetching component with ID: ${_id}`);
+      const component = await Component.findById(_id).populate('services');
+      console.log('Component Data:', component);
+      if (!component) {
+        console.log(`No component found with this ID: ${_id}`);
+        return null;
+      }
+      return component;
+    },
+    annualServices: async (_, { componentId }, context) => {
+      try {
+        // Fetch the component by its ID
+        const component = await Component.findById(componentId);
+        
+        // If the component exists, find its associated annual services
+        if (component) {
+          const annualServices = await AnnualService.find({ component: componentId });
+          return annualServices;
+        } else {
+          // If the component doesn't exist, return an empty array
+          return [];
+        }
+      } catch (error) {
+        console.error('Error fetching annual services:', error);
+        throw new Error(error);
+      }
+    },
+    
   },
   Mutation: {
     // Mutation to create an account and return a JWT token
@@ -66,6 +96,20 @@ const resolvers = {
       await Component.findByIdAndUpdate(componentId, { $push: { services: newService._id } });
       return newService;
     },
+    addAnnualService: async (_, { componentId, task, dateCompleted, completedBy, testValues, notes, procedureLocations }) => {
+      const newAnnualService = new AnnualService({
+        component: componentId,
+        task,
+        dateCompleted,
+        completedBy,
+        testValues,
+        notes,
+        procedureLocations
+      });
+      await newAnnualService.save();
+      await Component.findByIdAndUpdate(componentId, { $push: { services: newAnnualService._id } });
+      return newAnnualService;
+    },
     addLift: async (_, { name }) => {
       const newLift = new Lift({ name });
       await newLift.save();
@@ -79,7 +123,19 @@ const resolvers = {
       await Lift.findByIdAndUpdate(liftId, { $push: { components: newComponent._id } });
 
       return newComponent;
+    },
+    addComponentToLifts: async (_, { name, liftIds }) => {
+      // Create the component
+      const newComponent = await Component.create({ name });
+
+      // Associate the component with each lift
+      for (const liftId of liftIds) {
+        await Lift.findByIdAndUpdate(liftId, { $push: { components: newComponent._id } });
+      }
+
+      return newComponent;
     }
+
   },
   Lift: {
     components: async (lift) => {
@@ -93,7 +149,6 @@ const resolvers = {
       return await Service.find({ _id: { $in: component.services } });
     }
   }
-
 };
 
 module.exports = resolvers;
