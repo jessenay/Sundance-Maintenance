@@ -5,13 +5,13 @@ const Header = () => {
 
   return (
     <header
-      className="bg-info mb-4 display-flex align-center header"
+      className="header"
       style={{ backgroundColor: "red" }}
     >
-      <div className="container flex-row">
-        <Link className="text-light mr-auto p-2" to="/home">
+      <div className="headerContainer">
+        <Link className="" to="/home">
           <h1
-            className="m-0"
+            className=""
             style={{
               fontSize: "60px",
               fontFamily: "Playfair Display",
@@ -22,9 +22,9 @@ const Header = () => {
             Sundance
           </h1>
         </Link>
-        <Link className="text-light p-2 nav-buttons" to="/home">
+        <Link className="nav-buttons" to="/home">
           <h1
-            className="m-0"
+            className=""
             style={{
               fontSize: "20px",
               fontFamily: "Poppins",
@@ -50,9 +50,9 @@ const Header = () => {
             Outlaw
           </h1>
         </Link>
-        <Link className="text-light p-2 nav-buttons" to={`/lift/jakes`}>
+        <Link className="nav-buttons" to={`/lift/jakes`}>
           <h1
-            className="m-0"
+            className=""
             style={{
               fontSize: "20px",
               fontFamily: "Poppins",
@@ -64,9 +64,9 @@ const Header = () => {
             Jakes
           </h1>
         </Link>
-        <Link className="text-light p-2 nav-buttons" to={`/lift/wildwood`}>
+        <Link className="nav-buttons" to={`/lift/wildwood`}>
           <h1
-            className="m-0"
+            className=""
             style={{
               fontSize: "20px",
               fontFamily: "Poppins",
@@ -78,9 +78,9 @@ const Header = () => {
             Wildwood
           </h1>
         </Link>
-        <Link className="text-light p-2 nav-buttons" to={`/lift/flathead`}>
+        <Link className="nav-buttons" to={`/lift/flathead`}>
           <h1
-            className="m-0"
+            className=""
             style={{
               fontSize: "20px",
               fontFamily: "Poppins",
@@ -92,9 +92,9 @@ const Header = () => {
             Flathead
           </h1>
         </Link>
-        <Link className="text-light p-2 nav-buttons" to={`/lift/reds`}>
+        <Link className="nav-buttons" to={`/lift/reds`}>
           <h1
-            className="m-0"
+            className=""
             style={{
               fontSize: "20px",
               fontFamily: "Poppins",
@@ -106,9 +106,9 @@ const Header = () => {
             Reds
           </h1>
         </Link>
-        <Link className="text-light p-2 nav-buttons" to={`/lift/stairway`}>
+        <Link className="nav-buttons" to={`/lift/stairway`}>
           <h1
-            className="m-0"
+            className=""
             style={{
               fontSize: "20px",
               fontFamily: "Poppins",
@@ -122,12 +122,12 @@ const Header = () => {
         </Link>
         {auth.loggedIn() ? (
           <Link
-            className="text-light p-2 nav-buttons"
+            className="nav-buttons"
             to="/"
             onClick={() => auth.logout()}
           >
             <h1
-              className="m-0"
+              className=""
               style={{
                 fontSize: "20px",
                 fontFamily: "Poppins",
@@ -141,12 +141,12 @@ const Header = () => {
           </Link>
         ) : (
           <Link
-            className="text-light p-2 nav-buttons"
+            className="nav-buttons"
             to="/"
             onClick={() => setLoggedIn(!loggedIn)}
           >
             <h1
-              className="m-0"
+              className=""
               style={{
                 fontSize: "20px",
                 fontFamily: "Poppins",

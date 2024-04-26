@@ -19,7 +19,7 @@ const AuxillaryMotor = () => {
     //   };
 
     return (
-        <main>
+        <main className="annualContainer">
             <h1>Auxillary Motor</h1>
             <h2>
                 Reason Codes: 1-Regular Preventative Maintenance 2-Failure of unit or component 3-Inspection 4-Damage/Accident/Incident 5-Other(explain in work description)

@@ -31,7 +31,7 @@ const AnnualForm = ({ onAdd }) => {
 
     return (
         <div className='form-container'>
-            <form className="form" 
+            <form className="annualForm" 
             // onSubmit={submit}
             >
                 <label className='label'>TASK:</label>
@@ -56,7 +56,7 @@ const AnnualForm = ({ onAdd }) => {
                         required
                     />
                 ))} */}
-                {/* <button className="button" type="submit">Add Annual</button> */}
+                <button className="button" type="submit">Submit</button>
             </form>
         </div>
     );

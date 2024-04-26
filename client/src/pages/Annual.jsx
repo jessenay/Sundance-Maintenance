@@ -19,7 +19,7 @@ const Annual = () => {
 //   };
 
   return (
-    <main>
+    <main className="annualContainer">
         <h1>Annual</h1>
         <div>
             < AnnualForm />

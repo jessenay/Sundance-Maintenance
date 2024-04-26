@@ -9,6 +9,9 @@ import Bullwheels from "./pages/Bullwheels";
 import AuxillaryMotor from "./pages/AuxillaryMotor";
 import ElectricMotor from "./pages/ElectricMotor";
 import Chairs from "./pages/Chairs";
+import Brakes from "./pages/Brakes";
+import EmergencyDrive from "./pages/EmergencyDrive";
+import Electrical from "./pages/Electrical";
 // import Error from "./pages/Error";
 import LoginForm from "./pages/LoginForm.jsx";
 
@@ -49,6 +52,18 @@ const router = createBrowserRouter([
           {
             path: "chairs",
             element: <Chairs />,
+          },
+          {
+            path: "brakes",
+            element: <Brakes />,
+          },
+          {
+            path: "emergencyDrive",
+            element: <EmergencyDrive />,
+          },
+          {
+            path: "electrical",
+            element: <Electrical />,
           },
 
         ],

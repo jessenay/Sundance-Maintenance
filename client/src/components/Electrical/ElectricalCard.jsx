@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useMutation } from '@apollo/client';
 
-const AuxillaryMotorForm = ({ onAdd }) => {
-    const [auxillaryMotor, setAuxillaryMotor] = useState({
+const ElectricalForm = ({ onAdd }) => {
+    const [electrical, setElectrical] = useState({
         dateCompleted: '', reason: '', workDescription: '', partsUsed: '', completedBy: ''
     });
 
@@ -10,8 +10,8 @@ const AuxillaryMotorForm = ({ onAdd }) => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setAuxillaryMotor((prevAuxillaryMotor) => ({
-            ...prevAuxillaryMotor,
+        setElectrical((prevElectrical) => ({
+            ...prevElectrical,
             [name]: value,
         }))
     };
@@ -35,15 +35,15 @@ const AuxillaryMotorForm = ({ onAdd }) => {
             // onSubmit={submit}
             >
                 <label className='label'>DATE COMPLETED:</label>
-                <input className="input" type="text" name="dateCompleted" value={auxillaryMotor.dateCompleted} onChange={handleChange} require />
+                <input className="input" type="text" name="dateCompleted" value={electrical.dateCompleted} onChange={handleChange} require />
                 <label className="label">REASON:</label>
-                <input className="input" type="text" name="reason" value={auxillaryMotor.reason} onChange={handleChange} require />
+                <input className="input" type="text" name="reason" value={electrical.reason} onChange={handleChange} require />
                 <label className="label">WORK DESCRIPTION:</label>
-                <input className="input" type="text" name="workDescription" value={auxillaryMotor.workDescription} onChange={handleChange} require />
+                <input className="input" type="text" name="workDescription" value={electrical.workDescription} onChange={handleChange} require />
                 <label className="label">PARTS USED:</label>
-                <input className="input" type="text" name="notes" value={auxillaryMotor.partsUsed} onChange={handleChange} require />
+                <input className="input" type="text" name="notes" value={electrical.partsUsed} onChange={handleChange} require />
                 <label className="label">COMPLETED BY:</label>
-                <input className="input" type="text" name="completedBy" value={auxillaryMotor.completedBy} onChange={handleChange} require />
+                <input className="input" type="text" name="completedBy" value={electrical.completedBy} onChange={handleChange} require />
                 {/* {recipe.ingredients.map((ingredient, index) => (
                     <input
                         className="input"
@@ -60,4 +60,4 @@ const AuxillaryMotorForm = ({ onAdd }) => {
     );
 };
 
-export default AuxillaryMotorForm;
+export default ElectricalForm;

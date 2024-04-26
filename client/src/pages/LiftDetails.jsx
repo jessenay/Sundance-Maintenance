@@ -8,7 +8,7 @@ const LiftDetails = () => {
 //   const liftData = getLiftData(liftName); // Implement this function based on your data source
 console.log("lift name in liftDetails:", liftName);
   return (
-    <div>
+    <div className="navContainer">
       <h1>{liftName}</h1>
       < MaintNav liftName={liftName} />
       <Outlet />

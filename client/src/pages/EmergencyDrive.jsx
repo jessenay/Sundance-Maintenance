@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 // import RecipeList from "../components/RecipeList";
 import AuthService from "../utils/auth";
-import ChairsForm from "../components/Chairs/ChairsCard";
+import EmergencyDriveForm from "../components/EmergencyDrive/EmergencyDriveCard";
 // import { NewRecipe } from "../components/RecipeCards/NewRecipe";
 
-const Chairs = () => {
+const emergencyDrive = () => {
     const navigate = useNavigate();
 
     //   useEffect(() => {
@@ -20,15 +20,15 @@ const Chairs = () => {
 
     return (
         <main className="annualContainer">
-            <h1>Chairs</h1>
+            <h1>Emergency Drive</h1>
             <h2>
                 Reason Codes: 1-Regular Preventative Maintenance 2-Failure of unit or component 3-Inspection 4-Damage/Accident/Incident 5-Other(explain in work description)
             </h2>
             <div>
-                <ChairsForm />
+                <EmergencyDriveForm />
             </div>
         </main>
     )
 };
 
-export default Chairs;
+export default emergencyDrive;

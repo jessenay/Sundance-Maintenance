@@ -1,16 +1,26 @@
-header {
+/* header {
     width: 100%;
     background-color: red;
     display: flex;
-    align-items: center; /* Centers items vertically */
+    align-items: center;
     justify-content: space-between;
+  } */
+  h2 {
+    text-align: center;
   }
   
+  .headerContainer {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    justify-content: space-evenly;
+    /* padding: 0 20px; */
+  }
+
   .container {
     width: 100%;
     display: flex;
-    justify-content: space-between;
-    padding: 0 20px;
+    justify-content: center;
   }
   
   .nav-buttons {
@@ -18,4 +28,69 @@ header {
     margin-bottom: auto;
     text-decoration: none;
   }
+
+  .annualForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .reasonCodes{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .label {
+    margin-top: 30px;
+  }
+
+  .input {
+    /* width: 500px;
+    height: 100px; */
+  }
+
+  .annualContainer {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+  }
+
+  .navContainer {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+  }
+
+  .maintNav {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    flex-direction: row;
+    margin-top: 20px;
+  }
+
+  .link-container {
+    display: flex;
+    flex-wrap: wrap; /* Allows items to wrap onto the next line */
+    justify-content: center; /* Aligns items horizontally */
+    align-items: center; /* Aligns items vertically */
+    padding: 10px 0; /* Adds some padding around the items */
+  }
+
+  .maintNav-buttons {
+      padding: 5px 50px; /* Adjust padding to space out the links */
+      margin: 5px; /* Adds margin around each link for even spacing */
+      text-decoration: none;
+      display: block; /* Ensures the link text aligns properly */
+  }
+  
   

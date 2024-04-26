@@ -31,7 +31,7 @@ const BullwheelsForm = ({ onAdd }) => {
 
     return (
         <div className='form-container'>
-            <form className="form" 
+            <form className="annualForm" 
             // onSubmit={submit}
             >
                 <label className='label'>DATE COMPLETED:</label>
@@ -54,7 +54,7 @@ const BullwheelsForm = ({ onAdd }) => {
                         required
                     />
                 ))} */}
-                {/* <button className="button" type="submit">Add Annual</button> */}
+                <button className="button" type="submit">Submit</button>
             </form>
         </div>
     );
