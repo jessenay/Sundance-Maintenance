@@ -9,9 +9,6 @@ const Header = () => {
   const [loggedIn, setLoggedIn] = useState(auth.loggedIn());
 
   useEffect(() => {
-    // This effect will only re-check the login status when the component mounts,
-    // which isn't perfect if login status can change while the component is mounted.
-    // Consider a global state or context for a more robust solution.
     setLoggedIn(auth.loggedIn());
   }, []);
 
@@ -31,34 +28,34 @@ const Header = () => {
   };
 
   return (
-    <header className="header" style={{ backgroundColor: "red" }}>
+    <header className="header" style={{ backgroundColor: "black" }}>
       <div className="headerContainer">
-        <Link to="/home">
-          <h1 style={{ fontSize: "60px", fontFamily: "Playfair Display", fontWeight: 400, color: "#06052e" }}>
+        <Link to="/home" style={{ textDecoration: 'none' }}>
+          <h1 style={{ fontSize: "60px", fontFamily: "Playfair Display", fontWeight: 400, color: "white" }}>
             Sundance
           </h1>
         </Link>
         <Link className="nav-buttons" to="/home">
-          <h1 style={{ fontSize: "20px", fontFamily: "Poppins", fontWeight: 600, textTransform: "uppercase", color: "#06052e" }}>
+          <h1 style={{ fontSize: "20px", fontFamily: "Poppins", fontWeight: 600, textTransform: "uppercase", color: "white" }}>
             Home
           </h1>
         </Link>
         {lifts.map((lift) => (
           <Link key={lift._id} className="text-light p-2 nav-buttons" to={`/lift/${lift._id}`}>
-            <h1 className="m-0" style={{ fontSize: "20px", fontFamily: "Poppins", fontWeight: 600, textTransform: "uppercase", color: "#06052e" }}>
+            <h1 className="m-0" style={{ fontSize: "20px", fontFamily: "Poppins", fontWeight: 600, textTransform: "uppercase", color: "white" }}>
               {lift.name}
             </h1>
           </Link>
         ))}
         {loggedIn ? (
           <button className="nav-buttons" onClick={handleLogout}>
-            <h1 style={{ fontSize: "20px", fontFamily: "Poppins", fontWeight: 600, textTransform: "uppercase", color: "#06052e" }}>
+            <h1 style={{ fontSize: "20px", fontFamily: "Poppins", fontWeight: 600, textTransform: "uppercase" }}>
               Logout
             </h1>
           </button>
         ) : (
           <Link className="nav-buttons" to="/" onClick={handleLogin}>
-            <h1 style={{ fontSize: "20px", fontFamily: "Poppins", fontWeight: 600, textTransform: "uppercase", color: "#06052e" }}>
+            <h1 style={{ fontSize: "20px", fontFamily: "Poppins", fontWeight: 600, textTransform: "uppercase" }}>
               Login
             </h1>
           </Link>

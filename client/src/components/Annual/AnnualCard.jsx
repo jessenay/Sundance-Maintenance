@@ -1,6 +1,19 @@
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { ADD_ANNUAL_SERVICE } from '../../utils/mutations';
+function formatLabel(text) {
+    // Split the text on each capital letter or underscore and capitalize the first letter
+    return text
+        // Replace underscores with spaces and split into words
+        .replace(/_/g, ' ')
+        // Split at capital letters (for camelCase), ensure first letter is capitalized
+        .split(/(?=[A-Z])/)
+        // Combine all the transformations
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+        // Join into a single string with spaces
+        .join(' ');
+}
+
 
 const AnnualForm = ({ componentId }) => {
     const [annual, setAnnual] = useState({
@@ -49,24 +62,30 @@ const AnnualForm = ({ componentId }) => {
     return (
         <div className='form-container'>
             <form className="annualForm" onSubmit={handleSubmit}>
-                <label className='label'>TASK:</label>
-                <input className="input" type="text" name="task" value={annual.task} onChange={handleChange} required />
-                <label className='label'>DATE COMPLETED:</label>
-                <input className="input" type="text" name="dateCompleted" value={annual.dateCompleted} onChange={handleChange} required />
-                <label className="label">COMPLETED BY:</label>
-                <input className="input" type="text" name="completedBy" value={annual.completedBy} onChange={handleChange} required />
-                <label className="label">TEST VALUES (If Applicable):</label>
-                <input className="input" type="text" name="testValues" value={annual.testValues} onChange={handleChange} required />
-                <label className="label">NOTES:</label>
-                <input className="input" type="text" name="notes" value={annual.notes} onChange={handleChange} required />
-                <label className="label">PROCEDURE LOCATIONS:</label>
-                <input className="input" type="text" name="procedureLocations" value={annual.procedureLocations} onChange={handleChange} required />
+                {Object.keys(annual).map((key) => (
+                    <div key={key}>
+                        <label className='label' htmlFor={key}>
+                            {formatLabel(key)}
+                        </label>
+                        <textarea
+                            className="input"
+                            id={key}
+                            name={key}
+                            value={annual[key]}
+                            onChange={handleChange}
+                            required={key !== 'testValues' && key !== 'notes' && key !== 'procedureLocations'}
+                            rows={key === 'notes' || key === 'procedureLocations' ? 4 : 2}
+                        />
+                    </div>
+                ))}
                 <button className="button" type="submit">Submit</button>
             </form>
             {loading && <div>Loading...</div>}
             {error && <div>Error! {error.message}</div>}
         </div>
     );
+    
 };
+
 
 export default AnnualForm;

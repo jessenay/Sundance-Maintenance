@@ -41,7 +41,7 @@ function App() {
     <ApolloProvider client={client}>
       <div className="flex-column justify-flex-start min-100-vh">
         {!hideHeaderAndFooter && <Header loggedIn={loggedIn} setLoggedIn={setLoggedIn} />}
-        <div className="container">
+        <div>
           <Outlet />
         </div>
         {!hideHeaderAndFooter && <Footer />}

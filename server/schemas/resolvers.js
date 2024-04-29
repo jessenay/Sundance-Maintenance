@@ -59,18 +59,17 @@ const resolvers = {
   },
   Mutation: {
     // Mutation to create an account and return a JWT token
-    createAccount: async (_, { username, email, password }) => {
+    createAccount: async (_, { username, password }) => {
       const user = await Profile.create({
         username,
-        email,
         password
       });
       const token = signToken(user);
       return { token, user };
     },
     // Mutation for user login
-    login: async (_, { email, password }) => {
-      const user = await Profile.findOne({ email });
+    login: async (_, { username, password }) => {
+      const user = await Profile.findOne({ username });
       if (!user) {
         throw new AuthenticationError('User not found');
       }

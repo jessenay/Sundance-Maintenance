@@ -1,55 +1,57 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { useQuery, useMutation, NetworkStatus } from '@apollo/client';
+import { useQuery, useMutation } from '@apollo/client';
 import AuthService from "../utils/auth";
 import AnnualForm from "../components/Annual/AnnualCard";
-import { ADD_ANNUAL_SERVICE } from '../utils/queries';
-import { GET_ANNUAL_SERVICES } from '../utils/queries';
+import { ADD_ANNUAL_SERVICE, GET_ANNUAL_SERVICES } from '../utils/queries';
 
 const Annual = () => {
-  const { liftId, componentId } = useParams();
+  const navigate = useNavigate();
+  const { componentId } = useParams();
+  const [showForm, setShowForm] = useState(false); // State to control the form visibility
+
   useEffect(() => {
     if (!componentId) {
       console.error("Component ID is missing.");
       return;
     }
-
-    // Further code to fetch data or anything else
   }, [componentId]);
-  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!AuthService.loggedIn()) {
+      navigate("/login");
+    }
+  }, [navigate]);
 
   const { loading, error, data, refetch } = useQuery(GET_ANNUAL_SERVICES, {
     variables: { componentId },
     notifyOnNetworkStatusChange: true,
   });
 
-  console.log("Query Loading:", loading); // Debug loading
-  console.log("Query Error:", error); // Debug error
-  console.log("Query Data:", data); // Debug data
-
-  // Handle authentication redirection
-  // useEffect(() => {
-  //   if (!AuthService.loggedIn()) {
-  //     navigate("/login");
-  //   }
-  // }, [navigate]);
-
-  // Refresh data after mutation
   const [addAnnualService] = useMutation(ADD_ANNUAL_SERVICE, {
-    onCompleted: () => refetch(), // Refetch services after a successful mutation
+    onCompleted: () => {
+      refetch();
+      setShowForm(false); // Optionally hide the form again after submission
+    },
   });
+
+  const toggleForm = () => setShowForm(!showForm); // Toggle the form display
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
   if (!data || !data.annualServices) return <p>No data found</p>;
 
+  const reversedServices = [...data.annualServices].reverse();
+
   return (
     <div>
-      <h1>Add a Service</h1>
-      <AnnualForm componentId={componentId} />
+      <button onClick={toggleForm}>
+        {showForm ? "Hide Form" : "Add Service"}
+      </button>
+      {showForm && <AnnualForm componentId={componentId} />}
       <h2>Annual Services</h2>
       <ul>
-        {data.annualServices.map(service => (
+        {reversedServices.map(service => (
           <li key={service._id}>
             <p>Date Completed: {service.dateCompleted}</p>
             <p>Task: {service.task}</p>

@@ -4,7 +4,6 @@ const typeDefs = gql`
 type Profile {
   _id: ID
   username: String
-  email: String
 }
 
 type Lift {
@@ -54,8 +53,8 @@ type Query {
 }
 
 type Mutation {
-  createAccount(username: String!, email: String!, password: String!): AuthPayload
-  login(email: String!, password: String!): AuthPayload
+  createAccount(username: String!, password: String!): AuthPayload
+  login(username: String!, password: String!): AuthPayload
   addService(componentId: ID!, dateCompleted: String!, reason: String!, workDescription: String!, partsUsed: String!, completedBy: String!): Service
   addAnnualService(componentId: ID!, task: String!, dateCompleted: String!, completedBy: String!, testValues: String, notes: String, procedureLocations: String): AnnualService
   addLift(name: String!): Lift
