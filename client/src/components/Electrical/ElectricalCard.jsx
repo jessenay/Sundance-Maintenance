@@ -1,61 +1,79 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
+import { ADD_SERVICE } from '../../utils/mutations';
 
-const ElectricalForm = ({ onAdd }) => {
+function formatLabel(text) {
+    return text.replace(/_/g, ' ')
+               .split(/(?=[A-Z])/)
+               .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+               .join(' ');
+}
+
+const ElectricalForm = ({ componentId }) => {
+    
+    console.log("Component ID at start:", componentId);  // Debugging output
+
     const [electrical, setElectrical] = useState({
         dateCompleted: '', reason: '', workDescription: '', partsUsed: '', completedBy: ''
     });
 
-    // const [addAnnual, { loading, error }] = useMutation(ADD_ANNUAL);
+    const [addService, { loading, error }] = useMutation(ADD_SERVICE);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setElectrical((prevElectrical) => ({
+        setElectrical(prevElectrical => ({
             ...prevElectrical,
             [name]: value,
-        }))
+        }));
     };
 
-    // const submit = async (e) => {
-    //     e.preventDefault();
-    //     try {
-    //         await addAnnual({
-    //             variables: {
-    //                 ...annual,
-    //             }
-    //         });
-    //     } catch (error) {
-    //         console.error("and error has occured while adding an annual")
-    //     }
-    // };
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        console.log("Attempting to submit with Component ID:", componentId); // Debugging output
+        if (!componentId) {
+            console.error("Component ID is undefined, cannot submit the form.");
+            alert("Component ID is missing, cannot submit the form.");
+            return;
+        }
+
+        try {
+            const response = await addService({
+                variables: { ...electrical, componentId }
+            });
+            console.log("Mutation response:", response); // Debugging output
+            alert('Service added successfully!');
+            setElectrical({
+                dateCompleted: '', reason: '', workDescription: '', partsUsed: '', completedBy: ''
+            });
+        } catch (error) {
+            console.error("Error occurred while adding a service:", error);
+            alert(`Error! ${error.message}`);
+        }
+    };
 
     return (
         <div className='form-container'>
-            <form className="annualForm" 
-            // onSubmit={submit}
-            >
-                <label className='label'>DATE COMPLETED:</label>
-                <input className="input" type="text" name="dateCompleted" value={electrical.dateCompleted} onChange={handleChange} require />
-                <label className="label">REASON:</label>
-                <input className="input" type="text" name="reason" value={electrical.reason} onChange={handleChange} require />
-                <label className="label">WORK DESCRIPTION:</label>
-                <input className="input" type="text" name="workDescription" value={electrical.workDescription} onChange={handleChange} require />
-                <label className="label">PARTS USED:</label>
-                <input className="input" type="text" name="notes" value={electrical.partsUsed} onChange={handleChange} require />
-                <label className="label">COMPLETED BY:</label>
-                <input className="input" type="text" name="completedBy" value={electrical.completedBy} onChange={handleChange} require />
-                {/* {recipe.ingredients.map((ingredient, index) => (
-                    <input
-                        className="input"
-                        key={index}
-                        type="text"
-                        value={ingredient}
-                        onChange={(e) => handleChange(index, e.target.value)}
-                        required
-                    />
-                ))} */}
+            <form className="annualForm" onSubmit={handleSubmit}>
+                {Object.keys(electrical).map((key) => (
+                    <div key={key}>
+                        <label className='label' htmlFor={key}>
+                            {formatLabel(key)}
+                        </label>
+                        <textarea
+                            className="input"
+                            id={key}
+                            name={key}
+                            type="text"
+                            value={electrical[key]}
+                            onChange={handleChange}
+                        />
+                    </div>
+                ))}
                 <button className="button" type="submit">Submit</button>
             </form>
+            {loading && <div>Loading...</div>}
+            {error && <div>Error! {error.message}</div>}
         </div>
     );
 };

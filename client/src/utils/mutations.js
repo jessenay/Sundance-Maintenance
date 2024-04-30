@@ -25,3 +25,38 @@ mutation AddAnnualService($componentId: ID!, $task: String!, $dateCompleted: Str
   }
 }
 `;
+
+export const ADD_SERVICE = gql`
+mutation AddService($componentId: ID!, $dateCompleted: String!, $reason: String!, $workDescription: String!, $partsUsed: String!, $completedBy: String!) {
+  addService(componentId: $componentId, dateCompleted: $dateCompleted, reason: $reason, workDescription: $workDescription, partsUsed: $partsUsed, completedBy: $completedBy) {
+    _id
+    dateCompleted
+    reason
+    workDescription
+    partsUsed
+    completedBy
+  }
+}
+`;
+
+export const ADD_TOWER = gql`
+  mutation AddTower($name: String!, $liftId: ID!) {
+    addTower(name: $name, liftId: $liftId) {
+      _id
+      name
+    }
+  }
+`;
+
+export const ADD_TOWER_SERVICE = gql`
+mutation AddTowerService($towerId: ID!, $dateCompleted: String!, $uphillOrDownhill: String!, $workDescription: String!, $partsUsed: String!, $completedBy: String!) {
+  addTowerService(towerId: $towerId, dateCompleted: $dateCompleted, uphillOrDownhill: $uphillOrDownhill, workDescription: $workDescription, partsUsed: $partsUsed, completedBy: $completedBy) {
+    _id
+    dateCompleted
+    uphillOrDownhill
+    workDescription
+    partsUsed
+    completedBy
+  }
+}
+`;

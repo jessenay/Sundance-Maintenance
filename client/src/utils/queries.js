@@ -65,3 +65,66 @@ export const GET_ANNUAL_SERVICES = gql`
       }
     }
   `;
+
+
+  export const GET_SERVICES = gql`
+  query GetServices($componentId: ID!) {
+    services(componentId: $componentId) {
+      _id
+      dateCompleted
+      reason
+      workDescription
+      partsUsed
+      completedBy
+    }
+  }
+`;
+
+export const ADD_SERVICE = gql`
+  mutation AddService($componentId: ID!, $dateCompleted: String!, $reason: String!, $workDescription: String!, $partsUsed: String!, $completedBy: String!) {
+    addService(componentId: $componentId, dateCompleted: $dateCompleted, reason: $reason, workDescription: $workDescription, partsUsed: $partsUsed, completedBy: $completedBy) {
+      _id
+      dateCompleted
+      reason
+      workDescription
+      partsUsed
+      completedBy
+    }
+  }
+`;
+
+export const FETCH_TOWERS_BY_LIFT_ID = gql`
+  query GetLiftWithTowers($liftId: ID!) {
+    lift(_id: $liftId) {
+      _id
+      name
+      towers {
+        _id
+        name
+        services {
+          _id
+          dateCompleted
+          reason
+          workDescription
+          partsUsed
+          completedBy
+        }
+      }
+    }
+  }
+`;
+
+export const FETCH_SERVICES_BY_TOWER_ID = gql`
+  query FetchServicesByTowerId($towerId: ID!) {
+    tower(_id: $towerId) {
+      services {
+        _id
+        dateCompleted
+        uphillOrDownhill
+        workDescription
+        partsUsed
+        completedBy
+      }
+    }
+  }
+`;

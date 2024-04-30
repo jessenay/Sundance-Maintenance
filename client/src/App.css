@@ -212,7 +212,6 @@ button:hover {
 
 .alert {
   margin-bottom: 20px;
-  /* More space below alert */
 }
 
 .email {
@@ -251,4 +250,65 @@ button:hover {
 .nav-buttons h1 {
   margin: 0;
   /* Removes default margin from h1 */
+}
+
+.add-service {
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 20px;
+}
+
+ul {
+  display: grid;
+  grid-gap: 20px;  /* Space between grid items */
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Flexible grid layout */
+  padding: 0;
+  list-style-type: none;
+}
+
+li {
+  border: 1px solid #ccc;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Optional: Adds a subtle shadow for better visual separation */
+  margin-bottom: 20px; /* Adds space between items when they wrap */
+}
+
+p {
+  word-wrap: break-word; /* Ensures that words can break and wrap onto the next line */
+}
+
+.service-list {
+  display: grid;
+  grid-gap: 20px;  /* Space between grid items */
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Flexible grid layout */
+  padding: 0;
+  list-style-type: none;
+}
+
+.service-item {
+  border: 1px solid #ccc;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Optional: Adds a subtle shadow for better visual separation */
+  margin-bottom: 20px;
+}
+
+/* styles.css */
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+.tower-card, .service-detail {
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 5px;
 }

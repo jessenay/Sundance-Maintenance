@@ -1,6 +1,5 @@
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-
 import App from "./App.jsx";
 import Home from "./pages/Home";
 import LiftDetails from "./pages/LiftDetails";
@@ -16,6 +15,8 @@ import HaulRope from "./pages/HaulRope";
 import ReturnTerminal from "./pages/ReturnTerminal";
 import DriveTerminal from "./pages/DriveTerminal";
 import MidTerminal from "./pages/MidTerminal";
+import TowersGrid from "./pages/TowersGrid.jsx";
+import TowerServices from "./pages/TowerServices.jsx";
 // import Error from "./pages/Error";
 import LoginForm from "./pages/LoginForm.jsx";
 
@@ -85,6 +86,14 @@ const router = createBrowserRouter([
             path: "mid-terminal/:componentId",
             element: <MidTerminal />,
           },
+          {
+            path: "towers",
+            element: <TowersGrid />,
+          },
+          {
+            path: "towers/:towerId",
+            element: <TowerServices />,
+          }
 
         ],
       },

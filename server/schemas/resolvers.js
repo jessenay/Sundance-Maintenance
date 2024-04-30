@@ -2,6 +2,7 @@ const { Profile } = require('../models');
 const Component = require('../models/Component');
 const Lift = require('../models/Lift');
 const Service = require('../models/Service');
+const Tower = require('../models/Tower');
 const AnnualService = require('../models/AnnualService');
 const { signToken, AuthenticationError } = require('../utils/auth');
 
@@ -41,7 +42,7 @@ const resolvers = {
       try {
         // Fetch the component by its ID
         const component = await Component.findById(componentId);
-        
+
         // If the component exists, find its associated annual services
         if (component) {
           const annualServices = await AnnualService.find({ component: componentId });
@@ -55,41 +56,41 @@ const resolvers = {
         throw new Error(error);
       }
     },
-    
+    services: async (_, { componentId }) => {
+      const component = await Component.findById(componentId).populate('services');
+      if (!component) {
+        throw new Error('Component not found');
+      }
+      return component.services;
+    },
   },
   Mutation: {
-    // Mutation to create an account and return a JWT token
+    // Correctly nested all mutation resolvers
     createAccount: async (_, { username, password }) => {
-      const user = await Profile.create({
-        username,
-        password
-      });
+      const user = await Profile.create({ username, password });
       const token = signToken(user);
       return { token, user };
     },
-    // Mutation for user login
     login: async (_, { username, password }) => {
       const user = await Profile.findOne({ username });
       if (!user) {
         throw new AuthenticationError('User not found');
       }
-
       const validPassword = await user.isCorrectPassword(password);
       if (!validPassword) {
         throw new AuthenticationError('Invalid password');
       }
-
       const token = signToken(user);
       return { token, user };
     },
     addService: async (_, { componentId, dateCompleted, reason, workDescription, partsUsed, completedBy }) => {
       const newService = new Service({
+        component: componentId,
         dateCompleted,
         reason,
         workDescription,
         partsUsed,
         completedBy,
-        component: componentId
       });
       await newService.save();
       await Component.findByIdAndUpdate(componentId, { $push: { services: newService._id } });
@@ -117,34 +118,45 @@ const resolvers = {
     addComponent: async (_, { name, liftId }) => {
       const newComponent = new Component({ name, lift: liftId });
       await newComponent.save();
-
-      // Optionally add this component to the lift's components array
       await Lift.findByIdAndUpdate(liftId, { $push: { components: newComponent._id } });
-
       return newComponent;
     },
     addComponentToLifts: async (_, { name, liftIds }) => {
-      // Create the component
       const newComponent = await Component.create({ name });
-
-      // Associate the component with each lift
       for (const liftId of liftIds) {
         await Lift.findByIdAndUpdate(liftId, { $push: { components: newComponent._id } });
       }
-
       return newComponent;
+    },
+    addTower: async (_, { name, liftId }) => {
+      const newTower = new Tower({ name });
+      await newTower.save();
+      await Lift.findByIdAndUpdate(liftId, { $push: { towers: newTower._id } });
+      return newTower;
+    },
+    addTowerService: async (_, { towerId, dateCompleted, uphillOrDownhill, workDescription, partsUsed, completedBy }) => {
+      const newTowerService = new TowerService({
+        dateCompleted,
+        uphillOrDownhill,
+        workDescription,
+        partsUsed,
+        completedBy
+      });
+      await newTowerService.save();
+      await Tower.findByIdAndUpdate(towerId, { $push: { services: newTowerService._id } });
+      return newTowerService;
     }
-
   },
   Lift: {
     components: async (lift) => {
-      // Assuming 'components' is populated or an array of IDs
       return await Component.find({ _id: { $in: lift.components } });
+    },
+    towers: async (lift) => {
+      return await Tower.find({ _id: { $in: lift.towers } }).populate('services');
     }
   },
   Component: {
     services: async (component) => {
-      // Assuming 'services' is populated or an array of IDs
       return await Service.find({ _id: { $in: component.services } });
     }
   }

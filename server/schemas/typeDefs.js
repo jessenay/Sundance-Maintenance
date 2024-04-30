@@ -10,6 +10,7 @@ type Lift {
   _id: ID!
   name: String!
   components: [Component]
+  towers: [Tower]
 }
 
 type Component {
@@ -22,9 +23,24 @@ type Service {
   _id: ID!
   dateCompleted: String
   reason: String
-  workDecription: String
+  workDescription: String
   partsUsed: String
   completedBy: String
+}
+
+type TowerService {
+  _id: ID!
+  dateCompleted: String
+  uphillOrDownhill: String
+  workDescription: String
+  partsUsed: String
+  completedBy: String
+}
+
+type Tower {
+  _id: ID!
+  name: String!
+  services: [TowerService]
 }
 
 type AnnualService {
@@ -50,13 +66,17 @@ type Query {
   components: [Component]
   component(_id: ID!): Component
   annualServices(componentId: ID!): [AnnualService]
+  services(componentId: ID!): [Service]
+  towerServices (towerId: ID!): [TowerService]
 }
 
 type Mutation {
+  addTower(name: String!, liftId: ID!): Tower
   createAccount(username: String!, password: String!): AuthPayload
   login(username: String!, password: String!): AuthPayload
-  addService(componentId: ID!, dateCompleted: String!, reason: String!, workDescription: String!, partsUsed: String!, completedBy: String!): Service
   addAnnualService(componentId: ID!, task: String!, dateCompleted: String!, completedBy: String!, testValues: String, notes: String, procedureLocations: String): AnnualService
+  addService(componentId: ID!, dateCompleted: String!, reason: String!, workDescription: String!, partsUsed: String!, completedBy: String!): Service
+  addTowerService(towerId: ID!, dateCompleted: String!, uphillOrDownhill: String!, workDescription: String!, partsUsed: String!, completedBy: String!): TowerService
   addLift(name: String!): Lift
   addComponent(name: String!, liftId: ID!): Component
   addComponentToLifts(name: String!, liftIds: [ID!]!): Component
