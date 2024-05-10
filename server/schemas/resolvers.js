@@ -23,7 +23,10 @@ const resolvers = {
       return await Lift.find({});
     },
     lift: async (_, { _id }) => {
-      return await Lift.findById(_id).populate('components');
+      return await Lift.findById(_id).populate('components').populate({
+        path: 'towers',
+        populate: { path: 'services' }
+      });
     },
     components: async () => {
       return await Component.find({});
@@ -37,6 +40,12 @@ const resolvers = {
         return null;
       }
       return component;
+    },
+    tower: async (_, { _id }) => {
+      return await Tower.findById(_id).populate('services');
+    },
+    towers: async () => {
+      return await Tower.find({});
     },
     annualServices: async (_, { componentId }, context) => {
       try {
@@ -134,6 +143,21 @@ const resolvers = {
       await Lift.findByIdAndUpdate(liftId, { $push: { towers: newTower._id } });
       return newTower;
     },
+    addTowersToLift: async (_, { liftId, towerNames }) => {
+      const lift = await Lift.findById(liftId);
+      if (!lift) {
+        throw new Error('Lift not found');
+      }
+
+      const towers = await Promise.all(towerNames.map(name => {
+        const tower = new Tower({ name });
+        return tower.save();
+      }));
+
+      lift.towers = lift.towers.concat(towers.map(tower => tower._id));
+      await lift.save();
+      return lift.populate('towers');
+    },
     addTowerService: async (_, { towerId, dateCompleted, uphillOrDownhill, workDescription, partsUsed, completedBy }) => {
       const newTowerService = new TowerService({
         dateCompleted,
@@ -152,7 +176,7 @@ const resolvers = {
       return await Component.find({ _id: { $in: lift.components } });
     },
     towers: async (lift) => {
-      return await Tower.find({ _id: { $in: lift.towers } }).populate('services');
+      return await Tower.find({ _id: { $in: lift.towers } });
     }
   },
   Component: {

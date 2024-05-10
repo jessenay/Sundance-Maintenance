@@ -63,6 +63,8 @@ type Query {
   profile: Profile
   lifts: [Lift]
   lift(_id: ID!): Lift
+  tower(_id: ID!): Tower
+  towers: [Tower]
   components: [Component]
   component(_id: ID!): Component
   annualServices(componentId: ID!): [AnnualService]
@@ -80,6 +82,7 @@ type Mutation {
   addLift(name: String!): Lift
   addComponent(name: String!, liftId: ID!): Component
   addComponentToLifts(name: String!, liftIds: [ID!]!): Component
+  addTowersToLift(liftId: ID!, towerNames: [String!]!): Lift
 }
 `;
 

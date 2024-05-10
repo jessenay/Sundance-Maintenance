@@ -1,29 +1,43 @@
-// TowerServices.js
-import React from 'react';
+import React, { useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
-import { useParams, Link } from 'react-router-dom';
-import { FETCH_SERVICES_BY_TOWER_ID } from '../../../client/src/utils/queries';
+import { FETCH_SERVICES_BY_TOWER_ID } from '../utils/queries'; // Adjust path as necessary
+import TowerServicesForm from '../components/Towers/TowerServicesCard';
 
 const TowerServices = () => {
-  const { towerId } = useParams();
-  const { loading, error, data } = useQuery(FETCH_SERVICES_BY_TOWER_ID, { variables: { towerId } });
+    const { towerId } = useParams();
+    const navigate = useNavigate();
+    const [showForm, setShowForm] = useState(false);
 
-  if (loading) return <p>Loading services...</p>;
-  if (error) return <p>Error loading services: {error.message}</p>;
+    const { data, loading, error } = useQuery(FETCH_SERVICES_BY_TOWER_ID, {
+        variables: { towerId }
+    });
 
-  return (
-    <div>
-      <h2>Services for Tower</h2>
-      {data.tower.services.map(service => (
-        <div key={service._id}>
-          <p>Date: {service.dateCompleted}</p>
-          <p>Detail: {service.uphillOrDownhill}</p>
-          {/* Add more service details as needed */}
+    const toggleForm = () => setShowForm(!showForm);
+
+    if (loading) return <p>Loading services...</p>;
+    if (error) return <p>Error loading services: {error.message}</p>;
+    if (!data || !data.tower || !data.tower.services) return <p>No services found for this tower.</p>;
+
+    return (
+        <div>
+            <button onClick={() => navigate(-1)}>Back to Towers</button>
+            <h2>{`Services for Tower: ${data.tower.name}`}</h2>
+            <button onClick={toggleForm}>{showForm ? 'Hide Form' : 'Add New Service'}</button>
+            {showForm && <TowerServicesForm towerId={towerId} onClose={() => setShowForm(false)} />}
+            <ul>
+                {data.tower.services.map(service => (
+                    <li key={service._id}>
+                        <p>Date Completed: {service.dateCompleted}</p>
+                        <p>Detail: {service.uphillOrDownhill}</p>
+                        <p>Work Description: {service.workDescription}</p>
+                        <p>Parts Used: {service.partsUsed}</p>
+                        <p>Completed By: {service.completedBy}</p>
+                    </li>
+                ))}
+            </ul>
         </div>
-      ))}
-      <Link to={`/add-service/tower/${towerId}`}>Add New Service</Link>
-    </div>
-  );
+    );
 };
 
 export default TowerServices;

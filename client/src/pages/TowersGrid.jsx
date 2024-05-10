@@ -1,22 +1,26 @@
-// TowersGrid.js
 import React from 'react';
 import { useQuery } from '@apollo/client';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { FETCH_TOWERS_BY_LIFT_ID } from '../../src/utils/queries';
 
 const TowersGrid = () => {
-  const { liftId } = useParams(); // Assuming you're using React Router and the lift ID is part of the URL
+  const { liftId } = useParams();
+  const navigate = useNavigate();
   const { loading, error, data } = useQuery(FETCH_TOWERS_BY_LIFT_ID, { variables: { liftId } });
 
   if (loading) return <p>Loading towers...</p>;
   if (error) return <p>Error loading towers: {error.message}</p>;
+  if (!data || !data.lift || !data.lift.towers) return <p>No towers found.</p>;
+
+  const handleTowerClick = (towerId) => {
+    navigate(`/lift/${liftId}/towers/${towerId}`);
+  };
 
   return (
     <div className="grid-container">
-      {data && data.lift && data.lift.towers.map(tower => (
-        <div key={tower._id} className="tower-card">
+      {data.lift.towers.map(tower => (
+        <div key={tower._id} className="tower-card" onClick={() => handleTowerClick(tower._id)}>
           <h3>{tower.name}</h3>
-          <Link to={`/lifts/${liftId}/towers/${tower._id}`}>View Services</Link>
         </div>
       ))}
     </div>

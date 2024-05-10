@@ -67,7 +67,7 @@ export const GET_ANNUAL_SERVICES = gql`
   `;
 
 
-  export const GET_SERVICES = gql`
+export const GET_SERVICES = gql`
   query GetServices($componentId: ID!) {
     services(componentId: $componentId) {
       _id
@@ -93,25 +93,28 @@ export const ADD_SERVICE = gql`
   }
 `;
 
-export const FETCH_TOWERS_BY_LIFT_ID = gql`
-  query GetLiftWithTowers($liftId: ID!) {
-    lift(_id: $liftId) {
+export const ADD_TOWER_SERVICE = gql`
+  mutation AddTowerService($towerId: ID!, $dateCompleted: String!, $uphillOrDownhill: String!, $workDescription: String!, $partsUsed: String!, $completedBy: String!) {
+    addTowerService(towerId: $towerId, dateCompleted: $dateCompleted, uphillOrDownhill: $uphillOrDownhill, workDescription: $workDescription, partsUsed: $partsUsed, completedBy: $completedBy) {
       _id
-      name
-      towers {
-        _id
-        name
-        services {
-          _id
-          dateCompleted
-          reason
-          workDescription
-          partsUsed
-          completedBy
-        }
-      }
+      dateCompleted
+      uphillOrDownhill
+      workDescription
+      partsUsed
+      completedBy
     }
   }
+`;
+
+export const FETCH_TOWERS_BY_LIFT_ID = gql`
+query FetchTowersByLiftId($liftId: ID!) {
+  lift(_id: $liftId) {
+    towers {
+      _id
+      name
+    }
+  }
+}
 `;
 
 export const FETCH_SERVICES_BY_TOWER_ID = gql`
