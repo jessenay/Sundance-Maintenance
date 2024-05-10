@@ -10,7 +10,10 @@ const liftSchema = new mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Component'
     }
-  ]
+  ],
+  towers: [{ type: mongoose.Schema.Types.ObjectId, 
+  ref: 'Tower'
+}]
 });
 
 const Lift = mongoose.model('Lift', liftSchema);
