@@ -18,6 +18,10 @@ export const GET_LIFTS = gql`
         lifts {
             _id
             name
+            components {
+              _id
+              name
+            }
         }
     }
 `;

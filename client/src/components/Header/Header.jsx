@@ -19,42 +19,49 @@ const Header = () => {
 
   const handleLogout = () => {
     auth.logout();
-    setLoggedIn(false); // Update state to reflect logout
+    setLoggedIn(false);
   };
 
-  const handleLogin = () => {
-    // This should redirect to a login page where auth.login() can be called
-    setLoggedIn(true); // This line may be unnecessary depending on your login flow
+  const slugify = (text) => {
+    return text.toLowerCase().replace(/\s+/g, '-');
   };
 
   return (
     <header className="header" style={{ backgroundColor: "black" }}>
       <div className="headerContainer">
         <Link to="/home" style={{ textDecoration: 'none' }}>
-          <h1 style={{ fontSize: "60px", fontFamily: "Playfair Display", fontWeight: 400, color: "white" }}>
+          <h1 style={{ fontSize: "60px", fontFamily: "Playfair Display", fontWeight: 400, color: "red" }}>
             Sundance
           </h1>
         </Link>
-        <Link className="nav-buttons" to="/home">
-          <h1 style={{ fontSize: "20px", fontFamily: "Poppins", fontWeight: 600, textTransform: "uppercase", color: "white" }}>
-            Home
-          </h1>
-        </Link>
         {lifts.map((lift) => (
-          <Link key={lift._id} className="text-light p-2 nav-buttons" to={`/lift/${lift._id}`}>
-            <h1 className="m-0" style={{ fontSize: "20px", fontFamily: "Poppins", fontWeight: 600, textTransform: "uppercase", color: "white" }}>
-              {lift.name}
-            </h1>
-          </Link>
+          <div className="lift-link-container" key={lift._id}>
+            <Link className="nav-buttons" to={`/lift/${lift._id}`}>
+              <h1 style={{ fontSize: "20px", fontFamily: "Poppins", fontWeight: 600, textTransform: "uppercase", color: "white" }}>
+                {lift.name}
+              </h1>
+            </Link>
+            <div className="dropdown-content">
+              {lift.components.map((component) => {
+                const linkPath = component.name === 'Towers'
+                  ? `/lift/${lift._id}/towers`  // Path for tower grid
+                  : `/lift/${lift._id}/${slugify(component.name)}/${component._id}`; // General path for other components
+
+                return (
+                  <Link key={component._id} to={linkPath} style={{ textDecoration: 'none', color: 'black' }}>
+                    {component.name}
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
         ))}
         {loggedIn ? (
           <button className="nav-buttons" onClick={handleLogout}>
-            <h1 style={{ fontSize: "20px", fontFamily: "Poppins", fontWeight: 600, textTransform: "uppercase" }}>
-              Logout
-            </h1>
+            Logout
           </button>
         ) : (
-          <Link className="nav-buttons" to="/" onClick={handleLogin}>
+          <Link className="nav-buttons" to="/">
             <h1 style={{ fontSize: "20px", fontFamily: "Poppins", fontWeight: 600, textTransform: "uppercase" }}>
               Login
             </h1>

@@ -3,6 +3,7 @@ const Component = require('../models/Component');
 const Lift = require('../models/Lift');
 const Service = require('../models/Service');
 const Tower = require('../models/Tower');
+const TowerService = require('../models/TowerService');
 const AnnualService = require('../models/AnnualService');
 const { signToken, AuthenticationError } = require('../utils/auth');
 
@@ -130,12 +131,19 @@ const resolvers = {
       await Lift.findByIdAndUpdate(liftId, { $push: { components: newComponent._id } });
       return newComponent;
     },
-    addComponentToLifts: async (_, { name, liftIds }) => {
-      const newComponent = await Component.create({ name });
-      for (const liftId of liftIds) {
-        await Lift.findByIdAndUpdate(liftId, { $push: { components: newComponent._id } });
+    addComponentsToLift: async (_, { liftId, components }) => {
+      const lift = await Lift.findById(liftId);
+      if (!lift) {
+        throw new Error('Lift not found');
       }
-      return newComponent;
+    
+      const componentDocuments = components.map(name => new Component({ name }));
+      const savedComponents = await Promise.all(componentDocuments.map(component => component.save()));
+    
+      lift.components = lift.components.concat(savedComponents.map(component => component._id));
+    
+      await lift.save();
+      return lift.populate('components');
     },
     addTower: async (_, { name, liftId }) => {
       const newTower = new Tower({ name });
@@ -166,9 +174,15 @@ const resolvers = {
         partsUsed,
         completedBy
       });
-      await newTowerService.save();
-      await Tower.findByIdAndUpdate(towerId, { $push: { services: newTowerService._id } });
-      return newTowerService;
+      const savedService = await newTowerService.save();
+
+      await Tower.findByIdAndUpdate(
+        towerId,
+        { $push: { services: savedService._id } },
+        { new: true, upsert: true }
+      );
+
+      return savedService;
     }
   },
   Lift: {

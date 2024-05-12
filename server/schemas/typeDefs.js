@@ -81,7 +81,7 @@ type Mutation {
   addTowerService(towerId: ID!, dateCompleted: String!, uphillOrDownhill: String!, workDescription: String!, partsUsed: String!, completedBy: String!): TowerService
   addLift(name: String!): Lift
   addComponent(name: String!, liftId: ID!): Component
-  addComponentToLifts(name: String!, liftIds: [ID!]!): Component
+  addComponentsToLift(liftId: ID!, components: [String!]!): Lift
   addTowersToLift(liftId: ID!, towerNames: [String!]!): Lift
 }
 `;

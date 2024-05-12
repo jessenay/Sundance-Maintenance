@@ -21,7 +21,7 @@ const LiftDetails = () => {
   return (
     <div className="navContainer">
       <h1>{liftName}</h1> {/* Display the lift name instead of the lift ID */}
-      <MaintNav liftId={liftId} />
+      {/* <MaintNav liftId={liftId} /> */}
       <Outlet />
     </div>
   );

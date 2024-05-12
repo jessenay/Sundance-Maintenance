@@ -34,14 +34,13 @@ const client = new ApolloClient({
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const location = useLocation();
-  
   const hideHeaderAndFooter = location.pathname === '/'
 
   return (
     <ApolloProvider client={client}>
       <div className="flex-column justify-flex-start min-100-vh">
         {!hideHeaderAndFooter && <Header loggedIn={loggedIn} setLoggedIn={setLoggedIn} />}
-        <div>
+        <div className='content-container'>
           <Outlet />
         </div>
         {!hideHeaderAndFooter && <Footer />}

@@ -1,12 +1,15 @@
-// models/TowerService.js
 const mongoose = require('mongoose');
 
 const towerServiceSchema = new mongoose.Schema({
-  dateCompleted: { type: String, required: true },
-  uphillOrDownhill: { type: String, required: true },
-  workDescription: { type: String, required: true },
-  partsUsed: { type: String, required: true },
-  completedBy: { type: String, required: true }
+  dateCompleted: String,
+  uphillOrDownhill: String,
+  workDescription: String,
+  partsUsed: String,
+  completedBy: String,
+  tower: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Tower'
+  }
 });
 
 const TowerService = mongoose.model('TowerService', towerServiceSchema);

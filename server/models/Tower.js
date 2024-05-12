@@ -9,7 +9,7 @@ const towerSchema = new mongoose.Schema({
   services: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Service'
+      ref: 'TowerService'
     }
   ]
 });

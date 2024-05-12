@@ -12,7 +12,10 @@ const MaintNav = ({ liftId }) => {
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error! {error.message}</div>;
 
-  const components = data.lift?.components || [];
+  // Ensure data is being fetched and parsed correctly
+  if (!data || !data.lift || !data.lift.components) return <div>No components found for this lift.</div>;
+
+  const components = data.lift.components;
 
   return (
     <header className="maintNav" style={{ backgroundColor: "black" }}>
@@ -36,4 +39,3 @@ const MaintNav = ({ liftId }) => {
 };
 
 export default MaintNav;
-
