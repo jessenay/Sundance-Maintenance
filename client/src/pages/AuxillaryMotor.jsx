@@ -25,43 +25,24 @@ const AuxillaryMotor = () => {
 
     const { loading, error, data, refetch } = useQuery(GET_SERVICES, {
         variables: { componentId },
-        onError: (error) => {
-            console.error("Query error", error)
-        },
-        onCompleted: (data) => {
-            console.log("Query completed with data:", data);
-        },
-        skip: !componentId,
         notifyOnNetworkStatusChange: true,
     });
 
-    const [addService] = useMutation(ADD_SERVICE, {
-        onCompleted: () => {
-            refetch();
-            setForceUpdateKey(forceUpdateKey + 1);
-            setShowForm(false);
-        },
-    });
-
-    const toggleForm = () => setShowForm(!showForm);
-
     if (loading) return <p>Loading...</p>;
-    if (error) {
-        console.error("Error fetching services:", error);
-        return <p>Error: {error.message}</p>;
-    }
+    if (error) return <p>Error: {error.message}</p>;
     if (!data || !data.services) return <p>No data found</p>;
-    console.log("Services Data:", data.services);
+
     const reversedServices = [...data.services].reverse();
+
     return (
         <div>
-            <button className='add-service' onClick={toggleForm}>
+            <button className='add-service' onClick={() => setShowForm(!showForm)}>
                 {showForm ? "Hide Form" : "Add Service"}
             </button>
             {showForm && <AuxillaryMotorForm componentId={componentId} />}
             <h2>Auxillary Motor Services</h2>
             <ul className="service-list">
-                {data.services.map(service => (
+                {reversedServices.map(service => (
                     <li key={service._id} className="service-item">
                         <p className="date-completed">Date Completed: {service.dateCompleted}</p>
                         <p>Reason: {service.reason}</p>

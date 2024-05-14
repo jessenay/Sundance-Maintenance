@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
-import { FETCH_SERVICES_BY_TOWER_ID } from '../utils/queries'; // Adjust path as necessary
+import { FETCH_SERVICES_BY_TOWER_ID } from '../utils/queries'; 
 import TowerServicesForm from '../components/Towers/TowerServicesCard';
 
 const TowerServices = () => {
@@ -22,7 +22,7 @@ const TowerServices = () => {
     return (
         <div>
             <button onClick={() => navigate(-1)}>Back to Towers</button>
-            <h2>{`Services for Tower: ${data.tower.name}`}</h2>
+            <h2>{`Services for ${data.tower.name}`}</h2>
             <button onClick={toggleForm}>{showForm ? 'Hide Form' : 'Add New Service'}</button>
             {showForm && <TowerServicesForm towerId={towerId} onClose={() => setShowForm(false)} />}
             <ul>

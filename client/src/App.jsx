@@ -9,7 +9,7 @@ import { setContext } from '@apollo/client/link/context';
 import { Outlet, useLocation } from 'react-router-dom';
 import { useState, useEffect } from "react";
 import Header from './components/Header/Header';
-import Footer from './components/Footer/Footer';
+// import Footer from './components/Footer/Footer';
 import AuthService from './utils/auth';
 
 const httpLink = createHttpLink({
@@ -43,7 +43,7 @@ function App() {
         <div className='content-container'>
           <Outlet />
         </div>
-        {!hideHeaderAndFooter && <Footer />}
+        {!hideHeaderAndFooter}
       </div>
     </ApolloProvider>
   );

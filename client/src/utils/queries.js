@@ -124,6 +124,7 @@ query FetchTowersByLiftId($liftId: ID!) {
 export const FETCH_SERVICES_BY_TOWER_ID = gql`
   query FetchServicesByTowerId($towerId: ID!) {
     tower(_id: $towerId) {
+      name
       services {
         _id
         dateCompleted

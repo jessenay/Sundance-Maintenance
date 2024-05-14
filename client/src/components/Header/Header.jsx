@@ -30,22 +30,22 @@ const Header = () => {
     <header className="header" style={{ backgroundColor: "black" }}>
       <div className="headerContainer">
         <Link to="/home" style={{ textDecoration: 'none' }}>
-          <h1 style={{ fontSize: "60px", fontFamily: "Playfair Display", fontWeight: 400, color: "red" }}>
+          <h1 style={{ fontSize: "60px", fontFamily: "Playfair Display", fontWeight: 500, color: "red" }}>
             Sundance
           </h1>
         </Link>
         {lifts.map((lift) => (
           <div className="lift-link-container" key={lift._id}>
             <Link className="nav-buttons" to={`/lift/${lift._id}`}>
-              <h1 style={{ fontSize: "20px", fontFamily: "Poppins", fontWeight: 600, textTransform: "uppercase", color: "white" }}>
+              <h1 style={{ fontSize: "30px", fontFamily: "Poppins", fontWeight: 450, textTransform: "uppercase", color: "white" }}>
                 {lift.name}
               </h1>
             </Link>
             <div className="dropdown-content">
               {lift.components.map((component) => {
                 const linkPath = component.name === 'Towers'
-                  ? `/lift/${lift._id}/towers`  // Path for tower grid
-                  : `/lift/${lift._id}/${slugify(component.name)}/${component._id}`; // General path for other components
+                  ? `/lift/${lift._id}/towers`
+                  : `/lift/${lift._id}/${slugify(component.name)}/${component._id}`;
 
                 return (
                   <Link key={component._id} to={linkPath} style={{ textDecoration: 'none', color: 'black' }}>
@@ -61,7 +61,7 @@ const Header = () => {
             Logout
           </button>
         ) : (
-          <Link className="nav-buttons" to="/">
+          <Link className="nav-buttons" to="/login">
             <h1 style={{ fontSize: "20px", fontFamily: "Poppins", fontWeight: 600, textTransform: "uppercase" }}>
               Login
             </h1>

@@ -6,7 +6,6 @@ const Footer = () => {
   return (
     <footer
       className="footer"
-      style={{ backgroundColor: "#aad15f" }}
     >
       <div className="container text-center mb-5">
         {location.pathname !== "/" && (
@@ -20,7 +19,6 @@ const Footer = () => {
             fontFamily: "Poppins",
             fontWeight: 600,
             textTransform: "uppercase",
-            color: "#06052e",
           }}
         >
           &copy; {new Date().getFullYear()} - Sundance Lift Maintenance
