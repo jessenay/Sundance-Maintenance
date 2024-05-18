@@ -39,7 +39,7 @@ const AuxillaryMotor = () => {
             <button className='add-service' onClick={() => setShowForm(!showForm)}>
                 {showForm ? "Hide Form" : "Add Service"}
             </button>
-            {showForm && <AuxillaryMotorForm componentId={componentId} />}
+            {showForm && <AuxillaryMotorForm componentId={componentId} refetch={refetch} setShowForm={setShowForm} />}
             <h2>Auxillary Motor Services</h2>
             <ul className="service-list">
                 {reversedServices.map(service => (

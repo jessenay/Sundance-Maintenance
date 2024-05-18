@@ -9,7 +9,6 @@ const ElectricMotor = () => {
     const navigate = useNavigate();
     const { componentId } = useParams();
     const [showForm, setShowForm] = useState(false);
-    const [forceUpdateKey, setForceUpdateKey] = useState(0);
 
     useEffect(() => {
         if (!componentId) {
@@ -26,16 +25,6 @@ const ElectricMotor = () => {
         notifyOnNetworkStatusChange: true,
     });
 
-    const [addService] = useMutation(ADD_SERVICE, {
-        onCompleted: () => {
-            refetch();
-            setShowForm(false);
-            setForceUpdateKey(prevKey => prevKey + 1);  // Force a re-render of the component
-        },
-    });
-
-    const toggleForm = () => setShowForm(!showForm);
-
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error.message}</p>;
     if (!data || !data.services) return <p>No data found</p>;
@@ -44,10 +33,10 @@ const ElectricMotor = () => {
 
     return (
       <div>
-          <button className='add-service' onClick={toggleForm}>
+            <button className='add-service' onClick={() => setShowForm(!showForm)}>
               {showForm ? "Hide Form" : "Add Service"}
           </button>
-          {showForm && <ElectricMotorForm componentId={componentId} />}
+          {showForm && <ElectricMotorForm componentId={componentId} refetch={refetch} setShowForm={setShowForm} />}
           <h2>Electric Motor Services</h2>
           <ul className="service-list">
                 {data.services.map(service => (
@@ -62,7 +51,6 @@ const ElectricMotor = () => {
             </ul>
       </div>
   );
-  
 };
 
 export default ElectricMotor;

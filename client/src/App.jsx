@@ -34,7 +34,7 @@ const client = new ApolloClient({
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const location = useLocation();
-  const hideHeaderAndFooter = location.pathname === '/'
+  const hideHeaderAndFooter = location.pathname === '/login';
 
   return (
     <ApolloProvider client={client}>
@@ -43,7 +43,7 @@ function App() {
         <div className='content-container'>
           <Outlet />
         </div>
-        {!hideHeaderAndFooter}
+        {/* Add Footer here if needed */}
       </div>
     </ApolloProvider>
   );

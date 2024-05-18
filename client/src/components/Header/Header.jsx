@@ -36,7 +36,7 @@ const Header = () => {
         </Link>
         {lifts.map((lift) => (
           <div className="lift-link-container" key={lift._id}>
-            <Link className="nav-buttons" to={`/lift/${lift._id}`}>
+            <Link className="nav-buttons" to={`/lift/${lift._id}`} style={{ textDecoration: 'none' }}>
               <h1 style={{ fontSize: "30px", fontFamily: "Poppins", fontWeight: 450, textTransform: "uppercase", color: "white" }}>
                 {lift.name}
               </h1>
@@ -57,11 +57,11 @@ const Header = () => {
           </div>
         ))}
         {loggedIn ? (
-          <button className="nav-buttons" onClick={handleLogout}>
+          <button className="nav-buttons" to="/login" onClick={handleLogout}>
             Logout
           </button>
         ) : (
-          <Link className="nav-buttons" to="/login">
+          <Link className="nav-buttons" to="/login" style={{ textDecoration: 'none' }}>
             <h1 style={{ fontSize: "20px", fontFamily: "Poppins", fontWeight: 600, textTransform: "uppercase" }}>
               Login
             </h1>

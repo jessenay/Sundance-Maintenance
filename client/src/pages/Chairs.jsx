@@ -6,14 +6,11 @@ import ChairsForm from "../components/Chairs/ChairsCard";
 import { GET_SERVICES, ADD_SERVICE } from "../utils/queries";
 
 const Chairs = () => {
-    console.log("Chairs component is rendering");
     const navigate = useNavigate();
     const { componentId } = useParams();
     const [showForm, setShowForm] = useState(false);
-    const [forceUpdateKey, setForceUpdateKey] = useState(0);
 
     useEffect(() => {
-        console.log("Running the query with component ID:", componentId);
         if (!componentId) {
             console.error("Component ID is missing.");
             return;
@@ -25,40 +22,21 @@ const Chairs = () => {
 
     const { loading, error, data, refetch } = useQuery(GET_SERVICES, {
         variables: { componentId },
-        onError: (error) => {
-            console.error("Query error", error)
-        },
-        onCompleted: (data) => {
-            console.log("Query completed with data:", data);
-        },
-        skip: !componentId,
         notifyOnNetworkStatusChange: true,
     });
 
-    const [addService] = useMutation(ADD_SERVICE, {
-        onCompleted: () => {
-            refetch();
-            setForceUpdateKey(forceUpdateKey + 1);
-            setShowForm(false);
-        },
-    });
-
-    const toggleForm = () => setShowForm(!showForm);
-
     if (loading) return <p>Loading...</p>;
-    if (error) {
-        console.error("Error fetching services:", error);
-        return <p>Error: {error.message}</p>;
-    }
+    if (error) return <p>Error: {error.message}</p>;
     if (!data || !data.services) return <p>No data found</p>;
-    console.log("Services Data:", data.services);
+
     const reversedServices = [...data.services].reverse();
+
     return (
         <div>
-            <button className='add-service' onClick={toggleForm}>
+            <button className='add-service' onClick={() => setShowForm(!showForm)}>
                 {showForm ? "Hide Form" : "Add Service"}
             </button>
-            {showForm && <ChairsForm componentId={componentId} />}
+            {showForm && <ChairsForm componentId={componentId} refetch={refetch} setShowForm={setShowForm} />}
             <h2>Chairs Services</h2>
             <ul className="service-list">
                 {data.services.map(service => (
