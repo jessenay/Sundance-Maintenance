@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import { GET_LIFTS } from "../../utils/queries";
 import auth from "../../utils/auth";
@@ -7,6 +7,7 @@ import auth from "../../utils/auth";
 const Header = () => {
   const { loading, error, data } = useQuery(GET_LIFTS);
   const [loggedIn, setLoggedIn] = useState(auth.loggedIn());
+  const navigate = useNavigate();
 
   useEffect(() => {
     setLoggedIn(auth.loggedIn());
@@ -20,6 +21,7 @@ const Header = () => {
   const handleLogout = () => {
     auth.logout();
     setLoggedIn(false);
+    navigate("/login");
   };
 
   const slugify = (text) => {
@@ -57,7 +59,7 @@ const Header = () => {
           </div>
         ))}
         {loggedIn ? (
-          <button className="nav-buttons" to="/login" onClick={handleLogout}>
+          <button className="nav-buttons" onClick={handleLogout}>
             Logout
           </button>
         ) : (
