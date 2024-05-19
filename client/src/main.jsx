@@ -1,5 +1,5 @@
 import ReactDOM from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
 import App from "./App.jsx";
 import Home from "./pages/Home";
 import LiftDetails from "./pages/LiftDetails";
@@ -24,8 +24,12 @@ import WorkOrders from "./pages/WorkOrders.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: <Navigate to="/login" replace />, // Redirect to login on application start
     errorElement: <div>Error: Page not found</div>, // Simple error component
+  },
+  {
+    path: "/",
+    element: <App />,
     children: [
       {
         path: "login",

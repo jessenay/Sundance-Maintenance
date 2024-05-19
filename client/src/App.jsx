@@ -5,12 +5,11 @@ import {
   ApolloProvider,
   createHttpLink,
 } from '@apollo/client';
-import { setContext } from '@apollo/client/link/context';
+import { setContext } from '@apollo/client/link/context'; // Corrected import statement
 import { Outlet, useLocation } from 'react-router-dom';
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Header from './components/Header/Header';
 // import Footer from './components/Footer/Footer';
-import AuthService from './utils/auth';
 
 const httpLink = createHttpLink({
   uri: '/graphql',
@@ -32,14 +31,13 @@ const client = new ApolloClient({
 });
 
 function App() {
-  const [loggedIn, setLoggedIn] = useState(false);
   const location = useLocation();
   const hideHeaderAndFooter = location.pathname === '/login';
 
   return (
     <ApolloProvider client={client}>
       <div className="flex-column justify-flex-start min-100-vh">
-        {!hideHeaderAndFooter && <Header loggedIn={loggedIn} setLoggedIn={setLoggedIn} />}
+        {!hideHeaderAndFooter && <Header />}
         <div className='content-container'>
           <Outlet />
         </div>
