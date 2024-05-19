@@ -1,29 +1,32 @@
-import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-// import RecipeList from "../components/RecipeList";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import AuthService from "../utils/auth";
-import AnnualForm from "../components/Annual/AnnualCard"
-// import { NewRecipe } from "../components/RecipeCards/NewRecipe";
+import Slideshow from "../components/Slideshow/Slideshow";
 
 const Home = () => {
   const navigate = useNavigate();
 
-//   useEffect(() => {
-//     if (!AuthService.loggedIn()) {
-//       navigate("/");
-//     }
-//   }, [navigate]);
+  useEffect(() => {
+    if (!AuthService.loggedIn()) {
+      navigate("/login");
+    }
+  }, [navigate]);
 
-  const handleAddRecipeClick = () => {
-    navigate("/add-recipe");
+  const handleViewWorkOrdersClick = () => {
+    navigate("/work-orders");
   };
 
   return (
-    <div>
-        <h1>
-        Hello Twink
-        </h1>
+    <div className="home-page">
+      <h1 className="home-page-background">
+        Welcome to <span style={{ color: 'red' }}>Sundance</span> Lift Maintenance
+      </h1>
+      <Slideshow />
+      <button onClick={handleViewWorkOrdersClick} className="work-orders">
+        View Work Orders
+      </button>
     </div>
-  )};
+  );
+};
 
 export default Home;

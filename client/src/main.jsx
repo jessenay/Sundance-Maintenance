@@ -19,20 +19,25 @@ import TowersGrid from "./pages/TowersGrid.jsx";
 import TowerServices from "./pages/TowerServices.jsx";
 // import Error from "./pages/Error";
 import LoginForm from "./pages/LoginForm.jsx";
+import WorkOrders from "./pages/WorkOrders.jsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
-    errorElement: <Error />,
+    errorElement: <div>Error: Page not found</div>, // Simple error component
     children: [
       {
-        path: "/login",
+        path: "login",
         element: <LoginForm />,
       },
       {
-        path: "/home",
+        path: "home",
         element: <Home />,
+      },
+      {
+        path: "work-orders",
+        element: <WorkOrders />,
       },
       {
         path: "lift/:liftId",
@@ -93,8 +98,7 @@ const router = createBrowserRouter([
           {
             path: "towers/:towerId",
             element: <TowerServices />,
-          }
-
+          },
         ],
       },
     ],
