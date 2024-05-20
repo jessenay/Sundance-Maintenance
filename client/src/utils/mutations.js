@@ -60,3 +60,20 @@ mutation AddTowerService($towerId: ID!, $dateCompleted: String!, $uphillOrDownhi
   }
 }
 `;
+
+export const ADD_WORK_ORDER = gql`
+  mutation AddWorkOrder($job: String!, $personnel: [String]!, $toolsRequired: [String]!, $partsUsed: [PartInput]!, $timeWorked: String!) {
+    addWorkOrder(job: $job, personnel: $personnel, toolsRequired: $toolsRequired, partsUsed: $partsUsed, timeWorked: $timeWorked) {
+      _id
+      job
+      personnel
+      toolsRequired
+      partsUsed {
+        _id
+        name
+        cost
+      }
+      timeWorked
+    }
+  }
+`;

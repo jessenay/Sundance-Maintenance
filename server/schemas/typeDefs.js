@@ -28,6 +28,17 @@ type Service {
   completedBy: String
 }
 
+type Part {
+  _id: ID!
+  name: String!
+  cost: Float!
+}
+
+input PartInput {
+  name: String!
+  cost: Float!
+}
+
 type TowerService {
   _id: ID!
   dateCompleted: String
@@ -53,6 +64,15 @@ type AnnualService {
   procedureLocations: String
 }
 
+type WorkOrder {
+  _id: ID!
+  job: String
+  personnel: [String]
+  toolsRequired: [String]
+  partsUsed: [Part]
+  timeWorked: String
+}
+
 type AuthPayload {
   token: String
   user: Profile
@@ -70,6 +90,7 @@ type Query {
   annualServices(componentId: ID!): [AnnualService]
   services(componentId: ID!): [Service]
   towerServices (towerId: ID!): [TowerService]
+  workOrders: [WorkOrder]
 }
 
 type Mutation {
@@ -83,6 +104,7 @@ type Mutation {
   addComponent(name: String!, liftId: ID!): Component
   addComponentsToLift(liftId: ID!, components: [String!]!): Lift
   addTowersToLift(liftId: ID!, towerNames: [String!]!): Lift
+  addWorkOrder(job: String!, personnel: [String]!, toolsRequired: [String]!, partsUsed: [PartInput]!, timeWorked: String!): WorkOrder
 }
 `;
 

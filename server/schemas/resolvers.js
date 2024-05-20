@@ -5,15 +5,14 @@ const Service = require('../models/Service');
 const Tower = require('../models/Tower');
 const TowerService = require('../models/TowerService');
 const AnnualService = require('../models/AnnualService');
+const WorkOrder = require('../models/WorkOrder');
 const { signToken, AuthenticationError } = require('../utils/auth');
 
 const resolvers = {
   Query: {
-    // Fetch all profiles
     profiles: async () => {
       return await Profile.find({});
     },
-    // Fetch a single profile by the logged-in user's ID
     profile: async (_, __, context) => {
       if (context.user) {
         return await Profile.findById(context.user._id);
@@ -50,15 +49,11 @@ const resolvers = {
     },
     annualServices: async (_, { componentId }, context) => {
       try {
-        // Fetch the component by its ID
         const component = await Component.findById(componentId);
-
-        // If the component exists, find its associated annual services
         if (component) {
           const annualServices = await AnnualService.find({ component: componentId });
           return annualServices;
         } else {
-          // If the component doesn't exist, return an empty array
           return [];
         }
       } catch (error) {
@@ -73,9 +68,11 @@ const resolvers = {
       }
       return component.services;
     },
+    workOrders: async () => {
+      return await WorkOrder.find({});
+    },
   },
   Mutation: {
-    // Correctly nested all mutation resolvers
     createAccount: async (_, { username, password }) => {
       const user = await Profile.create({ username, password });
       const token = signToken(user);
@@ -183,6 +180,17 @@ const resolvers = {
       );
 
       return savedService;
+    },
+    addWorkOrder: async (_, { job, personnel, toolsRequired, partsUsed, timeWorked }) => {
+      const newWorkOrder = new WorkOrder({
+        job,
+        personnel,
+        toolsRequired,
+        partsUsed,
+        timeWorked
+      });
+      await newWorkOrder.save();
+      return newWorkOrder;
     }
   },
   Lift: {

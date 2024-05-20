@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 
 const images = [
-  "../public/assets/Images/flatheadPicture.png",
-  "../public/assets/Images/jakesPicture.png",
-  "../public/assets/Images/outlawPicture.png",
-  "../public/assets/Images/sundancePicture.png",
-  "../public/assets/Images/redsPicture.png",
-  "../public/assets/Images/stairwayPicture.png",
-  "../public/assets/Images/wildwoodPicture.png",
+  "../assets/Images/flatheadPicture.png",
+  "../assets/Images/jakesPicture.png",
+  "../assets/Images/outlawPicture.png",
+  "../assets/Images/sundancePicture.png",
+  "../assets/Images/redsPicture.png",
+  "../assets/Images/stairwayPicture.png",
+  "../assets/Images/wildwoodPicture.png",
   // Add paths to your images here
 ];
 

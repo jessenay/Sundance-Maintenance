@@ -136,3 +136,19 @@ export const FETCH_SERVICES_BY_TOWER_ID = gql`
     }
   }
 `;
+
+export const GET_WORK_ORDERS = gql`
+  query GetWorkOrders {
+    workOrders {
+      _id
+      job
+      personnel
+      toolsRequired
+      partsUsed {
+        name
+        cost
+      }
+      timeWorked
+    }
+  }
+`;

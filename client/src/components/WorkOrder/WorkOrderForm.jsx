@@ -1,122 +1,165 @@
 import React, { useState } from "react";
+import { useMutation } from '@apollo/client';
+import { ADD_WORK_ORDER } from '../../utils/mutations';
 
-const WorkOrderForm = () => {
-  const [jobs, setJobs] = useState([""]);
-  const [personnel, setPersonnel] = useState([""]);
-  const [tools, setTools] = useState([""]);
-  const [parts, setParts] = useState([{ name: "", cost: "" }]);
-  const [timesWorked, setTimesWorked] = useState([""]);
+function formatLabel(text) {
+  return text.replace(/_/g, ' ')
+    .split(/(?=[A-Z])/)
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(' ');
+}
 
-  const handleAddField = (setter, type) => {
-    setter((prev) => {
-      if (type === "parts") {
-        return [...prev, { name: "", cost: "" }];
-      } else {
-        return [...prev, ""];
-      }
-    });
-  };
+const WorkOrderForm = ({ refetch, setShowForm }) => {
+  const [workOrder, setWorkOrder] = useState({
+    job: '',
+    personnel: [''],
+    toolsRequired: [''],
+    partsUsed: [{ name: '', cost: '' }],
+    timeWorked: ''
+  });
 
-  const handleChange = (setter, index, event, field = null) => {
-    const { name, value } = event.target;
-    setter((prev) => {
-      const newState = [...prev];
-      if (field) {
-        newState[index][field] = value;
-      } else {
-        newState[index] = value;
+  const [addWorkOrder, { loading, error }] = useMutation(ADD_WORK_ORDER, {
+    onCompleted: () => {
+      alert('Work order added successfully!');
+      setWorkOrder({
+        job: '',
+        personnel: [''],
+        toolsRequired: [''],
+        partsUsed: [{ name: '', cost: '' }],
+        timeWorked: ''
+      });
+      setShowForm(false);
+      refetch();
+    },
+    onError: (err) => {
+      alert(`Error! ${err.message}`);
+    },
+  });
+
+  const handleAddField = (field) => {
+    setWorkOrder((prev) => {
+      const newState = { ...prev };
+      if (field === "toolsRequired" || field === "personnel") {
+        newState[field].push('');
+      } else if (field === "partsUsed") {
+        newState[field].push({ name: '', cost: '' });
       }
       return newState;
     });
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    // Handle form submission logic here
+  const handleChange = (e, field, index, subField = null) => {
+    const { value } = e.target;
+    setWorkOrder((prev) => {
+      const newState = { ...prev };
+      if (field === 'job' || field === 'timeWorked') {
+        newState[field] = value;
+      } else if (subField) {
+        newState[field][index][subField] = value;
+      } else {
+        newState[field][index] = value;
+      }
+      return newState;
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    await addWorkOrder({
+      variables: {
+        job: workOrder.job,
+        personnel: workOrder.personnel,
+        toolsRequired: workOrder.toolsRequired,
+        partsUsed: workOrder.partsUsed.map(part => ({ name: part.name, cost: parseFloat(part.cost) })),
+        timeWorked: workOrder.timeWorked
+      }
+    });
   };
 
   return (
     <div className='form-container'>
-    <h2>Work Order Form</h2>
-    <form className="annualForm" onSubmit={handleSubmit}>
-        {jobs.map((job, index) => (
+      <form className="annualForm" onSubmit={handleSubmit}>
+        <div>
+          <label className='label' htmlFor='job'>{formatLabel('job')}</label>
+          <input
+            className="input"
+            id='job'
+            name='job'
+            type="text"
+            value={workOrder.job}
+            onChange={(e) => handleChange(e, 'job')}
+          />
+        </div>
+        {workOrder.personnel.map((person, index) => (
           <div key={index}>
-            <input
-              type="text"
-              placeholder="Job"
-              value={job}
-              onChange={(e) => handleChange(setJobs, index, e)}
-            />
-          </div>
-        ))}
-        <button type="button" onClick={() => handleAddField(setJobs)}>
-          Add Job
-        </button>
-
-        {personnel.map((person, index) => (
-          <div key={index}>
+            <label className='label'>{formatLabel('personnel')}</label>
             <input
               type="text"
               placeholder="Personnel"
               value={person}
-              onChange={(e) => handleChange(setPersonnel, index, e)}
+              onChange={(e) => handleChange(e, 'personnel', index)}
+              className="input"
             />
           </div>
         ))}
-        <button type="button" onClick={() => handleAddField(setPersonnel)}>
+        <button type="button" onClick={() => handleAddField('personnel')}>
           Add Personnel
         </button>
 
-        {tools.map((tool, index) => (
+        {workOrder.toolsRequired.map((tool, index) => (
           <div key={index}>
+            <label className='label'>{formatLabel('toolsRequired')}</label>
             <input
               type="text"
-              placeholder="Tools Required"
+              placeholder="Tool Required"
               value={tool}
-              onChange={(e) => handleChange(setTools, index, e)}
+              onChange={(e) => handleChange(e, 'toolsRequired', index)}
+              className="input"
             />
           </div>
         ))}
-        <button type="button" onClick={() => handleAddField(setTools)}>
+        <button type="button" onClick={() => handleAddField('toolsRequired')}>
           Add Tool
         </button>
 
-        {parts.map((part, index) => (
+        {workOrder.partsUsed.map((part, index) => (
           <div key={index}>
+            <label className='label'>{formatLabel('partsUsed')}</label>
             <input
               type="text"
               placeholder="Part Used"
               value={part.name}
-              onChange={(e) => handleChange(setParts, index, e, "name")}
+              onChange={(e) => handleChange(e, 'partsUsed', index, 'name')}
+              className="input"
             />
             <input
-              type="text"
+              type="number"
               placeholder="Cost"
               value={part.cost}
-              onChange={(e) => handleChange(setParts, index, e, "cost")}
+              onChange={(e) => handleChange(e, 'partsUsed', index, 'cost')}
+              className="input"
             />
           </div>
         ))}
-        <button type="button" onClick={() => handleAddField(setParts, "parts")}>
+        <button type="button" onClick={() => handleAddField('partsUsed')}>
           Add Part
         </button>
 
-        {timesWorked.map((time, index) => (
-          <div key={index}>
-            <input
-              type="text"
-              placeholder="Time Worked"
-              value={time}
-              onChange={(e) => handleChange(setTimesWorked, index, e)}
-            />
-          </div>
-        ))}
-        <button type="button" onClick={() => handleAddField(setTimesWorked)}>
-          Add Time Worked
-        </button>
-
-        <button type="submit">Submit</button>
+        <div>
+          <label className='label' htmlFor='timeWorked'>{formatLabel('timeWorked')}</label>
+          <input
+            className="input"
+            id='timeWorked'
+            name='timeWorked'
+            type="text"
+            value={workOrder.timeWorked}
+            onChange={(e) => handleChange(e, 'timeWorked')}
+          />
+        </div>
+        <button className="button" type="submit">Submit</button>
       </form>
+      {loading && <div>Loading...</div>}
+      {error && <div>Error! {error.message}</div>}
     </div>
   );
 };
