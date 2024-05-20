@@ -77,7 +77,15 @@ const WorkOrderForm = ({ refetch, setShowForm }) => {
   };
 
   return (
-    <div className='form-container'>
+    <div style={{
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: '#fff',
+      padding: '20px',
+      borderRadius: '10px',
+      boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)'
+    }}>
       <form className="annualForm" onSubmit={handleSubmit}>
         <div>
           <label className='label' htmlFor='job'>{formatLabel('job')}</label>
@@ -85,6 +93,7 @@ const WorkOrderForm = ({ refetch, setShowForm }) => {
             className="input"
             id='job'
             name='job'
+            placeholder="Job"
             type="text"
             value={workOrder.job}
             onChange={(e) => handleChange(e, 'job')}
@@ -123,7 +132,7 @@ const WorkOrderForm = ({ refetch, setShowForm }) => {
         </button>
 
         {workOrder.partsUsed.map((part, index) => (
-          <div key={index}>
+          <div key={index} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width:'90%' }}>
             <label className='label'>{formatLabel('partsUsed')}</label>
             <input
               type="text"
@@ -131,6 +140,7 @@ const WorkOrderForm = ({ refetch, setShowForm }) => {
               value={part.name}
               onChange={(e) => handleChange(e, 'partsUsed', index, 'name')}
               className="input"
+              style={{ marginBottom: '10px', width: '100%' }}
             />
             <input
               type="number"
@@ -138,6 +148,7 @@ const WorkOrderForm = ({ refetch, setShowForm }) => {
               value={part.cost}
               onChange={(e) => handleChange(e, 'partsUsed', index, 'cost')}
               className="input"
+              style={{ width: '100%' }}
             />
           </div>
         ))}
@@ -151,6 +162,7 @@ const WorkOrderForm = ({ refetch, setShowForm }) => {
             className="input"
             id='timeWorked'
             name='timeWorked'
+            placeholder="Time Worked"
             type="text"
             value={workOrder.timeWorked}
             onChange={(e) => handleChange(e, 'timeWorked')}
