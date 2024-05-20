@@ -77,3 +77,13 @@ export const ADD_WORK_ORDER = gql`
     }
   }
 `;
+
+export const ADD_PROCEDURE = gql`
+  mutation AddProcedure($name: String!, $description: String!, $componentId: ID!) {
+    addProcedure(name: $name, description: $description, componentId: $componentId) {
+      _id
+      name
+      description
+    }
+  }
+`;

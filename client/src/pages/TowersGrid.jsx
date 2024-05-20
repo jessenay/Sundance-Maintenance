@@ -16,13 +16,22 @@ const TowersGrid = () => {
     navigate(`/lift/${liftId}/towers/${towerId}`);
   };
 
+  const handleViewProcedures = () => {
+    navigate(`/lift/${liftId}/procedures/${componentId}`);
+  };
+
   return (
-    <div className="grid-container">
-      {data.lift.towers.map(tower => (
-        <div key={tower._id} className="tower-card" onClick={() => handleTowerClick(tower._id)}>
-          <h3>{tower.name}</h3>
-        </div>
-      ))}
+    <div>
+      <button className='add-service' onClick={handleViewProcedures}>
+        View Procedures
+      </button>
+      <div className="grid-container">
+        {data.lift.towers.map(tower => (
+          <div key={tower._id} className="tower-card" onClick={() => handleTowerClick(tower._id)}>
+            <h3>{tower.name}</h3>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

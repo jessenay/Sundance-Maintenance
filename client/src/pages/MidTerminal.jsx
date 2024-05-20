@@ -8,7 +8,7 @@ import { GET_SERVICES, ADD_SERVICE } from "../utils/queries";
 const MidTerminal = () => {
     console.log("MidTerminal component is rendering");
     const navigate = useNavigate();
-    const { componentId } = useParams();
+    const { componentId, liftId } = useParams();
     const [showForm, setShowForm] = useState(false);
     const [forceUpdateKey, setForceUpdateKey] = useState(0);
 
@@ -53,10 +53,18 @@ const MidTerminal = () => {
     if (!data || !data.services) return <p>No data found</p>;
     console.log("Services Data:", data.services);
     const reversedServices = [...data.services].reverse();
+
+    const handleViewProcedures = () => {
+        navigate(`/lift/${liftId}/procedures/${componentId}`);
+    };
+
     return (
         <div>
             <button className='add-service' onClick={toggleForm}>
                 {showForm ? "Hide Form" : "Add Service"}
+            </button>
+            <button className='add-service' onClick={handleViewProcedures}>
+                View Procedures
             </button>
             {showForm && <MidTerminalForm componentId={componentId} />}
             <h2>Mid Terminal Services</h2>

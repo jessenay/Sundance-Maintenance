@@ -6,6 +6,7 @@ const Tower = require('../models/Tower');
 const TowerService = require('../models/TowerService');
 const AnnualService = require('../models/AnnualService');
 const WorkOrder = require('../models/WorkOrder');
+const Procedure = require('../models/Procedure');
 const { signToken, AuthenticationError } = require('../utils/auth');
 
 const resolvers = {
@@ -33,7 +34,7 @@ const resolvers = {
     },
     component: async (_, { _id }) => {
       console.log(`Fetching component with ID: ${_id}`);
-      const component = await Component.findById(_id).populate('services');
+      const component = await Component.findById(_id).populate('services').populate('procedures');
       console.log('Component Data:', component);
       if (!component) {
         console.log(`No component found with this ID: ${_id}`);
@@ -47,7 +48,7 @@ const resolvers = {
     towers: async () => {
       return await Tower.find({});
     },
-    annualServices: async (_, { componentId }, context) => {
+    annualServices: async (_, { componentId }) => {
       try {
         const component = await Component.findById(componentId);
         if (component) {
@@ -70,6 +71,9 @@ const resolvers = {
     },
     workOrders: async () => {
       return await WorkOrder.find({});
+    },
+    procedures: async (_, { componentId }) => {
+      return await Procedure.find({ component: componentId });
     },
   },
   Mutation: {
@@ -191,6 +195,12 @@ const resolvers = {
       });
       await newWorkOrder.save();
       return newWorkOrder;
+    },
+    addProcedure: async (_, { description, componentId }) => {
+      const newProcedure = new Procedure({ description, component: componentId });
+      await newProcedure.save();
+      await Component.findByIdAndUpdate(componentId, { $push: { procedures: newProcedure._id } });
+      return newProcedure;
     }
   },
   Lift: {
@@ -204,6 +214,9 @@ const resolvers = {
   Component: {
     services: async (component) => {
       return await Service.find({ _id: { $in: component.services } });
+    },
+    procedures: async (component) => {
+      return await Procedure.find({ component: component._id });
     }
   }
 };

@@ -13,9 +13,10 @@
   color: white;
   width: fit-content;
   min-width: 250px; /* Adjust the width as necessary */
-  height: 70vh; /* Adjust the height to match the image */
+  height: fit-content; /* Adjust the height to match the image */
   overflow-y: auto; /* Add scroll if the content overflows */
-  margin-top: 80px;
+  margin-top: auto;
+  margin-bottom: auto;
   z-index: 1;
 }
 
@@ -384,4 +385,8 @@ p {
   height: 45px;
   width: 600px;
   font-size: 20px;
+}
+
+.description-input {
+  height:340px;
 }

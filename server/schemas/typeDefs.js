@@ -17,6 +17,7 @@ type Component {
   _id: ID!
   name: String!
   services: [Service]
+  procedures: [Procedure]
 }
 
 type Service {
@@ -73,6 +74,12 @@ type WorkOrder {
   timeWorked: String
 }
 
+type Procedure {
+  _id: ID!
+  name: String
+  description: String
+}
+
 type AuthPayload {
   token: String
   user: Profile
@@ -91,6 +98,7 @@ type Query {
   services(componentId: ID!): [Service]
   towerServices (towerId: ID!): [TowerService]
   workOrders: [WorkOrder]
+  procedures(componentId: ID!): [Procedure]
 }
 
 type Mutation {
@@ -105,6 +113,7 @@ type Mutation {
   addComponentsToLift(liftId: ID!, components: [String!]!): Lift
   addTowersToLift(liftId: ID!, towerNames: [String!]!): Lift
   addWorkOrder(job: String!, personnel: [String]!, toolsRequired: [String]!, partsUsed: [PartInput]!, timeWorked: String!): WorkOrder
+  addProcedure(name: String!, description: String!, componentId: ID!): Procedure
 }
 `;
 

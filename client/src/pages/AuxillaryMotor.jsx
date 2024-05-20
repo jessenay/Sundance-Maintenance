@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { useQuery, useMutation } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import AuthService from "../utils/auth";
 import AuxillaryMotorForm from "../components/Auxillary/AuxillaryMotorCard";
-import { GET_SERVICES, ADD_SERVICE } from "../utils/queries";
+import { GET_SERVICES } from "../utils/queries";
 
 const AuxillaryMotor = () => {
     console.log("AuxillaryMotor component is rendering");
     const navigate = useNavigate();
-    const { componentId } = useParams();
+    const { liftId, componentId } = useParams();
     const [showForm, setShowForm] = useState(false);
-    const [forceUpdateKey, setForceUpdateKey] = useState(0);
 
     useEffect(() => {
         console.log("Running the query with component ID:", componentId);
@@ -34,10 +33,17 @@ const AuxillaryMotor = () => {
 
     const reversedServices = [...data.services].reverse();
 
+    const handleViewProcedures = () => {
+        navigate(`/lift/${liftId}/procedures/${componentId}`);
+    };
+
     return (
         <div>
             <button className='add-service' onClick={() => setShowForm(!showForm)}>
                 {showForm ? "Hide Form" : "Add Service"}
+            </button>
+            <button className='add-service' onClick={handleViewProcedures}>
+                View Procedures
             </button>
             {showForm && <AuxillaryMotorForm componentId={componentId} refetch={refetch} setShowForm={setShowForm} />}
             <h2>Auxillary Motor Services</h2>

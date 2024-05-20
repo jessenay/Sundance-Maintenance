@@ -7,7 +7,7 @@ import { ADD_SERVICE, GET_SERVICES } from '../utils/queries';
 
 const ElectricMotor = () => {
     const navigate = useNavigate();
-    const { componentId } = useParams();
+    const { componentId, liftId } = useParams();
     const [showForm, setShowForm] = useState(false);
 
     useEffect(() => {
@@ -31,14 +31,21 @@ const ElectricMotor = () => {
 
     const reversedServices = [...data.services].reverse();
 
+    const handleViewProcedures = () => {
+        navigate(`/lift/${liftId}/procedures/${componentId}`);
+    };
+
     return (
-      <div>
+        <div>
             <button className='add-service' onClick={() => setShowForm(!showForm)}>
-              {showForm ? "Hide Form" : "Add Service"}
-          </button>
-          {showForm && <ElectricMotorForm componentId={componentId} refetch={refetch} setShowForm={setShowForm} />}
-          <h2>Electric Motor Services</h2>
-          <ul className="service-list">
+                {showForm ? "Hide Form" : "Add Service"}
+            </button>
+            <button className='add-service' onClick={handleViewProcedures}>
+                View Procedures
+            </button>
+            {showForm && <ElectricMotorForm componentId={componentId} refetch={refetch} setShowForm={setShowForm} />}
+            <h2>Electric Motor Services</h2>
+            <ul className="service-list">
                 {data.services.map(service => (
                     <li key={service._id} className="service-item">
                         <p className="date-completed">Date Completed: {service.dateCompleted}</p>
@@ -49,8 +56,8 @@ const ElectricMotor = () => {
                     </li>
                 ))}
             </ul>
-      </div>
-  );
+        </div>
+    );
 };
 
 export default ElectricMotor;

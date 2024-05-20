@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { useQuery, useMutation } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import AuthService from "../utils/auth";
 import BullwheelsForm from "../components/Bullwheels/BullwheelsCard";
-import { GET_SERVICES, ADD_SERVICE } from "../utils/queries";
+import { GET_SERVICES } from "../utils/queries";
 
 const Bullwheels = () => {
     const navigate = useNavigate();
-    const { componentId } = useParams();
+    const { componentId, liftId } = useParams();
     const [showForm, setShowForm] = useState(false);
 
     useEffect(() => {
@@ -31,11 +31,20 @@ const Bullwheels = () => {
 
     const reversedServices = [...data.services].reverse();
 
+    const handleViewProcedures = () => {
+        navigate(`/lift/${liftId}/procedures/${componentId}`);
+    };
+
     return (
         <div>
-            <button className='add-service' onClick={() => setShowForm(!showForm)}>
-                {showForm ? "Hide Form" : "Add Service"}
-            </button>
+            <div className="button-group">
+                <button className='add-service' onClick={() => setShowForm(!showForm)}>
+                    {showForm ? "Hide Form" : "Add Service"}
+                </button>
+                <button className='add-service' onClick={handleViewProcedures}>
+                    View Procedures
+                </button>
+            </div>
             {showForm && <BullwheelsForm componentId={componentId} refetch={refetch} setShowForm={setShowForm} />}
             <h2>Bullwheels Services</h2>
             <ul className="service-list">

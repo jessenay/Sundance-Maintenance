@@ -17,9 +17,9 @@ import DriveTerminal from "./pages/DriveTerminal";
 import MidTerminal from "./pages/MidTerminal";
 import TowersGrid from "./pages/TowersGrid.jsx";
 import TowerServices from "./pages/TowerServices.jsx";
-// import Error from "./pages/Error";
 import LoginForm from "./pages/LoginForm.jsx";
 import WorkOrders from "./pages/WorkOrders.jsx";
+import Procedures from "./pages/Procedures.jsx";
 
 const router = createBrowserRouter([
   {
@@ -102,6 +102,10 @@ const router = createBrowserRouter([
           {
             path: "towers/:towerId",
             element: <TowerServices />,
+          },
+          {
+            path: "procedures/:componentId",
+            element: <Procedures />,
           },
         ],
       },

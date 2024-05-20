@@ -7,7 +7,7 @@ import { GET_SERVICES, ADD_SERVICE } from "../utils/queries";
 
 const EmergencyDrive = () => {
     const navigate = useNavigate();
-    const { componentId } = useParams();
+    const { componentId, liftId } = useParams();
     const [showForm, setShowForm] = useState(false);
 
     useEffect(() => {
@@ -31,10 +31,17 @@ const EmergencyDrive = () => {
 
     const reversedServices = [...data.services].reverse();
 
+    const handleViewProcedures = () => {
+        navigate(`/lift/${liftId}/procedures/${componentId}`);
+    };
+
     return (
         <div>
             <button className='add-service' onClick={() => setShowForm(!showForm)}>
                 {showForm ? "Hide Form" : "Add Service"}
+            </button>
+            <button className='add-service' onClick={handleViewProcedures}>
+                View Procedures
             </button>
             {showForm && <EmergencyDriveForm componentId={componentId} refetch={refetch} setShowForm={setShowForm} />}
             <h2>Emergency Drive Services</h2>
