@@ -33,7 +33,6 @@ profileSchema.methods.isCorrectPassword = async function (password) {
   return bcrypt.compare(password, this.password);
 };
 
+const Profile = model('Profile', profileSchema);
 
-const User = model('Profile', profileSchema);
-
-module.exports = User;
+module.exports = Profile;

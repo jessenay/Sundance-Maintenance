@@ -87,3 +87,15 @@ export const ADD_PROCEDURE = gql`
     }
   }
 `;
+
+export const CREATE_ACCOUNT = gql`
+  mutation createAccount($username: String!, $password: String!) {
+    createAccount(username: $username, password: $password) {
+      token
+      user {
+        _id
+        username
+      }
+    }
+  }
+`;

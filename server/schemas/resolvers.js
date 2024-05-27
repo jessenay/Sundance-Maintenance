@@ -78,6 +78,11 @@ const resolvers = {
   },
   Mutation: {
     createAccount: async (_, { username, password }) => {
+      const existingUser = await Profile.findOne({ username });
+      if (existingUser) {
+        throw new Error('User with this username already exists');
+      }
+
       const user = await Profile.create({ username, password });
       const token = signToken(user);
       return { token, user };
