@@ -7,6 +7,7 @@ const TowerService = require('../models/TowerService');
 const AnnualService = require('../models/AnnualService');
 const WorkOrder = require('../models/WorkOrder');
 const Procedure = require('../models/Procedure');
+const Todo = require('../models/Todo'); // Add the Todo model
 const { signToken, AuthenticationError } = require('../utils/auth');
 
 const resolvers = {
@@ -19,6 +20,9 @@ const resolvers = {
         return await Profile.findById(context.user._id);
       }
       throw new AuthenticationError('You must be logged in to view your profile.');
+    },
+    todos: async () => {
+      return await Todo.find({});
     },
     lifts: async () => {
       return await Lift.find({});
@@ -142,12 +146,12 @@ const resolvers = {
       if (!lift) {
         throw new Error('Lift not found');
       }
-    
+
       const componentDocuments = components.map(name => new Component({ name }));
       const savedComponents = await Promise.all(componentDocuments.map(component => component.save()));
-    
+
       lift.components = lift.components.concat(savedComponents.map(component => component._id));
-    
+
       await lift.save();
       return lift.populate('components');
     },
@@ -200,6 +204,16 @@ const resolvers = {
       });
       await newWorkOrder.save();
       return newWorkOrder;
+    },
+    addTodo: async (_, { job }) => {
+      const newTodo = new Todo({
+        job,
+      });
+      await newTodo.save();
+      return newTodo;
+    },
+    removeTodo: async (_, { _id }) => {
+      return await Todo.findByIdAndDelete(_id);
     },
     addProcedure: async (_, { description, componentId }) => {
       const newProcedure = new Procedure({ description, component: componentId });

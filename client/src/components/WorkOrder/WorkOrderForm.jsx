@@ -9,12 +9,12 @@ function formatLabel(text) {
     .join(' ');
 }
 
-const WorkOrderForm = ({ refetch, setShowForm }) => {
+const WorkOrderForm = ({ refetch, setShowForm, initialJob = '', handleFinishWorkOrder }) => {
   const [workOrder, setWorkOrder] = useState({
-    job: '',
+    job: initialJob,
     personnel: [''],
     toolsRequired: [''],
-    partsUsed: [{ name: '', cost: '' }],
+    partsUsed: [{ name: '', cost: 0 }],
     timeWorked: ''
   });
 
@@ -25,11 +25,12 @@ const WorkOrderForm = ({ refetch, setShowForm }) => {
         job: '',
         personnel: [''],
         toolsRequired: [''],
-        partsUsed: [{ name: '', cost: '' }],
+        partsUsed: [{ name: '', cost: 0 }],
         timeWorked: ''
       });
       setShowForm(false);
       refetch();
+      handleFinishWorkOrder();
     },
     onError: (err) => {
       alert(`Error! ${err.message}`);
@@ -42,7 +43,7 @@ const WorkOrderForm = ({ refetch, setShowForm }) => {
       if (field === "toolsRequired" || field === "personnel") {
         newState[field].push('');
       } else if (field === "partsUsed") {
-        newState[field].push({ name: '', cost: '' });
+        newState[field].push({ name: '', cost: 0 });
       }
       return newState;
     });
@@ -132,7 +133,7 @@ const WorkOrderForm = ({ refetch, setShowForm }) => {
         </button>
 
         {workOrder.partsUsed.map((part, index) => (
-          <div key={index} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width:'90%' }}>
+          <div key={index} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '90%' }}>
             <label className='label'>{formatLabel('partsUsed')}</label>
             <input
               type="text"

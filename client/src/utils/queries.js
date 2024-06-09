@@ -153,6 +153,33 @@ export const GET_WORK_ORDERS = gql`
   }
 `;
 
+export const GET_TODOS = gql`
+  query GetTodos {
+    todos {
+      _id
+      job
+    }
+  }
+`;
+
+export const ADD_TODO = gql`
+  mutation AddTodo($job: String!) {
+    addTodo(job: $job) {
+      _id
+      job
+    }
+  }
+`;
+
+export const REMOVE_TODO = gql`
+  mutation RemoveTodo($_id: ID!) {
+    removeTodo(_id: $_id) {
+      _id
+      job
+    }
+  }
+`;
+
 export const GET_PROCEDURES = gql`
   query GetProcedures($componentId: ID!) {
     procedures(componentId: $componentId) {

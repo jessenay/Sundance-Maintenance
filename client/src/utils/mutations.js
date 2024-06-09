@@ -78,6 +78,24 @@ export const ADD_WORK_ORDER = gql`
   }
 `;
 
+export const ADD_TODO = gql`
+  mutation AddTodo($job: String!) {
+    addTodo(job: $job) {
+      _id
+      job
+    }
+  }
+`;
+
+export const REMOVE_TODO = gql`
+  mutation RemoveTodo($_id: ID!) {
+    removeTodo(_id: $_id) {
+      _id
+      job
+    }
+  }
+`;
+
 export const ADD_PROCEDURE = gql`
   mutation AddProcedure($name: String!, $description: String!, $componentId: ID!) {
     addProcedure(name: $name, description: $description, componentId: $componentId) {
