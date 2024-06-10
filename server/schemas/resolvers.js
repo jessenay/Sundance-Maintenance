@@ -7,7 +7,7 @@ const TowerService = require('../models/TowerService');
 const AnnualService = require('../models/AnnualService');
 const WorkOrder = require('../models/WorkOrder');
 const Procedure = require('../models/Procedure');
-const Todo = require('../models/Todo'); // Add the Todo model
+const Todo = require('../models/ToDo'); // Add the Todo model
 const { signToken, AuthenticationError } = require('../utils/auth');
 
 const resolvers = {
