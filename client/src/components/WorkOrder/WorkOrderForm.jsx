@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useMutation } from '@apollo/client';
 import { ADD_WORK_ORDER } from '../../utils/mutations';
+import './WorkOrderForm.css';
 
 function formatLabel(text) {
   return text.replace(/_/g, ' ')

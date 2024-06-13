@@ -48,7 +48,7 @@ const Slideshow = ({ onImagesLoaded = () => {} }) => {
 
   return (
     <div className="slideshow">
-      <img src={images[currentImageIndex]} alt="Slideshow" style={{ width: 'auto', height: '600px' }} />
+      <img src={images[currentImageIndex]} alt="Slideshow" className="slideshow-image" />
     </div>
   );
 };

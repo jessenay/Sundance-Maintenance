@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { FETCH_SERVICES_BY_TOWER_ID } from '../utils/queries'; 
 import TowerServicesForm from '../components/Towers/TowerServicesCard';
+import './Services.css';
 
 const TowerServices = () => {
     const { towerId } = useParams();

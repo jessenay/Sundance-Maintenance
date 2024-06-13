@@ -4,6 +4,7 @@ import { useQuery, useMutation } from '@apollo/client';
 import AuthService from "../utils/auth";
 import AnnualForm from "../components/Annual/AnnualCard";
 import { ADD_ANNUAL_SERVICE, GET_ANNUAL_SERVICES } from '../utils/queries';
+import "./Services.css";
 
 const Annual = () => {
     const navigate = useNavigate();

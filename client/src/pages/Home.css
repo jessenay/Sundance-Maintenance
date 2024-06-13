@@ -1,0 +1,206 @@
+.home-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.home-page-background {
+  font-size: 2em;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.home-page-background .highlight {
+  color: red;
+}
+
+.columns-container {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.column {
+  flex: 1;
+  margin: 10px;
+}
+
+.left-column {
+  flex: 2; /* Increase the size of the left column */
+}
+
+.middle-column {
+  flex: 3; /* Keep the middle column as is */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.right-column {
+  flex: 1; /* Make the right column the smallest */
+}
+
+.slideshow-container {
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.slideshow {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  z-index: -2;
+}
+
+.slideshow-image {
+  max-width: 100%;
+  height: auto;
+}
+
+.work-orders {
+  padding: 10px 20px;
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 10px;
+  width: 400px; /* Set a fixed width for the button */
+  text-align: center; /* Center text inside the button */
+  align-self: center; /* Center the button in the flex container */
+}
+
+.work-orders:hover {
+  background-color: #cc0000;
+}
+
+.todo-list {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.todo-list h2 {
+  margin-top: 0;
+}
+
+.todo-list ul {
+  list-style: none;
+  padding: 0;
+}
+
+.todo-list li {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.todo-list li:hover {
+  background-color: #f0f0f0;
+}
+
+.add-todo {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  margin-top: 20px;
+}
+
+.add-todo input {
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.add-todo button {
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add-todo button:hover {
+  background-color: #45a049;
+}
+
+.work-order-form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 768px) {
+  .home-page-background {
+    font-size: 1.5em;
+  }
+
+  .columns-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .column {
+    width: 90%;
+    margin: 10px 0;
+  }
+
+  .work-orders {
+    position: static;
+    margin-bottom: 10px;
+  }
+
+  .todo-list,
+  .work-order-form-container {
+    width: 100%;
+  }
+
+  .todo-list {
+    position: relative;
+    right: 20px;
+  }
+
+  .slideshow-container {
+    display: none; /* Hide the slideshow container */
+  }
+}
+
+@media (max-width: 480px) {
+  .home-page-background {
+    font-size: 1.2em;
+  }
+
+  .add-todo input {
+    padding: 8px;
+  }
+
+  .add-todo button {
+    padding: 8px 16px;
+  }
+
+  .todo-list,
+  .work-order-form-container {
+    width: 100%;
+  }
+
+  .slideshow-container {
+    display: none; /* Hide the slideshow container */
+  }
+}

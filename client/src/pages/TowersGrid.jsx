@@ -2,6 +2,7 @@ import React from 'react';
 import { useQuery } from '@apollo/client';
 import { useParams, useNavigate } from 'react-router-dom';
 import { FETCH_TOWERS_BY_LIFT_ID } from '../../src/utils/queries';
+import "./TowersGrid.css";
 
 const TowersGrid = () => {
   const { liftId } = useParams();

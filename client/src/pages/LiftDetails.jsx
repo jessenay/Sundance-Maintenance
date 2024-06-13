@@ -3,6 +3,7 @@ import { Outlet, useParams, useLocation } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { GET_LIFT_BY_ID } from '../utils/queries';
 import MaintNav from '../components/Navigation/MaintNav'; // Adjust the import path as necessary
+import './LiftDetails.css';
 
 // Example images mapping
 const liftImages = {

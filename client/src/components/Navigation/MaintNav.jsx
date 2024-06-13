@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import { FETCH_COMPONENTS_BY_LIFT_ID } from "../../utils/queries";
+import "./MaintNav.css";
 
 const slugify = (text) => {
   return text.toLowerCase().replace(/\s+/g, '-');

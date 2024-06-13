@@ -1,0 +1,156 @@
+  .header {
+    background-color: black;
+    padding: 10px;
+  }
+  
+  .headerContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  
+  .header-link {
+    text-decoration: none;
+  }
+  
+  .header-title {
+    font-size: 60px;
+    font-family: "Playfair Display", serif;
+    font-weight: 500;
+    color: red;
+    position: relative;
+    bottom: 8px;
+  }
+  
+  .nav-buttons-container {
+    position: relative;
+  }
+  
+  .desktop-nav {
+    display: flex;
+  }
+  
+  .nav-buttons {
+    background: none;
+    border: none;
+    color: inherit;
+    padding: 10px 20px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+  }
+  
+  .lift-name {
+    font-size: 30px;
+    font-family: "Poppins", sans-serif;
+    font-weight: 450;
+    text-transform: uppercase;
+    color: white;
+  }
+  
+  .login-text {
+    font-size: 20px;
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+  
+  .lift-link-container {
+    position: relative;
+    display: inline-block;
+    font-size: 30px;
+  }
+  
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    font-size: 20px;
+  }
+  
+  .dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }
+  
+  .lift-link-container:hover .dropdown-content {
+    display: block;
+  }
+  
+  .lift-link-container a:hover {
+    background-color: red;
+  }
+  
+  .mobile-menu-button {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 30px;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .mobile-nav {
+    display: none;
+    flex-direction: column;
+    background-color: black;
+    width: 100%;
+  }
+
+  .logout-button {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    /* padding: 8px 16px; */
+    font-size: 12px; /* Reduced font size */
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+    text-transform: uppercase;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    height: 40px;
+    margin-left: 10px;
+    align-self: center;
+  }
+  
+  .logout-button:hover {
+    background-color: #cc0000;
+    transform: translateY(-2px);
+  }
+  
+  .logout-button:active {
+    background-color: #a80000;
+    transform: translateY(0);
+  }
+  
+  
+  @media (max-width: 1000px) {
+    .header-title {
+      font-size: 40px;
+    }
+    .desktop-nav {
+      display: none;
+    }
+    .mobile-menu-button {
+      display: block;
+    }
+    .mobile-nav {
+      display: flex;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .header-title {
+      font-size: 30px;
+    }
+  }
+  

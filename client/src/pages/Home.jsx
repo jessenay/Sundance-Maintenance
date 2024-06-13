@@ -5,7 +5,7 @@ import AuthService from "../utils/auth";
 import Slideshow from "../components/Slideshow/Slideshow";
 import { GET_TODOS, ADD_TODO, REMOVE_TODO } from "../utils/queries";
 import WorkOrderForm from "../components/WorkOrder/WorkOrderForm";
-import '../App.css'; // Import the CSS file
+import "./Home.css";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -56,43 +56,50 @@ const Home = () => {
   return (
     <div className="home-page">
       <h1 className="home-page-background">
-        Welcome to <span style={{ color: 'red' }}>Sundance</span> Lift Maintenance
+        Welcome to <span className="highlight">Sundance</span> Lift Maintenance
       </h1>
-      <div className="slideshow-container">
-        <Slideshow />
-        <button onClick={() => navigate("/work-orders")} className="work-orders">
-          View Work Orders
-        </button>
-      </div>
-      <div className="todo-container">
-        <div className="todo-list">
-          <h2>To-Do List</h2>
-          <ul>
-            {todosData?.todos.map(todo => (
-              <li key={todo._id} onClick={() => handleTodoClick(todo)}>
-                {todo.job}
-              </li>
-            ))}
-          </ul>
-          <div className="add-todo">
-            <input
-              type="text"
-              placeholder="New job"
-              value={newJob}
-              onChange={(e) => setNewJob(e.target.value)}
-            />
-            <button onClick={handleAddTodo}>Add To-Do</button>
+      <div className="columns-container">
+        <div className="column left-column">
+          <div className="todo-list">
+            <h2>To-Do List</h2>
+            <ul>
+              {todosData?.todos.map(todo => (
+                <li key={todo._id} onClick={() => handleTodoClick(todo)}>
+                  {todo.job}
+                </li>
+              ))}
+            </ul>
+            <div className="add-todo">
+              <input
+                type="text"
+                placeholder="New job"
+                value={newJob}
+                onChange={(e) => setNewJob(e.target.value)}
+              />
+              <button onClick={handleAddTodo}>Add To-Do</button>
+            </div>
+          </div>
+          {showWorkOrderForm && (
+            <div className="work-order-form-container">
+              <WorkOrderForm
+                refetch={refetchTodos}
+                setShowForm={setShowWorkOrderForm}
+                initialJob={selectedTodo?.job}
+                handleFinishWorkOrder={handleFinishWorkOrder}
+              />
+            </div>
+          )}
+        </div>
+        <div className="column middle-column">
+          <div className="slideshow-container">
+            <Slideshow />
+            <button onClick={() => navigate("/work-orders")} className="work-orders">
+              View Work Orders
+            </button>
           </div>
         </div>
-        <div className="work-order-form-container">
-          {showWorkOrderForm && (
-            <WorkOrderForm
-              refetch={refetchTodos}
-              setShowForm={setShowWorkOrderForm}
-              initialJob={selectedTodo?.job}
-              handleFinishWorkOrder={handleFinishWorkOrder}
-            />
-          )}
+        <div className="column right-column">
+          {/* Future content */}
         </div>
       </div>
     </div>
