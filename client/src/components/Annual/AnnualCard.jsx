@@ -3,7 +3,7 @@ import { useMutation } from '@apollo/client';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { ADD_ANNUAL_SERVICE } from '../../utils/mutations';
-import './annualcard.css';
+import './AnnualCard.css';
 
 function formatLabel(text) {
     return text
