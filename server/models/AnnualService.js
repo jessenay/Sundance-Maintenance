@@ -7,7 +7,7 @@ const annualServiceSchema = new mongoose.Schema({
         required: true
     },
     task: String,
-    dateCompleted: String,
+    dateCompleted: Date,
     completedBy: String,
     testValues: String,
     notes: String,

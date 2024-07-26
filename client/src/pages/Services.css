@@ -1,47 +1,107 @@
 /* General styles for the services page */
 .service-list {
-    display: grid;
-    grid-gap: 20px;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    padding: 0;
-    list-style-type: none;
-  }
-  
+  display: grid;
+  grid-gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  padding: 0;
+  list-style-type: none;
+  margin-top: 20px; /* Add space above the service list */
+}
+
+.service-item {
+  border: 1px solid #ddd;
+  padding: 15px;
+  background-color: #fff;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.service-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.add-service {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin: 20px auto; /* Center the button and add margin */
+}
+
+.add-service:hover {
+  background-color: #0056b3;
+}
+
+.date-completed, .completed-by, .test-values {
+  font-weight: bold;
+  color: #333;
+}
+
+p {
+  word-wrap: break-word;
+  margin: 5px 0;
+}
+
+h2 {
+  text-align: center;
+  color: #333;
+  margin-top: 20px;
+  font-family: 'Arial', sans-serif;
+}
+
+label {
+  font-weight: bold;
+  margin-right: 10px;
+  color: #555;
+}
+
+select {
+  padding: 5px 10px;
+  margin: 0 10px 20px 0;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+button {
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:focus {
+  outline: none;
+}
+
+/* Responsive styles for the services page */
+@media (max-width: 768px) {
   .service-item {
-    border: 1px solid #ccc;
     padding: 10px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    display: flex;
-    flex-direction: column;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   }
-  
+
+  select {
+      margin-bottom: 10px;
+  }
+
   .add-service {
-    display: flex;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 20px;
+      width: 100%;
+      text-align: center;
   }
-  
-  .date-completed, .completed-by, .test-values {
-    font-weight: bold;
+}
+
+@media (max-width: 480px) {
+  .service-item {
+    padding: 8px;
   }
-  
-  p {
-    word-wrap: break-word;
-  }
-  
-  /* Responsive styles for the services page */
-  @media (max-width: 768px) {
-    .service-item {
-      padding: 8px;
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .service-item {
-      padding: 6px;
-    }
-  }
-  
+}

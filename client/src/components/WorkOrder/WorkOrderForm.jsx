@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useMutation } from '@apollo/client';
 import { ADD_WORK_ORDER } from '../../utils/mutations';
 import './WorkOrderForm.css';
@@ -10,14 +10,23 @@ function formatLabel(text) {
     .join(' ');
 }
 
-const WorkOrderForm = ({ refetch, setShowForm, initialJob = '', handleFinishWorkOrder }) => {
+const WorkOrderForm = ({ refetch, setShowForm, handleFinishWorkOrder, todo }) => {
   const [workOrder, setWorkOrder] = useState({
-    job: initialJob,
+    job: '',
     personnel: [''],
     toolsRequired: [''],
     partsUsed: [{ name: '', cost: 0 }],
     timeWorked: ''
   });
+
+  useEffect(() => {
+    if (todo) {
+      setWorkOrder((prevWorkOrder) => ({
+        ...prevWorkOrder,
+        job: todo.job // Set the job field to the job of the todo
+      }));
+    }
+  }, [todo]);
 
   const [addWorkOrder, { loading, error }] = useMutation(ADD_WORK_ORDER, {
     onCompleted: () => {
@@ -171,6 +180,7 @@ const WorkOrderForm = ({ refetch, setShowForm, initialJob = '', handleFinishWork
           />
         </div>
         <button className="button" type="submit">Submit</button>
+        <button type="button" onClick={() => setShowForm(false)}>Close</button>
       </form>
       {loading && <div>Loading...</div>}
       {error && <div>Error! {error.message}</div>}

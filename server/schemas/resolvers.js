@@ -52,15 +52,21 @@ const resolvers = {
     towers: async () => {
       return await Tower.find({});
     },
-    annualServices: async (_, { componentId }) => {
+    annualServices: async (_, { componentId, month, year }) => {
       try {
-        const component = await Component.findById(componentId);
-        if (component) {
-          const annualServices = await AnnualService.find({ component: componentId });
-          return annualServices;
-        } else {
-          return [];
+        const filter = { component: componentId };
+
+        if (month && year) {
+          const start = new Date(year, month - 1, 1);
+          const end = new Date(year, month, 0);
+          filter.dateCompleted = { $gte: start, $lt: end };
+        } else if (year) {
+          const start = new Date(year, 0, 1);
+          const end = new Date(year, 11, 31);
+          filter.dateCompleted = { $gte: start, $lt: end };
         }
+
+        return AnnualService.find(filter).sort({ dateCompleted: -1 });
       } catch (error) {
         console.error('Error fetching annual services:', error);
         throw new Error(error);
@@ -150,7 +156,7 @@ const resolvers = {
       const componentDocuments = components.map(name => new Component({ name }));
       const savedComponents = await Promise.all(componentDocuments.map(component => component.save()));
 
-      lift.components = lift.components.concat(savedComponents.map(component => component._id));
+      lift.components = lift.components.concat(savedComponents.map(component => _id));
 
       await lift.save();
       return lift.populate('components');
@@ -172,7 +178,7 @@ const resolvers = {
         return tower.save();
       }));
 
-      lift.towers = lift.towers.concat(towers.map(tower => tower._id));
+      lift.towers = lift.towers.concat(towers.map(tower => _id));
       await lift.save();
       return lift.populate('towers');
     },

@@ -27,19 +27,19 @@
 }
 
 .left-column {
-  flex: 2; /* Increase the size of the left column */
+  flex: 1.5; /* Increase the size of the left column */
 }
 
 .middle-column {
   flex: 3; /* Keep the middle column as is */
-  display: flex;
+  /* display: flex; */
   flex-direction: column;
   align-items: center;
   justify-content: center;
 }
 
 .right-column {
-  flex: 1; /* Make the right column the smallest */
+  flex: 1.5; /* Make the right column the smallest */
 }
 
 .slideshow-container {
@@ -74,7 +74,7 @@
   cursor: pointer;
   transition: background-color 0.3s ease;
   margin-top: 10px;
-  width: 400px; /* Set a fixed width for the button */
+  width: 100%; /* Set a fixed width for the button */
   text-align: center; /* Center text inside the button */
   align-self: center; /* Center the button in the flex container */
 }
@@ -163,7 +163,6 @@
   }
 
   .work-orders {
-    position: static;
     margin-bottom: 10px;
   }
 

@@ -99,7 +99,7 @@ const typeDefs = gql`
     towers: [Tower]
     components: [Component]
     component(_id: ID!): Component
-    annualServices(componentId: ID!): [AnnualService]
+    annualServices(componentId: ID!, month: Int, year: Int): [AnnualService]
     services(componentId: ID!): [Service]
     towerServices (towerId: ID!): [TowerService]
     workOrders: [WorkOrder]

@@ -1,0 +1,75 @@
+/* Styles for the AnnualForm component */
+.annual-form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f7f7f7;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+    max-width: 600px;
+}
+
+.annualForm {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+.input, .textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+.textarea {
+    resize: vertical; /* Allow vertical resizing only */
+}
+
+.button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+.button:hover {
+    background-color: #0056b3;
+}
+
+.loading, .error {
+    margin-top: 10px;
+    font-weight: bold;
+    color: #d9534f; /* Bootstrap's red color */
+}
+
+@media (max-width: 768px) {
+    .annual-form-container {
+        padding: 15px;
+    }
+
+    .input, .textarea {
+        font-size: 14px;
+    }
+
+    .button {
+        font-size: 14px;
+        padding: 8px 16px;
+    }
+}

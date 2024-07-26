@@ -93,13 +93,12 @@ const Home = () => {
         <div className="column middle-column">
           <div className="slideshow-container">
             <Slideshow />
-            <button onClick={() => navigate("/work-orders")} className="work-orders">
-              View Work Orders
-            </button>
           </div>
         </div>
         <div className="column right-column">
-          {/* Future content */}
+        <button onClick={() => navigate("/work-orders")} className="work-orders">
+              View Work Orders
+            </button>
         </div>
       </div>
     </div>
