@@ -14,16 +14,16 @@ export const GET_LIFT_BY_ID = gql`
 `;
 
 export const GET_LIFTS = gql`
-    query GetLifts {
-        lifts {
-            _id
-            name
-            components {
-              _id
-              name
-            }
-        }
+  query GetLifts {
+    lifts {
+      _id
+      name
+      components {
+        _id
+        name
+      }
     }
+  }
 `;
 
 export const FETCH_COMPONENTS_BY_LIFT_ID = gql`
@@ -42,20 +42,6 @@ export const FETCH_COMPONENTS_BY_LIFT_ID = gql`
   }
 `;
 
-export const ADD_ANNUAL_SERVICE = gql`
-mutation AddAnnualService($componentId: ID!, $task: String!, $dateCompleted: String!, $completedBy: String!, $testValues: String, $notes: String, $procedureLocations: String) {
-  addAnnualService(componentId: $componentId, task: $task, dateCompleted: $dateCompleted, completedBy: $completedBy, testValues: $testValues, notes: $notes, procedureLocations: $procedureLocations) {
-    _id
-    task
-    dateCompleted
-    completedBy
-    testValues
-    notes
-    procedureLocations
-  }
-}
-`;
-
 export const GET_ANNUAL_SERVICES = gql`
 query GetAnnualServices($componentId: ID!, $month: Int, $year: Int) {
   annualServices(componentId: $componentId, month: $month, year: $year) {
@@ -72,8 +58,8 @@ query GetAnnualServices($componentId: ID!, $month: Int, $year: Int) {
 
 
 export const GET_SERVICES = gql`
-  query GetServices($componentId: ID!) {
-    services(componentId: $componentId) {
+  query GetServices($componentId: ID!, $month: Int, $year: Int) {
+    services(componentId: $componentId, month: $month, year: $year) {
       _id
       dateCompleted
       reason
@@ -82,6 +68,20 @@ export const GET_SERVICES = gql`
       completedBy
     }
   }
+`;
+
+export const ADD_ANNUAL_SERVICE = gql`
+mutation AddAnnualService($componentId: ID!, $task: String!, $dateCompleted: String!, $completedBy: String!, $testValues: String, $notes: String, $procedureLocations: String) {
+  addAnnualService(componentId: $componentId, task: $task, dateCompleted: $dateCompleted, completedBy: $completedBy, testValues: $testValues, notes: $notes, procedureLocations: $procedureLocations) {
+    _id
+    task
+    dateCompleted
+    completedBy
+    testValues
+    notes
+    procedureLocations
+  }
+}
 `;
 
 export const ADD_SERVICE = gql`

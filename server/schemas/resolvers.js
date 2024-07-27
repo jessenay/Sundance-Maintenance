@@ -9,6 +9,7 @@ const WorkOrder = require('../models/WorkOrder');
 const Procedure = require('../models/Procedure');
 const Todo = require('../models/ToDo'); // Add the Todo model
 const { signToken, AuthenticationError } = require('../utils/auth');
+const { Types: { ObjectId } } = require('mongoose'); // Import ObjectId from mongoose
 
 const resolvers = {
   Query: {
@@ -37,11 +38,8 @@ const resolvers = {
       return await Component.find({});
     },
     component: async (_, { _id }) => {
-      console.log(`Fetching component with ID: ${_id}`);
       const component = await Component.findById(_id).populate('services').populate('procedures');
-      console.log('Component Data:', component);
       if (!component) {
-        console.log(`No component found with this ID: ${_id}`);
         return null;
       }
       return component;
@@ -54,7 +52,7 @@ const resolvers = {
     },
     annualServices: async (_, { componentId, month, year }) => {
       try {
-        const filter = { component: componentId };
+        const filter = { component: new ObjectId(componentId) };
 
         if (month && year) {
           const start = new Date(year, month - 1, 1);
@@ -66,24 +64,42 @@ const resolvers = {
           filter.dateCompleted = { $gte: start, $lt: end };
         }
 
-        return AnnualService.find(filter).sort({ dateCompleted: -1 });
+        return await AnnualService.find(filter).sort({ dateCompleted: -1 });
       } catch (error) {
         console.error('Error fetching annual services:', error);
         throw new Error(error);
       }
     },
-    services: async (_, { componentId }) => {
-      const component = await Component.findById(componentId).populate('services');
-      if (!component) {
-        throw new Error('Component not found');
+    services: async (_, { componentId, month, year }) => {
+      try {
+        const filter = { component: new ObjectId(componentId) };
+
+        if (month && year) {
+          const start = new Date(year, month - 1, 1);
+          const end = new Date(year, month, 0);
+          filter.dateCompleted = { $gte: start.toISOString(), $lt: end.toISOString() };
+        } else if (year) {
+          const start = new Date(year, 0, 1);
+          const end = new Date(year, 11, 31);
+          filter.dateCompleted = { $gte: start.toISOString(), $lt: end.toISOString() };
+        }
+
+        console.log('Filter:', filter);
+
+        const services = await Service.find(filter).sort({ dateCompleted: -1 });
+        console.log('Services:', services);
+
+        return services;
+      } catch (error) {
+        console.error('Error fetching services:', error);
+        throw new Error(error);
       }
-      return component.services;
     },
     workOrders: async () => {
       return await WorkOrder.find({});
     },
     procedures: async (_, { componentId }) => {
-      return await Procedure.find({ component: componentId });
+      return await Procedure.find({ component: new ObjectId(componentId) });
     },
   },
   Mutation: {
@@ -111,7 +127,7 @@ const resolvers = {
     },
     addService: async (_, { componentId, dateCompleted, reason, workDescription, partsUsed, completedBy }) => {
       const newService = new Service({
-        component: componentId,
+        component: new ObjectId(componentId),
         dateCompleted,
         reason,
         workDescription,
@@ -124,9 +140,9 @@ const resolvers = {
     },
     addAnnualService: async (_, { componentId, task, dateCompleted, completedBy, testValues, notes, procedureLocations }) => {
       const newAnnualService = new AnnualService({
-        component: componentId,
+        component: new ObjectId(componentId),
         task,
-        dateCompleted,
+        dateCompleted: new Date(dateCompleted),
         completedBy,
         testValues,
         notes,
@@ -142,13 +158,13 @@ const resolvers = {
       return newLift;
     },
     addComponent: async (_, { name, liftId }) => {
-      const newComponent = new Component({ name, lift: liftId });
+      const newComponent = new Component({ name, lift: new ObjectId(liftId) });
       await newComponent.save();
       await Lift.findByIdAndUpdate(liftId, { $push: { components: newComponent._id } });
       return newComponent;
     },
     addComponentsToLift: async (_, { liftId, components }) => {
-      const lift = await Lift.findById(liftId);
+      const lift = await Lift.findById(new ObjectId(liftId));
       if (!lift) {
         throw new Error('Lift not found');
       }
@@ -156,7 +172,7 @@ const resolvers = {
       const componentDocuments = components.map(name => new Component({ name }));
       const savedComponents = await Promise.all(componentDocuments.map(component => component.save()));
 
-      lift.components = lift.components.concat(savedComponents.map(component => _id));
+      lift.components = lift.components.concat(savedComponents.map(component => component._id));
 
       await lift.save();
       return lift.populate('components');
@@ -168,7 +184,7 @@ const resolvers = {
       return newTower;
     },
     addTowersToLift: async (_, { liftId, towerNames }) => {
-      const lift = await Lift.findById(liftId);
+      const lift = await Lift.findById(new ObjectId(liftId));
       if (!lift) {
         throw new Error('Lift not found');
       }
@@ -178,7 +194,7 @@ const resolvers = {
         return tower.save();
       }));
 
-      lift.towers = lift.towers.concat(towers.map(tower => _id));
+      lift.towers = lift.towers.concat(towers.map(tower => tower._id));
       await lift.save();
       return lift.populate('towers');
     },
@@ -222,7 +238,7 @@ const resolvers = {
       return await Todo.findByIdAndDelete(_id);
     },
     addProcedure: async (_, { description, componentId }) => {
-      const newProcedure = new Procedure({ description, component: componentId });
+      const newProcedure = new Procedure({ description, component: new ObjectId(componentId) });
       await newProcedure.save();
       await Component.findByIdAndUpdate(componentId, { $push: { procedures: newProcedure._id } });
       return newProcedure;

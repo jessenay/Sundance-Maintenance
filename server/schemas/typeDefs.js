@@ -27,11 +27,22 @@ const typeDefs = gql`
 
   type Service {
     _id: ID!
+    component: ID!
+    dateCompleted: String!
+    reason: String!
+    workDescription: String!
+    partsUsed: String!
+    completedBy: String!
+  }
+
+  type AnnualService {
+    _id: ID!
+    task: String
     dateCompleted: String
-    reason: String
-    workDescription: String
-    partsUsed: String
     completedBy: String
+    testValues: String
+    notes: String
+    procedureLocations: String
   }
 
   type Part {
@@ -58,16 +69,6 @@ const typeDefs = gql`
     _id: ID!
     name: String!
     services: [TowerService]
-  }
-
-  type AnnualService {
-    _id: ID!
-    task: String
-    dateCompleted: String
-    completedBy: String
-    testValues: String
-    notes: String
-    procedureLocations: String
   }
 
   type WorkOrder {
@@ -100,7 +101,7 @@ const typeDefs = gql`
     components: [Component]
     component(_id: ID!): Component
     annualServices(componentId: ID!, month: Int, year: Int): [AnnualService]
-    services(componentId: ID!): [Service]
+    services(componentId: ID!, month: Int, year: Int): [Service]
     towerServices (towerId: ID!): [TowerService]
     workOrders: [WorkOrder]
     procedures(componentId: ID!): [Procedure]
@@ -111,8 +112,7 @@ const typeDefs = gql`
     addTower(name: String!, liftId: ID!): Tower
     createAccount(username: String!, password: String!): AuthPayload
     login(username: String!, password: String!): AuthPayload
-    addAnnualService(componentId: ID!, task: String!, dateCompleted: String!, completedBy: String!, testValues: String, notes: String, procedureLocations: String): AnnualService
-    addService(componentId: ID!, dateCompleted: String!, reason: String!, workDescription: String!, partsUsed: String!, completedBy: String!): Service
+    addAnnualService(componentId: ID!, task: String!, dateCompleted: String!, completedBy: String!, testValues: String, notes: String, procedureLocations: String): AnnualService    addService(componentId: ID!, dateCompleted: String!, reason: String!, workDescription: String!, partsUsed: String!, completedBy: String!): Service
     addTowerService(towerId: ID!, dateCompleted: String!, uphillOrDownhill: String!, workDescription: String!, partsUsed: String!, completedBy: String!): TowerService
     addLift(name: String!): Lift
     addComponent(name: String!, liftId: ID!): Component

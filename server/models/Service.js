@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
 
 const serviceSchema = new mongoose.Schema({
+  component: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Component',
+    required: true
+  },
   dateCompleted: {
     type: String,
     required: true

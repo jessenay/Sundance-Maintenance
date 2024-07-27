@@ -1,19 +1,32 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { useQuery, useMutation } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import AuthService from "../utils/auth";
-import ElectricalForm from "../components/Electrical/ElectricalCard";
-import { GET_SERVICES, ADD_SERVICE } from "../utils/queries";
+import ServiceForm from "../components/Services/ServiceForm";
+import { GET_SERVICES } from "../utils/queries";
+import "../pages/Services.css";
+
+const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${month}/${day}/${year}`;
+};
 
 const Electrical = () => {
-    console.log("Electrical component is rendering");
     const navigate = useNavigate();
     const { componentId, liftId } = useParams();
     const [showForm, setShowForm] = useState(false);
-    const [forceUpdateKey, setForceUpdateKey] = useState(0);
+    const [month, setMonth] = useState(new Date().getMonth() + 1);
+    const [year, setYear] = useState(new Date().getFullYear());
+
+    const monthNames = [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    ];
 
     useEffect(() => {
-        console.log("Running the query with component ID:", componentId);
         if (!componentId) {
             console.error("Component ID is missing.");
             return;
@@ -24,34 +37,23 @@ const Electrical = () => {
     }, [componentId, navigate]);
 
     const { loading, error, data, refetch } = useQuery(GET_SERVICES, {
-        variables: { componentId },
-        onError: (error) => {
-            console.error("Query error", error)
-        },
-        onCompleted: (data) => {
-            console.log("Query completed with data:", data);
-        },
-        skip: !componentId,
+        variables: { componentId, month, year },
         notifyOnNetworkStatusChange: true,
     });
 
-    const [addService] = useMutation(ADD_SERVICE, {
-        onCompleted: () => {
-            refetch();
-            setForceUpdateKey(forceUpdateKey + 1);
-            setShowForm(false);
-        },
-    });
+    const handleMonthChange = (e) => {
+        const selectedMonth = monthNames.indexOf(e.target.value) + 1;
+        setMonth(selectedMonth);
+    };
 
-    const toggleForm = () => setShowForm(!showForm);
+    const handleYearChange = (e) => {
+        setYear(parseInt(e.target.value, 10));
+    };
 
     if (loading) return <p>Loading...</p>;
-    if (error) {
-        console.error("Error fetching services:", error);
-        return <p>Error: {error.message}</p>;
-    }
+    if (error) return <p>Error: {error.message}</p>;
     if (!data || !data.services) return <p>No data found</p>;
-    console.log("Services Data:", data.services);
+
     const reversedServices = [...data.services].reverse();
 
     const handleViewProcedures = () => {
@@ -60,18 +62,36 @@ const Electrical = () => {
 
     return (
         <div>
-            <button className='add-service' onClick={toggleForm}>
+            <button className='add-service' onClick={() => setShowForm(!showForm)}>
                 {showForm ? "Hide Form" : "Add Service"}
             </button>
             <button className='add-service' onClick={handleViewProcedures}>
                 View Procedures
             </button>
-            {showForm && <ElectricalForm componentId={componentId} />}
-            <h2>Electrical Services</h2>
+            {showForm && <ServiceForm componentId={componentId} refetch={refetch} setShowForm={setShowForm} />}
+            {!showForm && (
+                <>
+                    <h2>Electrical Services</h2>
+                    <div>
+                        <label>Month:</label>
+                        <select value={monthNames[month - 1]} onChange={handleMonthChange}>
+                            {monthNames.map((m, index) => (
+                                <option key={index} value={m}>{m}</option>
+                            ))}
+                        </select>
+                        <label>Year:</label>
+                        <select value={year} onChange={handleYearChange}>
+                            {Array.from({ length: 10 }, (_, i) => new Date().getFullYear() - i).map((y) => (
+                                <option key={y} value={y}>{y}</option>
+                            ))}
+                        </select>
+                    </div>
+                </>
+            )}
             <ul className="service-list">
-                {data.services.map(service => (
+                {reversedServices.map(service => (
                     <li key={service._id} className="service-item">
-                        <p className="date-completed">Date Completed: {service.dateCompleted}</p>
+                        <p className="date-completed">Date Completed: {formatDate(service.dateCompleted)}</p>
                         <p>Reason: {service.reason}</p>
                         <p className="completed-by">Work Description: {service.workDescription}</p>
                         <p className="test-values">Parts Used: {service.partsUsed}</p>

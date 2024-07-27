@@ -31,15 +31,30 @@ const Annual = () => {
     const { loading, error, data, refetch } = useQuery(GET_ANNUAL_SERVICES, {
         variables: { componentId, month, year },
         notifyOnNetworkStatusChange: true,
+        onCompleted: (data) => {
+            console.log("Fetched annual services data:", data);
+        },
+        onError: (error) => {
+            console.error("Error fetching annual services:", error);
+        }
     });
 
     const handleMonthChange = (e) => {
         const selectedMonth = monthNames.indexOf(e.target.value) + 1;
         setMonth(selectedMonth);
+        refetch();
     };
 
     const handleYearChange = (e) => {
         setYear(parseInt(e.target.value, 10));
+        refetch();
+    };
+
+    const formatDate = (dateString) => {
+        const date = new Date(parseInt(dateString));
+        console.log("Raw date string:", dateString);
+        console.log("Parsed date:", date);
+        return isNaN(date) ? "Invalid Date" : `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
     };
 
     if (loading) return <p>Loading...</p>;
@@ -76,7 +91,7 @@ const Annual = () => {
             <ul className="service-list">
                 {reversedServices.map(service => (
                     <li key={service._id} className="service-item">
-                        <p className="date-completed">Date Completed: {new Date(service.dateCompleted).toLocaleDateString()}</p>
+                        <p className="date-completed">Date Completed: {formatDate(service.dateCompleted)}</p>
                         <p>Task: {service.task}</p>
                         <p className="completed-by">Completed By: {service.completedBy}</p>
                         <p className="test-values">Test Values: {service.testValues}</p>
