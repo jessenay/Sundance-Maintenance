@@ -25,7 +25,7 @@ import CreateAccount from "./pages/CreateAccount.jsx";
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: "/login",
     element: <App />, // Main App component
     children: [
       {
