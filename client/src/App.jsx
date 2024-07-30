@@ -1,3 +1,4 @@
+// src/App.jsx
 import {
   ApolloClient,
   InMemoryCache,
@@ -7,6 +8,7 @@ import {
 import { setContext } from '@apollo/client/link/context';
 import { Outlet, useLocation, Route, Routes } from 'react-router-dom';
 import Header from './components/Header/Header';
+import Footer from './components/Footer/Footer'; // Import Footer
 
 const httpLink = createHttpLink({
   uri: '/graphql',
@@ -38,6 +40,7 @@ function App() {
         <div className='content-container'>
           <Outlet /> {/* Outlet will render the child routes */}
         </div>
+        {!hideHeaderAndFooter && <Footer />} {/* Conditionally render Footer */}
       </div>
     </ApolloProvider>
   );

@@ -19,6 +19,7 @@
   display: flex;
   width: 100%;
   justify-content: space-between;
+  align-items: center;
 }
 
 .column {
@@ -73,7 +74,6 @@
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  margin-top: 0px;
   width: 100%; /* Set a fixed width for the button */
   text-align: center; /* Center text inside the button */
   align-self: center; /* Center the button in the flex container */
