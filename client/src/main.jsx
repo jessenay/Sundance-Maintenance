@@ -26,13 +26,12 @@ import CreateAccount from "./pages/CreateAccount.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Navigate to="/login" replace />, // Redirect to login on root access
-    errorElement: <div>Error: Page not found</div>, // Simple error component
-  },
-  {
-    path: "/",
-    element: <App />,
+    element: <App />, // Main App component
     children: [
+      {
+        path: "/",
+        element: <Navigate to="/login" replace />,
+      },
       {
         path: "login",
         element: <LoginForm />,
