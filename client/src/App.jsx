@@ -1,4 +1,3 @@
-// src/App.jsx
 import {
   ApolloClient,
   InMemoryCache,
@@ -6,7 +5,7 @@ import {
   createHttpLink,
 } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
-import { Outlet, useLocation, Route, Routes } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer'; // Import Footer
 
