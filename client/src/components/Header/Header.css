@@ -131,6 +131,23 @@
     background-color: #a80000;
     transform: translateY(0);
   }
+
+  .create-account-button {
+      background-color: green;
+      color: white;
+      border: none;
+      /* padding: 8px 16px; */
+      font-size: 12px; /* Reduced font size */
+      font-family: "Poppins", sans-serif;
+      font-weight: 600;
+      text-transform: uppercase;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+      height: 40px;
+      margin-left: 10px;
+      align-self: center;
+  }
   
   
   @media (max-width: 1000px) {

@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
 import { useMutation } from '@apollo/client';
+import { useNavigate } from 'react-router-dom';
 import auth from '../utils/auth';
 import { LOGIN_USER } from '../utils/mutations';
 import './LoginForm.css';
@@ -10,6 +11,7 @@ const LoginForm = () => {
   const [validated, setValidated] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [login] = useMutation(LOGIN_USER);
+  const navigate = useNavigate();
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -19,7 +21,7 @@ const LoginForm = () => {
   const handleFormSubmit = async (event) => {
     event.preventDefault();
     const form = event.currentTarget;
-    
+
     if (form.checkValidity() === false) {
       event.preventDefault();
       event.stopPropagation();
@@ -31,6 +33,7 @@ const LoginForm = () => {
       });
 
       auth.login(data.login.token);
+      navigate('/home'); // Navigate to the home page upon successful login
     } catch (err) {
       console.error(err);
       setShowAlert(true);

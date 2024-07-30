@@ -1,5 +1,5 @@
 import ReactDOM from "react-dom/client";
-import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./App.jsx";
 import Home from "./pages/Home";
 import LiftDetails from "./pages/LiftDetails";
@@ -20,16 +20,13 @@ import TowerServices from "./pages/TowerServices.jsx";
 import LoginForm from "./pages/LoginForm.jsx";
 import WorkOrders from "./pages/WorkOrders.jsx";
 import Procedures from "./pages/Procedures.jsx";
+import WinterChecklist from "./pages/WinterChecklist.jsx";
+import CreateAccount from "./pages/CreateAccount.jsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Navigate to="/login" replace />, // Redirect to login on application start
-    errorElement: <div>Error: Page not found</div>, // Simple error component
-  },
-  {
-    path: "/",
-    element: <App />,
+    element: <App />, // Main App component
     children: [
       {
         path: "login",
@@ -42,6 +39,14 @@ const router = createBrowserRouter([
       {
         path: "work-orders",
         element: <WorkOrders />,
+      },
+      {
+        path: "winter-checklist",
+        element: <WinterChecklist />,
+      },
+      {
+        path: "create-account",
+        element: <CreateAccount />,
       },
       {
         path: "lift/:liftId",

@@ -188,3 +188,59 @@ export const GET_PROCEDURES = gql`
     }
   }
 `;
+
+export const GET_WINTER_TASKS = gql`
+  query GetWinterTasks {
+    winterTasks {
+      _id
+      name
+      completed
+    }
+  }
+`;
+
+export const ADD_WINTER_TASK = gql`
+  mutation AddWinterTask($name: String!) {
+    addWinterTask(name: $name) {
+      _id
+      name
+      completed
+    }
+  }
+`;
+
+export const TOGGLE_WINTER_TASK = gql`
+  mutation ToggleWinterTask($_id: ID!) {
+    toggleWinterTask(_id: $_id) {
+      _id
+      name
+      completed
+    }
+  }
+`;
+
+export const UNCHECK_ALL_WINTER_TASKS = gql`
+  mutation UncheckAllWinterTasks {
+    uncheckAllWinterTasks {
+      _id
+      name
+      completed
+    }
+  }
+`;
+
+export const DELETE_ANNUAL_SERVICE = gql`
+  mutation deleteAnnualService($_id: ID!) {
+    deleteAnnualService(_id: $_id) {
+      _id
+    }
+  }
+`;
+
+export const DELETE_SERVICE = gql`
+  mutation deleteService($_id: ID!) {
+    deleteService(_id: $_id) {
+      _id
+    }
+  }
+`;

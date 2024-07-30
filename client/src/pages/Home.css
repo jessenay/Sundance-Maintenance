@@ -67,20 +67,93 @@
 
 .work-orders {
   padding: 10px 20px;
-  background-color: #ff4d4d;
-  color: white;
+  background-color: #6eff4d;
+  color: black;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  margin-top: 10px;
+  margin-top: 0px;
   width: 100%; /* Set a fixed width for the button */
   text-align: center; /* Center text inside the button */
   align-self: center; /* Center the button in the flex container */
 }
 
+.winter-checklist {
+  padding: 10px 20px;
+  background-color: #4df3ff;
+  color: black;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 32px;
+  width: 100%; /* Set a fixed width for the button */
+  text-align: center; /* Center text inside the button */
+  align-self: center; /* Center the button in the flex container */
+}
+
+.spring-checklist {
+  padding: 10px 20px;
+  background-color: #fde425;
+  color: black;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 32px;
+  width: 100%; /* Set a fixed width for the button */
+  text-align: center; /* Center text inside the button */
+  align-self: center; /* Center the button in the flex container */
+}
+
+.summer-checklist {
+  padding: 10px 20px;
+  background-color: #ff2121;
+  color: black;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 32px;
+  width: 100%; /* Set a fixed width for the button */
+  text-align: center; /* Center text inside the button */
+  align-self: center; /* Center the button in the flex container */
+}
+
+.fall-checklist {
+  padding: 10px 20px;
+  background-color: #ff9a4d;
+  color: black;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 32px;
+  width: 100%; /* Set a fixed width for the button */
+  text-align: center; /* Center text inside the button */
+  align-self: center; /* Center the button in the flex container */
+}
+
+
 .work-orders:hover {
-  background-color: #cc0000;
+  background-color: #076f09;
+}
+
+.winter-checklist:hover {
+  background-color: #007a7a;
+}
+
+.spring-checklist:hover {
+  background-color: #e6c200;
+}
+
+.summer-checklist:hover {
+  background-color: #b30000;
+}
+
+.fall-checklist:hover {
+  background-color: #b35900;
 }
 
 .todo-list {

@@ -8,19 +8,21 @@ const AnnualService = require('../models/AnnualService');
 const WorkOrder = require('../models/WorkOrder');
 const Procedure = require('../models/Procedure');
 const Todo = require('../models/ToDo'); // Add the Todo model
-const { signToken, AuthenticationError } = require('../utils/auth');
+const WinterTask = require('../models/WinterTask');
+const { signToken, isAdmin } = require('../utils/auth');
 const { Types: { ObjectId } } = require('mongoose'); // Import ObjectId from mongoose
+const { AuthenticationError } = require('apollo-server');
 
 const resolvers = {
   Query: {
     profiles: async () => {
-      return await Profile.find({});
+      return Profile.find({});
     },
     profile: async (_, __, context) => {
       if (context.user) {
-        return await Profile.findById(context.user._id);
+        return Profile.findById(context.user._id);
       }
-      throw new AuthenticationError('You must be logged in to view your profile.');
+      throw new AuthenticationError('You need to be logged in!');
     },
     todos: async () => {
       return await Todo.find({});
@@ -101,26 +103,34 @@ const resolvers = {
     procedures: async (_, { componentId }) => {
       return await Procedure.find({ component: new ObjectId(componentId) });
     },
+    winterTasks: async () => {
+      return await WinterTask.find({});
+    },
   },
   Mutation: {
-    createAccount: async (_, { username, password }) => {
+    createAccount: async (_, { username, password, role }, context) => {
+      // Temporarily remove the admin check
+      // if (!context.user || !isAdmin(context.user)) {
+      //   throw new AuthenticationError('You must be an admin to create a new account');
+      // }
+
       const existingUser = await Profile.findOne({ username });
       if (existingUser) {
         throw new Error('User with this username already exists');
       }
 
-      const user = await Profile.create({ username, password });
+      const user = await Profile.create({ username, password, role });
       const token = signToken(user);
       return { token, user };
     },
     login: async (_, { username, password }) => {
       const user = await Profile.findOne({ username });
       if (!user) {
-        throw new AuthenticationError('User not found');
+        throw new AuthenticationError('No user found with this username');
       }
-      const validPassword = await user.isCorrectPassword(password);
-      if (!validPassword) {
-        throw new AuthenticationError('Invalid password');
+      const correctPw = await user.isCorrectPassword(password);
+      if (!correctPw) {
+        throw new AuthenticationError('Incorrect credentials');
       }
       const token = signToken(user);
       return { token, user };
@@ -242,7 +252,41 @@ const resolvers = {
       await newProcedure.save();
       await Component.findByIdAndUpdate(componentId, { $push: { procedures: newProcedure._id } });
       return newProcedure;
-    }
+    },
+    addWinterTask: async (_, { name }) => {
+      const newTask = new WinterTask({ name, completed: false });
+      await newTask.save();
+      return newTask;
+    },
+    toggleWinterTask: async (_, { _id }) => {
+      const task = await WinterTask.findById(_id);
+      if (!task) {
+        throw new Error('Task not found');
+      }
+      task.completed = !task.completed;
+      await task.save();
+      return task;
+    },
+    uncheckAllWinterTasks: async () => {
+      await WinterTask.updateMany({ completed: true }, { completed: false });
+      return WinterTask.find({});
+    },
+    deleteAnnualService: async (parent, { _id }, context) => {
+      if (context.user.role !== 'admin') {
+        throw new AuthenticationError('You do not have permission to perform this action.');
+      }
+
+      return await AnnualService.findByIdAndDelete(_id);
+    },
+    deleteService: async (parent, { _id }) => {
+      try {
+        const service = await Service.findByIdAndDelete(_id);
+        return service;
+      } catch (err) {
+        console.error(err);
+        throw new Error('Error deleting service');
+      }
+    },
   },
   Lift: {
     components: async (lift) => {

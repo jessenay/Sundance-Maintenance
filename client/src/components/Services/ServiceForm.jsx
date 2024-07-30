@@ -59,38 +59,75 @@ const ServiceForm = ({ componentId, refetch, setShowForm }) => {
     };
 
     return (
-        <div className='form-container'>
-            <form className="annualForm" onSubmit={handleSubmit}>
-                {Object.keys(service).map((key) => (
-                    <div key={key}>
-                        <label className='label' htmlFor={key}>
-                            {formatLabel(key)}
-                        </label>
-                        {key === 'dateCompleted' ? (
-                            <DatePicker
-                                selected={service.dateCompleted ? new Date(service.dateCompleted) : null}
-                                onChange={handleDateChange}
-                                dateFormat="yyyy/MM/dd"
-                                className="input"
-                                placeholderText="Select date"
-                            />
-                        ) : (
-                            <textarea
-                                className="input textarea"
-                                id={key}
-                                name={key}
-                                type="text"
-                                value={service[key]}
-                                onChange={handleChange}
-                            />
-                        )}
-                    </div>
-                ))}
-                <button className="button" type="submit">Submit</button>
-            </form>
-            {loading && <div className="loading">Loading...</div>}
-            {error && <div className="error">Error! {error.message}</div>}
-        </div>
+        <form onSubmit={handleSubmit} className="service-form">
+            <label className='label' htmlFor="dateCompleted">
+                Date Completed
+            </label>
+            <DatePicker
+                selected={service.dateCompleted ? new Date(service.dateCompleted) : null}
+                onChange={handleDateChange}
+                dateFormat="yyyy/MM/dd"
+                className="input"
+                placeholderText="Select date"
+                required
+            />
+
+            <label className='label' htmlFor="reason">
+                Reason
+            </label>
+            <input
+                className="input"
+                id="reason"
+                name="reason"
+                type="text"
+                value={service.reason}
+                onChange={handleChange}
+                required
+            />
+
+            <label className='label' htmlFor="workDescription">
+                Work Description
+            </label>
+            <textarea
+                className="input textarea"
+                id="workDescription"
+                name="workDescription"
+                value={service.workDescription}
+                onChange={handleChange}
+                required
+            />
+
+            <label className='label' htmlFor="partsUsed">
+                Parts Used
+            </label>
+            <input
+                className="input"
+                id="partsUsed"
+                name="partsUsed"
+                type="text"
+                value={service.partsUsed}
+                onChange={handleChange}
+                required
+            />
+
+            <label className='label' htmlFor="completedBy">
+                Completed By
+            </label>
+            <input
+                className="input"
+                id="completedBy"
+                name="completedBy"
+                type="text"
+                value={service.completedBy}
+                onChange={handleChange}
+                required
+            />
+
+            <button className="button" type="submit">Add Service</button>
+            <button className="button cancel" type="button" onClick={() => setShowForm(false)}>Cancel</button>
+            {loading && <p className="loading">Adding...</p>}
+            {error && <p className="error">An error occurred: {error.message}</p>}
+        </form>
     );
 };
 

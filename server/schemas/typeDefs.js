@@ -4,6 +4,7 @@ const typeDefs = gql`
   type Profile {
     _id: ID
     username: String
+    role: String
   }
 
   type Lift {
@@ -91,6 +92,12 @@ const typeDefs = gql`
     user: Profile
   }
 
+  type WinterTask {
+    _id: ID!
+    name: String!
+    completed: Boolean!
+  }
+
   type Query {
     profiles: [Profile]
     profile: Profile
@@ -106,11 +113,12 @@ const typeDefs = gql`
     workOrders: [WorkOrder]
     procedures(componentId: ID!): [Procedure]
     todos: [Todo]
+    winterTasks: [WinterTask]
   }
 
   type Mutation {
     addTower(name: String!, liftId: ID!): Tower
-    createAccount(username: String!, password: String!): AuthPayload
+    createAccount(username: String!, password: String!, role: String!): Profile
     login(username: String!, password: String!): AuthPayload
     addAnnualService(componentId: ID!, task: String!, dateCompleted: String!, completedBy: String!, testValues: String, notes: String, procedureLocations: String): AnnualService    addService(componentId: ID!, dateCompleted: String!, reason: String!, workDescription: String!, partsUsed: String!, completedBy: String!): Service
     addTowerService(towerId: ID!, dateCompleted: String!, uphillOrDownhill: String!, workDescription: String!, partsUsed: String!, completedBy: String!): TowerService
@@ -122,6 +130,11 @@ const typeDefs = gql`
     addProcedure(name: String!, description: String!, componentId: ID!): Procedure
     addTodo(job: String!): Todo
     removeTodo(_id: ID!): Todo
+    addWinterTask(name: String!): WinterTask
+    toggleWinterTask(_id: ID!): WinterTask
+    uncheckAllWinterTasks: [WinterTask]
+    deleteAnnualService(_id: ID!): AnnualService
+    deleteService(_id: ID!): Service
   }
 `;
 

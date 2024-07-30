@@ -1,15 +1,16 @@
 import { gql } from '@apollo/client';
 
 export const LOGIN_USER = gql`
-  mutation login($username: String!, $password: String!) {
-    login(username: $username, password: $password) {
-      token
-      user {
-        _id
-        username
-      }
+mutation login($username: String!, $password: String!) {
+  login(username: $username, password: $password) {
+    token
+    user {
+      _id
+      username
+      role
     }
   }
+}
 `;
 
 export const ADD_ANNUAL_SERVICE = gql`
@@ -107,13 +108,11 @@ export const ADD_PROCEDURE = gql`
 `;
 
 export const CREATE_ACCOUNT = gql`
-  mutation createAccount($username: String!, $password: String!) {
-    createAccount(username: $username, password: $password) {
-      token
-      user {
-        _id
-        username
-      }
-    }
+mutation createAccount($username: String!, $password: String!, $role: String!) {
+  createAccount(username: $username, password: $password, role: $role) {
+    _id
+    username
+    role
   }
+}
 `;

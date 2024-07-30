@@ -1,0 +1,163 @@
+/* Container for the whole page */
+.winter-checklist-page {
+    padding: 40px;
+    max-width: 700px;
+    margin: 0 auto;
+    font-family: 'Arial', sans-serif;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Header styling */
+  .winter-checklist-page h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+    font-size: 32px;
+    font-weight: bold;
+  }
+  
+  /* Container for the add task input and button */
+  .add-task {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  /* Styling for the input field */
+  .add-task input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+  
+  /* Styling for the add button */
+  .add-task button {
+    padding: 10px 20px;
+    background-color: #5cb85c;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 16px;
+  }
+  
+  .add-task button:hover {
+    background-color: #4cae4c;
+  }
+  
+  /* Styling for the task list */
+  .task-list {
+    list-style: none;
+    padding: 0;
+  }
+  
+  /* Styling for individual task items */
+  .task-item {
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.3s ease, text-decoration 0.3s ease;
+  }
+  
+  /* Styling for completed tasks */
+  .task-item.completed {
+    text-decoration: line-through;
+    background-color: #d4edda;
+  }
+  
+  /* Styling for task label and checkbox */
+  .task-item label {
+    flex: 1;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .task-item input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+  }
+  
+  /* Styling for the uncheck button */
+  .uncheck-button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #d9534f;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 16px;
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .uncheck-button:hover {
+    background-color: #c9302c;
+  }
+  
+  /* Styling for the confirmation dialog */
+  .confirmation-dialog {
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 1000;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  
+  .confirmation-dialog p {
+    font-size: 18px;
+    margin-bottom: 20px;
+  }
+  
+  .confirmation-dialog button {
+    padding: 10px 20px;
+    margin: 5px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 16px;
+  }
+  
+  .confirmation-dialog button:first-of-type {
+    background-color: #d9534f;
+    color: white;
+  }
+  
+  .confirmation-dialog button:first-of-type:hover {
+    background-color: #c9302c;
+  }
+  
+  .confirmation-dialog button:last-of-type {
+    background-color: #5cb85c;
+    color: white;
+  }
+  
+  .confirmation-dialog button:last-of-type:hover {
+    background-color: #4cae4c;
+  }
+  

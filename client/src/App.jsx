@@ -1,15 +1,12 @@
-// import './App.css';
 import {
   ApolloClient,
   InMemoryCache,
   ApolloProvider,
   createHttpLink,
 } from '@apollo/client';
-import { setContext } from '@apollo/client/link/context'; // Corrected import statement
-import { Outlet, useLocation } from 'react-router-dom';
-import { useState } from "react";
+import { setContext } from '@apollo/client/link/context';
+import { Outlet, useLocation, Route, Routes } from 'react-router-dom';
 import Header from './components/Header/Header';
-// import Footer from './components/Footer/Footer';
 
 const httpLink = createHttpLink({
   uri: '/graphql',
@@ -39,9 +36,8 @@ function App() {
       <div className="flex-column justify-flex-start min-100-vh">
         {!hideHeaderAndFooter && <Header />}
         <div className='content-container'>
-          <Outlet />
+          <Outlet /> {/* Outlet will render the child routes */}
         </div>
-        {/* Add Footer here if needed */}
       </div>
     </ApolloProvider>
   );

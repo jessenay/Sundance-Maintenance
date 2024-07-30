@@ -99,6 +99,18 @@ const Home = () => {
         <button onClick={() => navigate("/work-orders")} className="work-orders">
               View Work Orders
             </button>
+            <button onClick={() => navigate("/winter-checklist")} className="winter-checklist">
+              Winter Checklist
+            </button>
+            <button onClick={() => navigate("/work-orders")} className="spring-checklist">
+              Spring Checklist
+            </button>
+            <button onClick={() => navigate("/work-orders")} className="summer-checklist">
+              Summer Checklist
+            </button>
+            <button onClick={() => navigate("/work-orders")} className="fall-checklist">
+              Fall Checklist
+            </button>
         </div>
       </div>
     </div>

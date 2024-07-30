@@ -17,6 +17,7 @@
   flex-direction: column;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  position: relative; /* Make sure the delete icon is positioned correctly */
 }
 
 .service-item:hover {
@@ -84,6 +85,46 @@ button:focus {
   outline: none;
 }
 
+.delete-service {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.delete-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  color: red;
+}
+
+.delete-confirmation {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+.delete-confirmation p {
+  margin-bottom: 10px;
+}
+
+.delete-confirmation input {
+  margin-bottom: 10px;
+  padding: 5px;
+  width: calc(100% - 10px);
+}
+
+.delete-confirmation button {
+  margin-right: 10px;
+  padding: 5px 10px;
+}
+
 /* Responsive styles for the services page */
 @media (max-width: 768px) {
   .service-item {
@@ -91,12 +132,12 @@ button:focus {
   }
 
   select {
-      margin-bottom: 10px;
+    margin-bottom: 10px;
   }
 
   .add-service {
-      width: 100%;
-      text-align: center;
+    width: 100%;
+    text-align: center;
   }
 }
 

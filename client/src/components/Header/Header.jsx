@@ -10,9 +10,14 @@ const Header = () => {
   const [loggedIn, setLoggedIn] = useState(auth.loggedIn());
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
+    if (auth.loggedIn()) {
+      const user = auth.getProfile();
+      setIsAdmin(user.data.role === 'admin');
+    }
     setLoggedIn(auth.loggedIn());
   }, []);
 
@@ -81,9 +86,16 @@ const Header = () => {
             </div>
           ))}
           {loggedIn ? (
-            <button className="logout-button" onClick={handleLogout}>
-              Logout
-            </button>
+            <>
+              {isAdmin && (
+                <button className="create-account-button" onClick={() => navigate('/create-account')}>
+                  Create Account
+                </button>
+              )}
+              <button className="logout-button" onClick={handleLogout}>
+                Logout
+              </button>
+            </>
           ) : (
             <Link className="nav-buttons" to="/login">
               <h1 className="login-text">Login</h1>
@@ -107,9 +119,16 @@ const Header = () => {
             </Link>
           ))}
           {loggedIn && (
-            <button className="logout-button" onClick={handleLogout}>
-              Logout
-            </button>
+            <>
+              {isAdmin && (
+                <button className="create-account-button" onClick={() => navigate('/create-account')}>
+                  Create Account
+                </button>
+              )}
+              <button className="logout-button" onClick={handleLogout}>
+                Logout
+              </button>
+            </>
           )}
         </div>
       )}

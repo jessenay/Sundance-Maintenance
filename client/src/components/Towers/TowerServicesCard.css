@@ -1,5 +1,5 @@
-/* General styles for the Service Form */
-.service-form {
+/* General styles for the Tower Services Form */
+.tower-services-form {
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -12,22 +12,22 @@
     max-width: 500px;
   }
   
-  .service-form input[type="date"],
-  .service-form input[type="text"],
-  .service-form textarea {
+  .tower-services-form input[type="date"],
+  .tower-services-form input[type="text"],
+  .tower-services-form textarea {
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 16px;
   }
   
-  .service-form textarea {
+  .tower-services-form textarea {
     resize: vertical;
     min-height: 100px;
   }
   
-  .service-form button[type="submit"],
-  .service-form button[type="button"] {
+  .tower-services-form button[type="submit"],
+  .tower-services-form button[type="button"] {
     padding: 10px 20px;
     border-radius: 5px;
     border: none;
@@ -35,54 +35,54 @@
     transition: background-color 0.3s ease;
   }
   
-  .service-form button[type="submit"] {
+  .tower-services-form button[type="submit"] {
     background-color: #007bff;
     color: white;
   }
   
-  .service-form button[type="submit"]:hover {
+  .tower-services-form button[type="submit"]:hover {
     background-color: #0056b3;
   }
   
-  .service-form button.cancel {
+  .tower-services-form button[type="button"] {
     background-color: #ccc;
   }
   
-  .service-form button.cancel:hover {
+  .tower-services-form button[type="button"]:hover {
     background-color: #999;
   }
   
-  .service-form p {
+  .tower-services-form p {
     margin-top: 0;
     color: red;
     font-weight: bold;
   }
   
   @media (max-width: 768px) {
-    .service-form {
+    .tower-services-form {
       padding: 15px;
     }
   
-    .service-form input[type="date"],
-    .service-form input[type="text"],
-    .service-form textarea {
+    .tower-services-form input[type="date"],
+    .tower-services-form input[type="text"],
+    .tower-services-form textarea {
       font-size: 14px;
     }
   }
   
   @media (max-width: 480px) {
-    .service-form {
+    .tower-services-form {
       padding: 10px;
     }
   
-    .service-form input[type="date"],
-    .service-form input[type="text"],
-    .service-form textarea {
+    .tower-services-form input[type="date"],
+    .tower-services-form input[type="text"],
+    .tower-services-form textarea {
       font-size: 12px;
     }
   
-    .service-form button[type="submit"],
-    .service-form button[type="button"] {
+    .tower-services-form button[type="submit"],
+    .tower-services-form button[type="button"] {
       padding: 8px 16px;
     }
   }
