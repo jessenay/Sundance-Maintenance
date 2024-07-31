@@ -116,3 +116,11 @@ mutation createAccount($username: String!, $password: String!, $role: String!) {
   }
 }
 `;
+
+export const DELETE_WORK_ORDER = gql`
+  mutation deleteWorkOrder($_id: ID!) {
+    deleteWorkOrder(_id: $_id) {
+      _id
+    }
+  }
+`;

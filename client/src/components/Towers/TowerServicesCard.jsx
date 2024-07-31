@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
+import DatePicker from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css";
 import { ADD_TOWER_SERVICE } from '../../utils/queries';
 import './TowerServicesCard.css';
 
@@ -27,55 +29,84 @@ const TowerServicesForm = ({ towerId, onClose }) => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+  const handleDateChange = (date) => {
+    setFormData(prev => ({ ...prev, dateCompleted: date }));
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     addTowerService();
   };
 
   return (
-    <form onSubmit={handleSubmit} className="tower-services-form">
-      <input
-        type="date"
-        name="dateCompleted"
-        value={formData.dateCompleted}
-        onChange={handleChange}
+    <form onSubmit={handleSubmit} className="service-form">
+      <label className='label' htmlFor="dateCompleted">
+        Date Completed
+      </label>
+      <DatePicker
+        selected={formData.dateCompleted ? new Date(formData.dateCompleted) : null}
+        onChange={handleDateChange}
+        dateFormat="yyyy/MM/dd"
+        className="input"
+        placeholderText="Select date"
         required
       />
+
+      <label className='label' htmlFor="uphillOrDownhill">
+        Uphill or Downhill
+      </label>
       <input
-        type="text"
+        className="input"
+        id="uphillOrDownhill"
         name="uphillOrDownhill"
-        placeholder="Uphill or Downhill"
+        type="text"
         value={formData.uphillOrDownhill}
         onChange={handleChange}
         required
       />
+
+      <label className='label' htmlFor="workDescription">
+        Work Description
+      </label>
       <textarea
+        className="input textarea"
+        id="workDescription"
         name="workDescription"
-        placeholder="Work Description"
         value={formData.workDescription}
         onChange={handleChange}
         required
       />
+
+      <label className='label' htmlFor="partsUsed">
+        Parts Used
+      </label>
       <input
-        type="text"
+        className="input"
+        id="partsUsed"
         name="partsUsed"
-        placeholder="Parts Used"
+        type="text"
         value={formData.partsUsed}
         onChange={handleChange}
         required
       />
+
+      <label className='label' htmlFor="completedBy">
+        Completed By
+      </label>
       <input
-        type="text"
+        className="input"
+        id="completedBy"
         name="completedBy"
-        placeholder="Completed By"
+        type="text"
         value={formData.completedBy}
         onChange={handleChange}
         required
       />
-      <button type="submit">Add Tower Service</button>
-      <button type="button" onClick={onClose}>Cancel</button>
+
+      <button className="button" type="submit">Add Tower Service</button>
+      <button className="button cancel" type="button" onClick={onClose}>Cancel</button>
       {loading && <p>Adding...</p>}
-      {error && <p>An error occurred: {error.message}</p>}
+      {error && <p className="error">An error occurred: {error.message}</p>}
     </form>
   );
 };

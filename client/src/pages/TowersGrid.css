@@ -1,52 +1,70 @@
 /* General styles for the towers grid */
 .grid-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-    padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive grid layout */
+  gap: 20px; /* Increase the gap between grid items */
+  padding: 20px;
+}
+
+.tower-card {
+  border: 1px solid #ddd; /* Softer border color */
+  padding: 15px;
+  background-color: #fff; /* White background for a clean look */
+  border-radius: 8px; /* Increase border-radius for a more modern look */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Slightly stronger shadow for depth */
+  cursor: pointer;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Smooth transition */
+  text-align: center; /* Center-align text */
+}
+
+.tower-card:hover {
+  transform: translateY(-5px); /* Slight lift on hover */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Stronger shadow on hover */
+}
+
+.tower-card h3 {
+  font-size: 1.2em; /* Adjust font size */
+  color: #333; /* Darker text color for better readability */
+  margin-bottom: 10px;
+}
+
+.add-tower-service {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px auto;
+  padding: 10px 20px;
+  background-color: #007bff; /* Blue background for consistency */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease, transform 0.3s ease; /* Add transition for smooth effect */
+}
+
+.add-service:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+  transform: scale(1.05); /* Slightly enlarge on hover */
+}
+
+/* Responsive styles for the towers grid */
+@media (max-width: 768px) {
+  .grid-container {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Adjust columns for smaller screens */
   }
-  
+
   .tower-card {
-    border: 1px solid #ccc;
     padding: 10px;
-    background-color: #f9f9f9;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    cursor: pointer;
-    transition: transform 0.2s ease-in-out;
   }
-  
-  .tower-card:hover {
-    transform: scale(1.05);
+}
+
+@media (max-width: 480px) {
+  .grid-container {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Adjust columns for even smaller screens */
   }
-  
-  .add-service {
-    display: flex;
-    margin: 20px auto;
-    padding: 10px 20px;
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s ease;
+
+  .tower-card {
+    padding: 8px;
   }
-  
-  .add-service:hover {
-    background-color: #45a049;
-  }
-  
-  /* Responsive styles for the towers grid */
-  @media (max-width: 768px) {
-    .grid-container {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .grid-container {
-      grid-template-columns: repeat(1, 1fr);
-    }
-  }
-  
+}

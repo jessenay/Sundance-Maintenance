@@ -1,11 +1,11 @@
-.lift-details-container {
+.lift-details-wrapper {
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
   width: 100%;
 }
 
-.main-content {
+.lift-details-main {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -32,13 +32,13 @@
 
 /* Media queries for responsiveness */
 @media (max-width: 768px) {
-  .lift-details-container {
+  .lift-details-wrapper {
     flex-direction: column;
     align-items: center;
     justify-content: center;
   }
 
-  .main-content {
+  .lift-details-main {
     width: 90%;
   }
 
@@ -49,13 +49,13 @@
 }
 
 @media (max-width: 480px) {
-  .lift-details-container {
+  .lift-details-wrapper {
     flex-direction: column;
     align-items: center;
     justify-content: center;
   }
 
-  .main-content {
+  .lift-details-main {
     width: 100%;
     padding: 10px;
   }

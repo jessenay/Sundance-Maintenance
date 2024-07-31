@@ -244,3 +244,11 @@ export const DELETE_SERVICE = gql`
     }
   }
 `;
+
+export const DELETE_WORK_ORDER = gql`
+  mutation deleteWorkOrder($_id: ID!) {
+    deleteWorkOrder(_id: $_id) {
+      _id
+    }
+  }
+`;

@@ -104,7 +104,7 @@ const Brakes = () => {
             {!showForm && (
                 <>
                     <h2>Brakes Services</h2>
-                    <div>
+                    <div style={{ textAlign: 'center', marginBottom: '20px' }}>
                         <label>Month:</label>
                         <select value={monthNames[month - 1]} onChange={handleMonthChange}>
                             {monthNames.map((m, index) => (

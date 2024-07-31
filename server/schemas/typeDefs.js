@@ -135,6 +135,7 @@ const typeDefs = gql`
     uncheckAllWinterTasks: [WinterTask]
     deleteAnnualService(_id: ID!): AnnualService
     deleteService(_id: ID!): Service
+    deleteWorkOrder(_id: ID!): WorkOrder
   }
 `;
 

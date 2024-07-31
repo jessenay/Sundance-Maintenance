@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { FETCH_SERVICES_BY_TOWER_ID } from '../utils/queries'; 
 import TowerServicesForm from '../components/Towers/TowerServicesCard';
-import './Services.css';
+import './TowerServices.css';
 
 const TowerServices = () => {
     const { towerId } = useParams();
@@ -21,15 +21,15 @@ const TowerServices = () => {
     if (!data || !data.tower || !data.tower.services) return <p>No services found for this tower.</p>;
 
     return (
-        <div>
-            <button onClick={() => navigate(-1)}>Back to Towers</button>
+        <div className="tower-services-container">
+            <button className="back-button" onClick={() => navigate(-1)}>Back to Towers</button>
             <h2>{`Services for ${data.tower.name}`}</h2>
-            <button onClick={toggleForm}>{showForm ? 'Hide Form' : 'Add New Service'}</button>
+            <button className="toggle-form-button" onClick={toggleForm}>{showForm ? 'Hide Form' : 'Add New Service'}</button>
             {showForm && <TowerServicesForm towerId={towerId} onClose={() => setShowForm(false)} />}
-            <ul>
+            <ul className="service-list">
                 {data.tower.services.map(service => (
-                    <li key={service._id}>
-                        <p>Date Completed: {service.dateCompleted}</p>
+                    <li key={service._id} className="service-item">
+                        <p className="date-completed">Date Completed: {service.dateCompleted}</p>
                         <p>Detail: {service.uphillOrDownhill}</p>
                         <p>Work Description: {service.workDescription}</p>
                         <p>Parts Used: {service.partsUsed}</p>

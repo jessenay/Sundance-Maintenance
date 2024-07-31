@@ -1,8 +1,9 @@
 /* General styles for the services page */
 .service-list {
-  display: grid;
-  grid-gap: 20px;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  display: flex; /* Use flexbox for row layout */
+  flex-wrap: wrap; /* Allow items to wrap to the next line */
+  justify-content: center;
+  gap: 20px; /* Use gap for spacing between items */
   padding: 0;
   list-style-type: none;
   margin-top: 20px; /* Add space above the service list */
@@ -18,6 +19,8 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   position: relative; /* Make sure the delete icon is positioned correctly */
+  flex: 1 1 300px; /* Flex-grow, flex-shrink, and flex-basis */
+  max-width: 300px; /* Limit the max width of each item */
 }
 
 .service-item:hover {

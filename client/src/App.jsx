@@ -36,7 +36,7 @@ function App() {
     <ApolloProvider client={client}>
       <div className="flex-column justify-flex-start min-100-vh">
         {!hideHeaderAndFooter && <Header />}
-        <div className='content-container'>
+        <div>
           <Outlet /> {/* Outlet will render the child routes */}
         </div>
         {!hideHeaderAndFooter && <Footer />} {/* Conditionally render Footer */}

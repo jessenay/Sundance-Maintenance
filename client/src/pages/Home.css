@@ -19,7 +19,6 @@
   display: flex;
   width: 100%;
   justify-content: space-between;
-  align-items: center;
 }
 
 .column {
@@ -35,8 +34,6 @@
   flex: 3; /* Keep the middle column as is */
   /* display: flex; */
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
 }
 
 .right-column {
@@ -44,18 +41,13 @@
 }
 
 .slideshow-container {
-  position: relative;
   width: 100%;
   max-width: 800px;
   margin-bottom: 20px;
-  display: flex;
   flex-direction: column;
-  align-items: center;
 }
 
 .slideshow {
-  display: flex;
-  justify-content: center;
   width: 100%;
   height: 100%;
   z-index: -2;

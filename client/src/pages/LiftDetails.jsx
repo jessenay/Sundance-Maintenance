@@ -4,6 +4,7 @@ import { useQuery } from '@apollo/client';
 import { GET_LIFT_BY_ID } from '../utils/queries';
 import MaintNav from '../components/Navigation/MaintNav'; // Adjust the import path as necessary
 import './LiftDetails.css';
+import './TowersGrid.css'; // Import the TowersGrid CSS file
 
 // Example images mapping
 const liftImages = {
@@ -40,15 +41,17 @@ const LiftDetails = () => {
   const isComponentPage = location.pathname !== `/lift/${liftId}`;
 
   return (
-    <div className="lift-details-container">
-      {!isComponentPage && <MaintNav liftId={liftId} />} {/* Conditionally render the MaintNav bar */}
-      <div className="main-content">
-        <h1>{liftName}</h1> {/* Display the lift name */}
-        {!isComponentPage && liftImage && (
-          <img src={liftImage} alt={liftName} className="lift-image" />
-        )} {/* Conditionally render the lift image */}
-        <Outlet />
+    <div>
+      <div className="lift-details-wrapper">
+        {!isComponentPage && <MaintNav liftId={liftId} />} {/* Conditionally render the MaintNav bar */}
+        <div className="lift-details-main">
+          <h1>{liftName}</h1> {/* Display the lift name */}
+          {!isComponentPage && liftImage && (
+            <img src={liftImage} alt={liftName} className="lift-image" />
+          )} {/* Conditionally render the lift image */}
+        </div>
       </div>
+      <Outlet />
     </div>
   );
 };

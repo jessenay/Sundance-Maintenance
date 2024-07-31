@@ -287,6 +287,15 @@ const resolvers = {
         throw new Error('Error deleting service');
       }
     },
+    deleteWorkOrder: async (parent, { _id }) => {
+      try {
+        const workOrder = await WorkOrder.findByIdAndDelete(_id);
+        return workOrder;
+      } catch (err) {
+        console.error(err);
+        throw new Error('Error deleting work order');
+      }
+    }
   },
   Lift: {
     components: async (lift) => {

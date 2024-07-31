@@ -125,7 +125,6 @@ const ServiceForm = ({ componentId, refetch, setShowForm }) => {
 
             <button className="button" type="submit">Add Service</button>
             <button className="button cancel" type="button" onClick={() => setShowForm(false)}>Cancel</button>
-            {loading && <p className="loading">Adding...</p>}
             {error && <p className="error">An error occurred: {error.message}</p>}
         </form>
     );

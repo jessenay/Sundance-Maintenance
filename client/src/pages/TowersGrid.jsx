@@ -23,7 +23,7 @@ const TowersGrid = () => {
 
   return (
     <div>
-      <button className='add-service' onClick={handleViewProcedures}>
+      <button className='add-tower-service' onClick={handleViewProcedures}>
         View Procedures
       </button>
       <div className="grid-container">

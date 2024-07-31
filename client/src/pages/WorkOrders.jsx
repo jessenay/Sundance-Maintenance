@@ -1,55 +1,100 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { useQuery } from '@apollo/client';
-import AuthService from "../utils/auth";
-import WorkOrderForm from "../components/WorkOrder/WorkOrderForm";
-import { GET_WORK_ORDERS } from '../utils/queries';
+import React, { useState, useEffect } from 'react';
+import { useQuery, useMutation } from '@apollo/client';
+import { GET_WORK_ORDERS, DELETE_WORK_ORDER } from '../utils/queries';
+import AuthService from '../utils/auth';
+import './WorkOrders.css';
+import { FaTrash } from 'react-icons/fa';
+import WorkOrderForm from '../components/WorkOrder/WorkOrderForm'; // Assuming you have a WorkOrderForm component
 
 const WorkOrders = () => {
-    const navigate = useNavigate();
-    const [showForm, setShowForm] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [deleteWorkOrderId, setDeleteWorkOrderId] = useState(null);
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+  const [confirmationInput, setConfirmationInput] = useState('');
+  const [showForm, setShowForm] = useState(false); // State to toggle form visibility
 
-    useEffect(() => {
-        if (!AuthService.loggedIn()) {
-            navigate("/login");
-        }
-    }, [navigate]);
+  const { loading, error, data, refetch } = useQuery(GET_WORK_ORDERS);
+  const [deleteWorkOrder] = useMutation(DELETE_WORK_ORDER, {
+    onCompleted: () => {
+      refetch();
+      setShowDeleteConfirmation(false);
+      setConfirmationInput('');
+    },
+    onError: (error) => {
+      console.error('Error deleting work order:', error);
+    }
+  });
 
-    const { loading, error, data, refetch } = useQuery(GET_WORK_ORDERS, {
-        notifyOnNetworkStatusChange: true,
-    });
+  useEffect(() => {
+    const profile = AuthService.getProfile();
+    setIsAdmin(profile.data.role === 'admin');
+  }, []);
 
-    if (loading) return <p>Loading...</p>;
-    if (error) return <p>Error: {error.message}</p>;
-    if (!data || !data.workOrders) return <p>No data found</p>;
+  const handleDeleteClick = (workOrderId) => {
+    setDeleteWorkOrderId(workOrderId);
+    setShowDeleteConfirmation(true);
+  };
 
-    const reversedWorkOrders = [...data.workOrders].reverse();
+  const confirmDelete = () => {
+    if (confirmationInput === 'delete') {
+      deleteWorkOrder({ variables: { _id: deleteWorkOrderId } });
+    }
+  };
 
-    return (
-        <div>
-            <button className='add-service' onClick={() => setShowForm(!showForm)}>
-                {showForm ? "Hide Work Order Form" : "Add Work Order"}
-            </button>
-            {showForm && <WorkOrderForm refetch={refetch} setShowForm={setShowForm} />}
-            <h2>Work Orders</h2>
-            <ul className="service-list">
-                {reversedWorkOrders.map(order => (
-                    <li key={order._id} className="service-item">
-                        <p className="date-completed">Job: {order.job}</p>
-                        <p>Personnel: {order.personnel.join(', ')}</p>
-                        <p className="completed-by">Tools Required: {order.toolsRequired.join(', ')}</p>
-                        <p className="test-values">Parts Used:</p>
-                        <ul>
-                            {order.partsUsed.map((part, index) => (
-                                <li key={index}>{part.name}: ${part.cost.toFixed(2)}</li>
-                            ))}
-                        </ul>
-                        <p>Time Worked: {order.timeWorked}</p>
-                    </li>
+  const toggleForm = () => {
+    setShowForm(!showForm);
+  };
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
+
+  return (
+    <div>
+      <h2>Work Orders</h2>
+      <button className='add-service' onClick={toggleForm}>
+        {showForm ? "Hide Form" : "Add Work Order"}
+      </button>
+      {showForm && <WorkOrderForm refetch={refetch} setShowForm={setShowForm} />}
+      <ul className="service-list">
+        {data.workOrders.map((workOrder) => (
+          <li key={workOrder._id} className="service-item">
+            <div className="service-content">
+              <p className="date-completed">Date: {new Date(workOrder.date).toLocaleDateString()}</p>
+              <p>Job: {workOrder.job}</p>
+              <p>Personnel: {workOrder.personnel}</p>
+              <p>Tools Required: {workOrder.toolsRequired}</p>
+              <p>Parts Used:</p>
+              <ul>
+                {workOrder.partsUsed.map((part, index) => (
+                  <li key={`${part.name}-${index}`}>
+                    {part.name}: {part.cost}
+                  </li>
                 ))}
-            </ul>
+              </ul>
+              <p>Time Worked: {workOrder.timeWorked}</p>
+            </div>
+            {isAdmin && (
+              <div className="delete-icon" onClick={() => handleDeleteClick(workOrder._id)}>
+                <FaTrash />
+              </div>
+            )}
+          </li>
+        ))}
+      </ul>
+      {showDeleteConfirmation && (
+        <div className="delete-confirmation">
+          <p>Are you sure you want to delete this work order? Type 'delete' to confirm:</p>
+          <input
+            type="text"
+            value={confirmationInput}
+            onChange={(e) => setConfirmationInput(e.target.value)}
+          />
+          <button onClick={confirmDelete}>Delete</button>
+          <button onClick={() => setShowDeleteConfirmation(false)}>Cancel</button>
         </div>
-    );
+      )}
+    </div>
+  );
 };
 
 export default WorkOrders;

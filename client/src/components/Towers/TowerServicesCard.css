@@ -1,89 +1,88 @@
-/* General styles for the Tower Services Form */
-.tower-services-form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    border: 1px solid #ddd;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin: 20px auto;
-    max-width: 500px;
+/* General styles for the Service Form */
+.service-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  border: 1px solid #ddd;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin: 20px auto;
+  max-width: 500px;
+}
+
+.service-form input[type="date"],
+.service-form input[type="text"],
+.service-form textarea {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.service-form textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.service-form button[type="submit"],
+.service-form button[type="button"] {
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.service-form button[type="submit"] {
+  background-color: #007bff;
+  color: white;
+}
+
+.service-form button[type="submit"]:hover {
+  background-color: #0056b3;
+}
+
+.service-form button.cancel {
+  background-color: #ccc;
+}
+
+.service-form button.cancel:hover {
+  background-color: #999;
+}
+
+.service-form p {
+  margin-top: 0;
+  color: red;
+  font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .service-form {
+    padding: 15px;
   }
-  
-  .tower-services-form input[type="date"],
-  .tower-services-form input[type="text"],
-  .tower-services-form textarea {
+
+  .service-form input[type="date"],
+  .service-form input[type="text"],
+  .service-form textarea {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .service-form {
     padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
   }
-  
-  .tower-services-form textarea {
-    resize: vertical;
-    min-height: 100px;
+
+  .service-form input[type="date"],
+  .service-form input[type="text"],
+  .service-form textarea {
+    font-size: 12px;
   }
-  
-  .tower-services-form button[type="submit"],
-  .tower-services-form button[type="button"] {
-    padding: 10px 20px;
-    border-radius: 5px;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+
+  .service-form button[type="submit"],
+  .service-form button[type="button"] {
+    padding: 8px 16px;
   }
-  
-  .tower-services-form button[type="submit"] {
-    background-color: #007bff;
-    color: white;
-  }
-  
-  .tower-services-form button[type="submit"]:hover {
-    background-color: #0056b3;
-  }
-  
-  .tower-services-form button[type="button"] {
-    background-color: #ccc;
-  }
-  
-  .tower-services-form button[type="button"]:hover {
-    background-color: #999;
-  }
-  
-  .tower-services-form p {
-    margin-top: 0;
-    color: red;
-    font-weight: bold;
-  }
-  
-  @media (max-width: 768px) {
-    .tower-services-form {
-      padding: 15px;
-    }
-  
-    .tower-services-form input[type="date"],
-    .tower-services-form input[type="text"],
-    .tower-services-form textarea {
-      font-size: 14px;
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .tower-services-form {
-      padding: 10px;
-    }
-  
-    .tower-services-form input[type="date"],
-    .tower-services-form input[type="text"],
-    .tower-services-form textarea {
-      font-size: 12px;
-    }
-  
-    .tower-services-form button[type="submit"],
-    .tower-services-form button[type="button"] {
-      padding: 8px 16px;
-    }
-  }
-  
+}
