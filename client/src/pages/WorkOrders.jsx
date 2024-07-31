@@ -51,14 +51,14 @@ const WorkOrders = () => {
   return (
     <div>
       <h2>Work Orders</h2>
-      <button className='add-service' onClick={toggleForm}>
+      <button className='add-service1' onClick={toggleForm}>
         {showForm ? "Hide Form" : "Add Work Order"}
       </button>
       {showForm && <WorkOrderForm refetch={refetch} setShowForm={setShowForm} />}
-      <ul className="service-list">
+      <ul className="service-list1">
         {data.workOrders.map((workOrder) => (
-          <li key={workOrder._id} className="service-item">
-            <div className="service-content">
+          <li key={workOrder._id} className="service-item1">
+            <div className="service-content1">
               <p className="date-completed">Date: {new Date(workOrder.date).toLocaleDateString()}</p>
               <p>Job: {workOrder.job}</p>
               <p>Personnel: {workOrder.personnel}</p>

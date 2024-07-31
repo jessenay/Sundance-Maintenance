@@ -72,6 +72,19 @@ const resolvers = {
         throw new Error(error);
       }
     },
+    towerServices: async (_, { towerId, month, year }) => {
+      const filter = { tower: new ObjectId(towerId) };
+      if (month && year) {
+        const start = new Date(year, month - 1, 1);
+        const end = new Date(year, month, 0);
+        filter.dateCompleted = { $gte: start.toISOString(), $lt: end.toISOString() };
+      } else if (year) {
+        const start = new Date(year, 0, 1);
+        const end = new Date(year, 11, 31);
+        filter.dateCompleted = { $gte: start.toISOString(), $lt: end.toISOString() };
+      }
+      return TowerService.find(filter).sort({ dateCompleted: -1 });
+    },
     services: async (_, { componentId, month, year }) => {
       try {
         const filter = { component: new ObjectId(componentId) };
@@ -209,22 +222,13 @@ const resolvers = {
       return lift.populate('towers');
     },
     addTowerService: async (_, { towerId, dateCompleted, uphillOrDownhill, workDescription, partsUsed, completedBy }) => {
-      const newTowerService = new TowerService({
-        dateCompleted,
-        uphillOrDownhill,
-        workDescription,
-        partsUsed,
-        completedBy
-      });
+      const newTowerService = new TowerService({ dateCompleted, uphillOrDownhill, workDescription, partsUsed, completedBy });
       const savedService = await newTowerService.save();
-
-      await Tower.findByIdAndUpdate(
-        towerId,
-        { $push: { services: savedService._id } },
-        { new: true, upsert: true }
-      );
-
+      await Tower.findByIdAndUpdate(towerId, { $push: { services: savedService._id } });
       return savedService;
+    },
+    deleteTowerService: async (_, { _id }) => {
+      return TowerService.findByIdAndDelete(_id);
     },
     addWorkOrder: async (_, { job, personnel, toolsRequired, partsUsed, timeWorked }) => {
       const newWorkOrder = new WorkOrder({

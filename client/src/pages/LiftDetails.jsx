@@ -2,9 +2,8 @@ import React from 'react';
 import { Outlet, useParams, useLocation } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { GET_LIFT_BY_ID } from '../utils/queries';
-import MaintNav from '../components/Navigation/MaintNav'; // Adjust the import path as necessary
+import MaintNav from '../components/Navigation/MaintNav';
 import './LiftDetails.css';
-import './TowersGrid.css'; // Import the TowersGrid CSS file
 
 // Example images mapping
 const liftImages = {
@@ -33,25 +32,26 @@ const LiftDetails = () => {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
-  // Access lift name from the data
-  const liftName = data?.lift?.name || 'Unknown'; // Adjust this according to the actual structure of your data
+  // Check if data is available and access lift name from the data
+  const lift = data?.lift;
+  if (!lift) return <p>Lift not found</p>;
+
+  const liftName = lift.name || 'Unknown';
   const liftImage = liftImages[liftName] || '/assets/Images/defaultLiftPicture.png'; // Fallback to a default image
 
   // Check if the current path includes a component route (excluding the main lift page)
   const isComponentPage = location.pathname !== `/lift/${liftId}`;
 
   return (
-    <div>
-      <div className="lift-details-wrapper">
-        {!isComponentPage && <MaintNav liftId={liftId} />} {/* Conditionally render the MaintNav bar */}
-        <div className="lift-details-main">
-          <h1>{liftName}</h1> {/* Display the lift name */}
-          {!isComponentPage && liftImage && (
-            <img src={liftImage} alt={liftName} className="lift-image" />
-          )} {/* Conditionally render the lift image */}
-        </div>
+    <div className="lift-details-container">
+      {!isComponentPage && <MaintNav liftId={liftId} />} {/* Conditionally render the MaintNav bar */}
+      <div className="main-content">
+        <h1 className='towers-lift-name'>{liftName}</h1> {/* Display the lift name */}
+        {!isComponentPage && liftImage && (
+          <img src={liftImage} alt={liftName} className="lift-image" />
+        )} {/* Conditionally render the lift image */}
+        <Outlet />
       </div>
-      <Outlet />
     </div>
   );
 };

@@ -252,3 +252,11 @@ export const DELETE_WORK_ORDER = gql`
     }
   }
 `;
+
+export const DELETE_TOWER_SERVICE = gql`
+  mutation DeleteTowerService($_id: ID!) {
+    deleteTowerService(_id: $_id) {
+      _id
+    }
+  }
+`;

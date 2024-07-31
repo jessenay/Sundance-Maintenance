@@ -109,7 +109,7 @@ const typeDefs = gql`
     component(_id: ID!): Component
     annualServices(componentId: ID!, month: Int, year: Int): [AnnualService]
     services(componentId: ID!, month: Int, year: Int): [Service]
-    towerServices (towerId: ID!): [TowerService]
+    towerServices (towerId: ID!, month: Int, year: Int): [TowerService]
     workOrders: [WorkOrder]
     procedures(componentId: ID!): [Procedure]
     todos: [Todo]
@@ -136,6 +136,7 @@ const typeDefs = gql`
     deleteAnnualService(_id: ID!): AnnualService
     deleteService(_id: ID!): Service
     deleteWorkOrder(_id: ID!): WorkOrder
+    deleteTowerService(_id: ID!): TowerService
   }
 `;
 

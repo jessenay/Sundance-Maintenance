@@ -77,3 +77,8 @@
   max-width: 100%;
   height: auto;
 }
+
+.towers-lift-name {
+  display: flex;
+  justify-content: center;
+}

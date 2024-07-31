@@ -1,5 +1,5 @@
 /* General styles for the work orders page */
-.service-list {
+.service-list1 {
     /* display: grid;
     grid-gap: 20px;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); */
@@ -11,7 +11,7 @@
 
   }
   
-  .service-item {
+  .service-item1 {
     border: 1px solid #ddd;
     padding: 15px;
     background-color: #fff;
@@ -23,12 +23,12 @@
     position: relative; /* Make sure the delete icon is positioned correctly */
   }
   
-  .service-item:hover {
+  .service-item1:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   }
   
-  .add-service {
+  .add-service1 {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -42,7 +42,7 @@
     margin: 20px auto; /* Center the button and add margin */
   }
   
-  .add-service:hover {
+  .add-service1:hover {
     background-color: #0056b3;
   }
   
