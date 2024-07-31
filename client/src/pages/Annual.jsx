@@ -102,14 +102,14 @@ const Annual = () => {
       {!showForm && (
         <>
           <h2>Annual Services</h2>
-          <div style={{ textAlign: 'center', marginBottom: '20px' }}>
-            <label>Month:</label>
+          <div style={{ textAlign: 'center', marginBottom: '20px', color: 'whitesmoke'}}>
+            <label className="date-picker">Month:</label>
             <select value={monthNames[month - 1]} onChange={handleMonthChange}>
               {monthNames.map((m, index) => (
                 <option key={index} value={m}>{m}</option>
               ))}
             </select>
-            <label>Year:</label>
+            <label className="date-picker">Year:</label>
             <select value={year} onChange={handleYearChange}>
               {Array.from({ length: 10 }, (_, i) => new Date().getFullYear() - i).map((y) => (
                 <option key={y} value={y}>{y}</option>

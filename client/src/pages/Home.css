@@ -27,13 +27,15 @@
 }
 
 .left-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
   flex: 1.5; /* Increase the size of the left column */
 }
 
 .middle-column {
   flex: 3; /* Keep the middle column as is */
-  /* display: flex; */
-  flex-direction: column;
 }
 
 .right-column {
@@ -42,7 +44,6 @@
 
 .slideshow-container {
   width: 100%;
-  max-width: 800px;
   margin-bottom: 20px;
   flex-direction: column;
 }
@@ -117,6 +118,34 @@
   padding: 10px 20px;
   background-color: #ff9a4d;
   color: black;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 32px;
+  width: 100%; /* Set a fixed width for the button */
+  text-align: center; /* Center text inside the button */
+  align-self: center; /* Center the button in the flex container */
+}
+
+.parts-calculator {
+  padding: 10px 20px;
+  background-color: #ff4dea;
+  color: black;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 32px;
+  width: 100%; /* Set a fixed width for the button */
+  text-align: center; /* Center text inside the button */
+  align-self: center; /* Center the button in the flex container */
+}
+
+.another-button {
+  padding: 10px 20px;
+  background-color: black;
+  color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;

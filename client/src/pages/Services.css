@@ -1,9 +1,8 @@
 /* General styles for the services page */
 .service-list {
-  display: flex; /* Use flexbox for row layout */
-  flex-wrap: wrap; /* Allow items to wrap to the next line */
-  justify-content: center;
-  gap: 20px; /* Use gap for spacing between items */
+  display: grid;
+  grid-gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   padding: 0;
   list-style-type: none;
   margin-top: 20px; /* Add space above the service list */
@@ -18,9 +17,6 @@
   flex-direction: column;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-  position: relative; /* Make sure the delete icon is positioned correctly */
-  flex: 1 1 300px; /* Flex-grow, flex-shrink, and flex-basis */
-  max-width: 300px; /* Limit the max width of each item */
 }
 
 .service-item:hover {
@@ -88,46 +84,6 @@ button:focus {
   outline: none;
 }
 
-.delete-service {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-}
-
-.delete-icon {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  cursor: pointer;
-  color: red;
-}
-
-.delete-confirmation {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: white;
-  padding: 20px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-  z-index: 1000;
-}
-
-.delete-confirmation p {
-  margin-bottom: 10px;
-}
-
-.delete-confirmation input {
-  margin-bottom: 10px;
-  padding: 5px;
-  width: calc(100% - 10px);
-}
-
-.delete-confirmation button {
-  margin-right: 10px;
-  padding: 5px 10px;
-}
-
 /* Responsive styles for the services page */
 @media (max-width: 768px) {
   .service-item {
@@ -135,12 +91,12 @@ button:focus {
   }
 
   select {
-    margin-bottom: 10px;
+      margin-bottom: 10px;
   }
 
   .add-service {
-    width: 100%;
-    text-align: center;
+      width: 100%;
+      text-align: center;
   }
 }
 

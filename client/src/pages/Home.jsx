@@ -111,6 +111,15 @@ const Home = () => {
           <button onClick={() => navigate("/work-orders")} className="fall-checklist">
             Fall Checklist
           </button>
+          <button onClick={() => navigate("/work-orders")} className="parts-calculator">
+            Parts Calculator
+          </button>
+          <button onClick={() => navigate("/work-orders")} className="another-button">
+            another button
+          </button>
+          <button onClick={() => navigate("/work-orders")} className="another-button">
+            another button
+          </button>
         </div>
       </div>
     </div>
