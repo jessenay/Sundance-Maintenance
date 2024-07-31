@@ -19,15 +19,10 @@ const LiftDetails = () => {
   const { liftId } = useParams(); // Get the lift ID from the URL
   const location = useLocation(); // Get the current location
 
-  console.log("Lift ID:", liftId); // Log the liftId to ensure it's being retrieved correctly
-
   // Execute the GraphQL query
   const { loading, error, data } = useQuery(GET_LIFT_BY_ID, {
     variables: { _id: liftId },
   });
-
-  console.log("Query Variables:", { _id: liftId });
-  console.log("Query Data:", data);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
@@ -44,14 +39,18 @@ const LiftDetails = () => {
 
   return (
     <div className="lift-details-container">
-      {!isComponentPage && <MaintNav liftId={liftId} />} {/* Conditionally render the MaintNav bar */}
-      <div className="main-content">
-        <h1 className='towers-lift-name'>{liftName}</h1> {/* Display the lift name */}
-        {!isComponentPage && liftImage && (
-          <img src={liftImage} alt={liftName} className="lift-image" />
-        )} {/* Conditionally render the lift image */}
-        <Outlet />
-      </div>
+      {!isComponentPage && (
+        <>
+          <MaintNav liftId={liftId} /> {/* Conditionally render the MaintNav bar */}
+          <div className="image-container">
+            <img src={liftImage} alt={liftName} className="lift-image" />
+            <div className="overlay">
+              <h1 className='lift-name'>{liftName}</h1> {/* Display the lift name */}
+            </div>
+          </div>
+        </>
+      )}
+      <Outlet /> {/* Outlet for nested routes */}
     </div>
   );
 };

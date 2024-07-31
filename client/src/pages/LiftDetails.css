@@ -1,84 +1,124 @@
-.lift-details-wrapper {
+.lift-details-container {
+  position: relative;
+  width: 100%;
+  height: 100vh; /* Make the container full screen */
+}
+
+.image-container {
+  position: relative;
+  width: 100%;
+  height: 100%; /* Make the image container full screen */
+}
+
+.lift-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Cover the entire container */
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   display: flex;
-  align-items: flex-start;
+  flex-direction: column;
+  align-items: center;
   justify-content: flex-start;
-  width: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
 }
 
-.lift-details-main {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-}
-
-.lift-image {
-  max-height: 70vh;
-  width: 100%;
-  height: auto;
-  display: block;
-  margin: 0 auto;
-}
-
-.navContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin-top: 20px;
-  height: auto;
-}
-
-/* Media queries for responsiveness */
-@media (max-width: 768px) {
-  .lift-details-wrapper {
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .lift-details-main {
-    width: 90%;
-  }
-
-  .lift-image {
-    max-height: 50vh;
-    width: 100%;
-  }
-}
-
-@media (max-width: 480px) {
-  .lift-details-wrapper {
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .lift-details-main {
-    width: 100%;
-    padding: 10px;
-  }
-
-  .lift-image {
-    max-height: 40vh;
-    width: 100%;
-  }
-
-  h1 {
-    font-size: 1.5em;
-    text-align: center;
-  }
-}
-
-/* Ensuring the image doesn't go off the screen */
-.lift-image {
-  object-fit: cover;
-  max-width: 100%;
-  height: auto;
+.lift-name {
+  color: white;
+  font-size: 3em;
+  text-align: center;
+  margin: 20px 0; /* Add margin to position it below the header */
 }
 
 .towers-lift-name {
   display: flex;
   justify-content: center;
+  font-size: 2em;
+  margin-bottom: 20px;
+}
+
+.maintNav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  z-index: 1;
+}
+
+.link-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+  max-width: 1200px;
+  gap: 10px; /* Add gap between boxes */
+}
+
+.maintNav-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: white;
+  text-decoration: none;
+  border: 2px solid white;
+  padding: 10px;
+  margin: 5px;
+  width: 150px;
+  height: 100px;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background for buttons */
+  transition: background-color 0.3s ease;
+}
+
+.maintNav-buttons:hover {
+  background-color: rgba(255, 255, 255, 0.2); /* Lighten background on hover */
+}
+
+.maintNav-buttons h1 {
+  font-size: 1em;
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: white;
+  margin: 0;
+}
+
+/* Responsive styles for the image and overlay */
+@media (max-width: 768px) {
+  .lift-image {
+    max-height: 50vh;
+    width: 100%;
+  }
+
+  .lift-name {
+    font-size: 2em;
+  }
+
+  .maintNav-buttons {
+    width: 100px;
+    height: 75px;
+  }
+}
+
+@media (max-width: 480px) {
+  .lift-image {
+    max-height: 40vh;
+    width: 100%;
+  }
+
+  .lift-name {
+    font-size: 1.5em;
+  }
+
+  .maintNav-buttons {
+    width: 80px;
+    height: 60px;
+  }
 }
