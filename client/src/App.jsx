@@ -39,7 +39,7 @@ function App() {
         <div>
           <Outlet /> {/* Outlet will render the child routes */}
         </div>
-        {!hideHeaderAndFooter && <Footer />} {/* Conditionally render Footer */}
+        {!hideHeaderAndFooter} {/* Conditionally render Footer */}
       </div>
     </ApolloProvider>
   );

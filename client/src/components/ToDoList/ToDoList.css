@@ -1,0 +1,82 @@
+.todo-list {
+    /* width: 100%; */
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* max-height: 300px; */
+    overflow-y: auto; /* Scrollable if content overflows */
+    /* margin-bottom: 20px;  */
+  }
+  
+  .todo-title {
+    margin-top: 0;
+    text-align: center;
+    font-size: 1.5em;
+    color: #333;
+    font-weight: 600;
+  }
+  
+  .todo-items {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .todo-item {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    color: #333;
+    font-size: 1.1em;
+    display: flex;
+    align-items: center;
+  }
+  
+  .todo-item:hover {
+    background-color: #f0f0f0;
+    transform: translateX(5px); /* Add a slight movement on hover */
+  }
+  
+  .work-order-container {
+    width: 100%;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-height: 300px; /* Limit height to fit the viewport */
+    overflow-y: auto; /* Scrollable if content overflows */
+    margin-top: 20px; /* Add space above the work order form */
+  }
+
+  .add-todo {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    margin-top: 20px;
+  }
+  
+  .add-todo input {
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  .add-todo-button {
+    padding: 10px 20px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+  
+  .add-todo-button:hover {
+    background-color: #45a049;
+    transform: translateY(-2px); /* Lift button on hover */
+  }
+  
+  

@@ -16,7 +16,8 @@ const WorkOrderForm = ({ refetch, setShowForm, handleFinishWorkOrder, todo }) =>
     personnel: [''],
     toolsRequired: [''],
     partsUsed: [{ name: '', cost: 0 }],
-    timeWorked: ''
+    timeWorked: '',
+    date: '' // New date field
   });
 
   useEffect(() => {
@@ -36,7 +37,8 @@ const WorkOrderForm = ({ refetch, setShowForm, handleFinishWorkOrder, todo }) =>
         personnel: [''],
         toolsRequired: [''],
         partsUsed: [{ name: '', cost: 0 }],
-        timeWorked: ''
+        timeWorked: '',
+        date: '' // Reset date field
       });
       setShowForm(false);
       refetch();
@@ -63,7 +65,7 @@ const WorkOrderForm = ({ refetch, setShowForm, handleFinishWorkOrder, todo }) =>
     const { value } = e.target;
     setWorkOrder((prev) => {
       const newState = { ...prev };
-      if (field === 'job' || field === 'timeWorked') {
+      if (field === 'job' || field === 'timeWorked' || field === 'date') {
         newState[field] = value;
       } else if (subField) {
         newState[field][index][subField] = value;
@@ -82,23 +84,16 @@ const WorkOrderForm = ({ refetch, setShowForm, handleFinishWorkOrder, todo }) =>
         personnel: workOrder.personnel,
         toolsRequired: workOrder.toolsRequired,
         partsUsed: workOrder.partsUsed.map(part => ({ name: part.name, cost: parseFloat(part.cost) })),
-        timeWorked: workOrder.timeWorked
+        timeWorked: workOrder.timeWorked,
+        date: workOrder.date // Include date in the submission
       }
     });
   };
 
   return (
-    <div style={{
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: '#fff',
-      padding: '20px',
-      borderRadius: '10px',
-      boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)'
-    }}>
-      <form className="annualForm" onSubmit={handleSubmit}>
-        <div>
+    <div className="work-order-form-container">
+      <form className="work-order-form" onSubmit={handleSubmit}>
+        <div className="form-group">
           <label className='label' htmlFor='job'>{formatLabel('job')}</label>
           <input
             className="input"
@@ -111,7 +106,7 @@ const WorkOrderForm = ({ refetch, setShowForm, handleFinishWorkOrder, todo }) =>
           />
         </div>
         {workOrder.personnel.map((person, index) => (
-          <div key={index}>
+          <div className="form-group" key={index}>
             <label className='label'>{formatLabel('personnel')}</label>
             <input
               type="text"
@@ -122,12 +117,12 @@ const WorkOrderForm = ({ refetch, setShowForm, handleFinishWorkOrder, todo }) =>
             />
           </div>
         ))}
-        <button type="button" onClick={() => handleAddField('personnel')}>
+        <button className="add-button" type="button" onClick={() => handleAddField('personnel')}>
           Add Personnel
         </button>
 
         {workOrder.toolsRequired.map((tool, index) => (
-          <div key={index}>
+          <div className="form-group" key={index}>
             <label className='label'>{formatLabel('toolsRequired')}</label>
             <input
               type="text"
@@ -138,12 +133,12 @@ const WorkOrderForm = ({ refetch, setShowForm, handleFinishWorkOrder, todo }) =>
             />
           </div>
         ))}
-        <button type="button" onClick={() => handleAddField('toolsRequired')}>
+        <button className="add-button" type="button" onClick={() => handleAddField('toolsRequired')}>
           Add Tool
         </button>
 
         {workOrder.partsUsed.map((part, index) => (
-          <div key={index} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '90%' }}>
+          <div className="form-group" key={index}>
             <label className='label'>{formatLabel('partsUsed')}</label>
             <input
               type="text"
@@ -151,7 +146,6 @@ const WorkOrderForm = ({ refetch, setShowForm, handleFinishWorkOrder, todo }) =>
               value={part.name}
               onChange={(e) => handleChange(e, 'partsUsed', index, 'name')}
               className="input"
-              style={{ marginBottom: '10px', width: '100%' }}
             />
             <input
               type="number"
@@ -159,15 +153,14 @@ const WorkOrderForm = ({ refetch, setShowForm, handleFinishWorkOrder, todo }) =>
               value={part.cost}
               onChange={(e) => handleChange(e, 'partsUsed', index, 'cost')}
               className="input"
-              style={{ width: '100%' }}
             />
           </div>
         ))}
-        <button type="button" onClick={() => handleAddField('partsUsed')}>
+        <button className="add-button" type="button" onClick={() => handleAddField('partsUsed')}>
           Add Part
         </button>
 
-        <div>
+        <div className="form-group">
           <label className='label' htmlFor='timeWorked'>{formatLabel('timeWorked')}</label>
           <input
             className="input"
@@ -179,8 +172,23 @@ const WorkOrderForm = ({ refetch, setShowForm, handleFinishWorkOrder, todo }) =>
             onChange={(e) => handleChange(e, 'timeWorked')}
           />
         </div>
-        <button className="button" type="submit">Submit</button>
-        <button type="button" onClick={() => setShowForm(false)}>Close</button>
+
+        <div className="form-group">
+          <label className='label' htmlFor='date'>{formatLabel('date')}</label>
+          <input
+            className="input"
+            id='date'
+            name='date'
+            type="date" // Date picker input type
+            value={workOrder.date}
+            onChange={(e) => handleChange(e, 'date')}
+          />
+        </div>
+
+        <div className="button-group">
+          <button className="submit-button" type="submit">Submit</button>
+          <button className="close-button" type="button" onClick={() => setShowForm(false)}>Close</button>
+        </div>
       </form>
       {loading && <div>Loading...</div>}
       {error && <div>Error! {error.message}</div>}

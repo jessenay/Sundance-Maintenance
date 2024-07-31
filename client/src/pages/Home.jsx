@@ -6,6 +6,7 @@ import Slideshow from "../components/Slideshow/Slideshow";
 import { GET_TODOS, ADD_TODO, REMOVE_TODO } from "../utils/queries";
 import WorkOrderForm from "../components/WorkOrder/WorkOrderForm";
 import "./Home.css";
+import "../components/ToDoList/ToDoList.css";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -55,71 +56,63 @@ const Home = () => {
 
   return (
     <div className="home-page">
-      <h1 className="home-page-background">
-        Welcome to <span className="highlight">Sundance</span> Lift Maintenance
-      </h1>
-      <div className="columns-container">
-        <div className="column left-column">
-          <div className="todo-list">
-            <h2>To-Do List</h2>
-            <ul>
-              {todosData?.todos.map(todo => (
-                <li key={todo._id} onClick={() => handleTodoClick(todo)}>
-                  {todo.job}
-                </li>
-              ))}
-            </ul>
-            <div className="add-todo">
-              <input
-                type="text"
-                placeholder="New job"
-                value={newJob}
-                onChange={(e) => setNewJob(e.target.value)}
-              />
-              <button onClick={handleAddTodo}>Add To-Do</button>
+      <Slideshow />
+      <div className="home-overlay">
+        <h1 className="home-page-background">
+          Welcome to <span className="highlight">Sundance</span> Lift Maintenance
+        </h1>
+        <div className="content-container">
+          <div className="todo-container">
+            <div className="todo-list">
+              <h2 className="todo-title">To-Do List</h2>
+              <ul className="todo-items">
+                {todosData?.todos.map(todo => (
+                  <li key={todo._id} className="todo-item" onClick={() => handleTodoClick(todo)}>
+                    {todo.job}
+                  </li>
+                ))}
+              </ul>
+              <div className="add-todo">
+                <input
+                  type="text"
+                  placeholder="New job"
+                  value={newJob}
+                  onChange={(e) => setNewJob(e.target.value)}
+                />
+                <button onClick={handleAddTodo} className="add-todo-button">Add To-Do</button>
+              </div>
+              {showWorkOrderForm && (
+                <div className="work-order-form-container">
+                  <WorkOrderForm
+                    refetch={refetchTodos}
+                    setShowForm={setShowWorkOrderForm}
+                    initialJob={selectedTodo?.job}
+                    handleFinishWorkOrder={handleFinishWorkOrder}
+                  />
+                </div>
+              )}
             </div>
           </div>
-          {showWorkOrderForm && (
-            <div className="work-order-form-container">
-              <WorkOrderForm
-                refetch={refetchTodos}
-                setShowForm={setShowWorkOrderForm}
-                initialJob={selectedTodo?.job}
-                handleFinishWorkOrder={handleFinishWorkOrder}
-              />
-            </div>
-          )}
-        </div>
-        <div className="column middle-column">
-          <div className="slideshow-container">
-            <Slideshow />
+          <div className="buttons-container">
+            <button onClick={() => navigate("/work-orders")} className="maintNav-buttons">
+              View Work Orders
+            </button>
+            <button onClick={() => navigate("/winter-checklist")} className="maintNav-buttons">
+              Winter Checklist
+            </button>
+            <button onClick={() => navigate("/work-orders")} className="maintNav-buttons">
+              Spring Checklist
+            </button>
+            <button onClick={() => navigate("/work-orders")} className="maintNav-buttons">
+              Summer Checklist
+            </button>
+            <button onClick={() => navigate("/work-orders")} className="maintNav-buttons">
+              Fall Checklist
+            </button>
+            <button onClick={() => navigate("/work-orders")} className="maintNav-buttons">
+              Parts Calculator
+            </button>
           </div>
-        </div>
-        <div className="column right-column">
-          <button onClick={() => navigate("/work-orders")} className="work-orders">
-            View Work Orders
-          </button>
-          <button onClick={() => navigate("/winter-checklist")} className="winter-checklist">
-            Winter Checklist
-          </button>
-          <button onClick={() => navigate("/work-orders")} className="spring-checklist">
-            Spring Checklist
-          </button>
-          <button onClick={() => navigate("/work-orders")} className="summer-checklist">
-            Summer Checklist
-          </button>
-          <button onClick={() => navigate("/work-orders")} className="fall-checklist">
-            Fall Checklist
-          </button>
-          <button onClick={() => navigate("/work-orders")} className="parts-calculator">
-            Parts Calculator
-          </button>
-          <button onClick={() => navigate("/work-orders")} className="another-button">
-            another button
-          </button>
-          <button onClick={() => navigate("/work-orders")} className="another-button">
-            another button
-          </button>
         </div>
       </div>
     </div>
