@@ -96,6 +96,16 @@ const typeDefs = gql`
     _id: ID!
     name: String!
     completed: Boolean!
+    initials: String
+    dateCompleted: String
+  }
+
+  type SpringTask {
+    _id: ID!
+    name: String!
+    completed: Boolean!
+    initials: String
+    dateCompleted: String
   }
 
   type Query {
@@ -109,18 +119,20 @@ const typeDefs = gql`
     component(_id: ID!): Component
     annualServices(componentId: ID!, month: Int, year: Int): [AnnualService]
     services(componentId: ID!, month: Int, year: Int): [Service]
-    towerServices (towerId: ID!, month: Int, year: Int): [TowerService]
+    towerServices(towerId: ID!, month: Int, year: Int): [TowerService]
     workOrders: [WorkOrder]
     procedures(componentId: ID!): [Procedure]
     todos: [Todo]
     winterTasks: [WinterTask]
+    springTasks: [SpringTask]
   }
 
   type Mutation {
     addTower(name: String!, liftId: ID!): Tower
     createAccount(username: String!, password: String!, role: String!): Profile
     login(username: String!, password: String!): AuthPayload
-    addAnnualService(componentId: ID!, task: String!, dateCompleted: String!, completedBy: String!, testValues: String, notes: String, procedureLocations: String): AnnualService    addService(componentId: ID!, dateCompleted: String!, reason: String!, workDescription: String!, partsUsed: String!, completedBy: String!): Service
+    addAnnualService(componentId: ID!, task: String!, dateCompleted: String!, completedBy: String!, testValues: String, notes: String, procedureLocations: String): AnnualService
+    addService(componentId: ID!, dateCompleted: String!, reason: String!, workDescription: String!, partsUsed: String!, completedBy: String!): Service
     addTowerService(towerId: ID!, dateCompleted: String!, uphillOrDownhill: String!, workDescription: String!, partsUsed: String!, completedBy: String!): TowerService
     addLift(name: String!): Lift
     addComponent(name: String!, liftId: ID!): Component
@@ -131,12 +143,17 @@ const typeDefs = gql`
     addTodo(job: String!): Todo
     removeTodo(_id: ID!): Todo
     addWinterTask(name: String!): WinterTask
-    toggleWinterTask(_id: ID!): WinterTask
+    toggleWinterTask(_id: ID!, initials: String, dateCompleted: String): WinterTask
     uncheckAllWinterTasks: [WinterTask]
+    deleteWinterTask(_id: ID!): WinterTask
     deleteAnnualService(_id: ID!): AnnualService
     deleteService(_id: ID!): Service
     deleteWorkOrder(_id: ID!): WorkOrder
     deleteTowerService(_id: ID!): TowerService
+    addSpringTask(name: String!): SpringTask
+    toggleSpringTask(_id: ID!, initials: String, dateCompleted: String): SpringTask
+    uncheckAllSpringTasks: [SpringTask]
+    deleteSpringTask(_id: ID!): SpringTask
   }
 `;
 

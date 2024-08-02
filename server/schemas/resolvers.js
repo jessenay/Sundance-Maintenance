@@ -7,11 +7,12 @@ const TowerService = require('../models/TowerService');
 const AnnualService = require('../models/AnnualService');
 const WorkOrder = require('../models/WorkOrder');
 const Procedure = require('../models/Procedure');
-const Todo = require('../models/ToDo'); // Add the Todo model
+const Todo = require('../models/ToDo');
 const WinterTask = require('../models/WinterTask');
 const { signToken, isAdmin } = require('../utils/auth');
-const { Types: { ObjectId } } = require('mongoose'); // Import ObjectId from mongoose
+const { Types: { ObjectId } } = require('mongoose');
 const { AuthenticationError } = require('apollo-server');
+const SpringTask = require('../models/SpringTask');
 
 const resolvers = {
   Query: {
@@ -119,14 +120,12 @@ const resolvers = {
     winterTasks: async () => {
       return await WinterTask.find({});
     },
+    springTasks: async () => {
+      return await SpringTask.find({});
+    },
   },
   Mutation: {
     createAccount: async (_, { username, password, role }, context) => {
-      // Temporarily remove the admin check
-      // if (!context.user || !isAdmin(context.user)) {
-      //   throw new AuthenticationError('You must be an admin to create a new account');
-      // }
-
       const existingUser = await Profile.findOne({ username });
       if (existingUser) {
         throw new Error('User with this username already exists');
@@ -262,18 +261,58 @@ const resolvers = {
       await newTask.save();
       return newTask;
     },
-    toggleWinterTask: async (_, { _id }) => {
+    addSpringTask: async (_, { name }) => {
+      const newTask = new SpringTask({ name, completed: false });
+      await newTask.save();
+      return newTask;
+    },
+    toggleWinterTask: async (_, { _id, initials, dateCompleted }) => {
       const task = await WinterTask.findById(_id);
       if (!task) {
         throw new Error('Task not found');
       }
-      task.completed = !task.completed;
+      if (!task.completed) {
+        task.completed = true;
+        task.initials = initials;
+        task.dateCompleted = dateCompleted;
+      } else {
+        task.completed = false;
+        task.initials = null;
+        task.dateCompleted = null;
+      }
+      await task.save();
+      return task;
+    },
+    toggleSpringTask: async (_, { _id, initials, dateCompleted }) => {
+      const task = await SpringTask.findById(_id);
+      if (!task) {
+        throw new Error('Task not found');
+      }
+      if (!task.completed) {
+        task.completed = true;
+        task.initials = initials;
+        task.dateCompleted = dateCompleted;
+      } else {
+        task.completed = false;
+        task.initials = null;
+        task.dateCompleted = null;
+      }
       await task.save();
       return task;
     },
     uncheckAllWinterTasks: async () => {
-      await WinterTask.updateMany({ completed: true }, { completed: false });
+      await WinterTask.updateMany({ completed: true }, { completed: false, initials: null, dateCompleted: null });
       return WinterTask.find({});
+    },
+    uncheckAllSpringTasks: async () => {
+      await SpringTask.updateMany({ completed: true }, { completed: false, initials: null, dateCompleted: null });
+      return SpringTask.find({});
+    },
+    deleteWinterTask: async (_, { _id }) => {
+      return WinterTask.findByIdAndDelete(_id);
+    },
+    deleteSpringTask: async (_, { _id }) => {
+      return SpringTask.findByIdAndDelete(_id);
     },
     deleteAnnualService: async (parent, { _id }, context) => {
       if (context.user.role !== 'admin') {

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const winterTaskSchema = new mongoose.Schema({
+const springTaskSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -17,6 +17,6 @@ const winterTaskSchema = new mongoose.Schema({
   },
 });
 
-const WinterTask = mongoose.model('WinterTask', winterTaskSchema);
+const SpringTask = mongoose.model('SpringTask', springTaskSchema);
 
-module.exports = WinterTask;
+module.exports = SpringTask;

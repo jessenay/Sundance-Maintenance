@@ -1,11 +1,13 @@
+// src/pages/SpringChecklist.jsx
+
 import React, { useState } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
-import { GET_WINTER_TASKS, ADD_WINTER_TASK, TOGGLE_WINTER_TASK, UNCHECK_ALL_WINTER_TASKS, DELETE_WINTER_TASK } from '../utils/queries';
+import { GET_SPRING_TASKS, ADD_SPRING_TASK, TOGGLE_SPRING_TASK, UNCHECK_ALL_SPRING_TASKS, DELETE_SPRING_TASK } from '../utils/queries';
 import { FaTrashAlt } from 'react-icons/fa';
 import AuthService from '../utils/auth';
 import './WinterChecklist.css';
 
-const WinterChecklist = () => {
+const SpringChecklist = () => {
   const [newTask, setNewTask] = useState('');
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [deleteTaskId, setDeleteTaskId] = useState(null);
@@ -14,23 +16,23 @@ const WinterChecklist = () => {
   const [dateCompleted, setDateCompleted] = useState('');
   const [taskToComplete, setTaskToComplete] = useState(null);
 
-  const { data, refetch } = useQuery(GET_WINTER_TASKS);
-  const [addTask] = useMutation(ADD_WINTER_TASK, {
+  const { data, refetch } = useQuery(GET_SPRING_TASKS);
+  const [addTask] = useMutation(ADD_SPRING_TASK, {
     onCompleted: () => {
       setNewTask('');
       refetch();
     }
   });
-  const [toggleTask] = useMutation(TOGGLE_WINTER_TASK, {
+  const [toggleTask] = useMutation(TOGGLE_SPRING_TASK, {
     onCompleted: () => refetch()
   });
-  const [uncheckAllTasks] = useMutation(UNCHECK_ALL_WINTER_TASKS, {
+  const [uncheckAllTasks] = useMutation(UNCHECK_ALL_SPRING_TASKS, {
     onCompleted: () => {
       setShowConfirmation(false);
       refetch();
     }
   });
-  const [deleteTask] = useMutation(DELETE_WINTER_TASK, {
+  const [deleteTask] = useMutation(DELETE_SPRING_TASK, {
     onCompleted: () => {
       setShowDeleteConfirmation(false);
       refetch();
@@ -86,7 +88,7 @@ const WinterChecklist = () => {
 
   return (
     <div className="winter-checklist-page">
-      <h1>Winter Checklist</h1>
+      <h1>Spring Checklist</h1>
       <div className="add-task">
         <input
           type="text"
@@ -97,7 +99,7 @@ const WinterChecklist = () => {
         <button onClick={handleAddTask}>Add New Task</button>
       </div>
       <ul className="task-list">
-        {data?.winterTasks.map(task => (
+        {data?.springTasks.map(task => (
           <li key={task._id} className={`task-item ${task.completed ? 'completed' : ''}`}>
             <label>
               <input
@@ -157,4 +159,4 @@ const WinterChecklist = () => {
   );
 };
 
-export default WinterChecklist;
+export default SpringChecklist;

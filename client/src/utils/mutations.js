@@ -124,3 +124,83 @@ export const DELETE_WORK_ORDER = gql`
     }
   }
 `;
+
+export const TOGGLE_WINTER_TASK = gql`
+  mutation ToggleWinterTask($_id: ID!, $initials: String!, $dateCompleted: String!) {
+    toggleWinterTask(_id: $_id, initials: $initials, dateCompleted: $dateCompleted) {
+      _id
+      name
+      completed
+      initials
+      dateCompleted
+    }
+  }
+`;
+
+export const ADD_WINTER_TASK = gql`
+  mutation AddWinterTask($name: String!) {
+    addWinterTask(name: $name) {
+      _id
+      name
+      completed
+    }
+  }
+`;
+
+export const UNCHECK_ALL_WINTER_TASKS = gql`
+  mutation UncheckAllWinterTasks {
+    uncheckAllWinterTasks {
+      _id
+      name
+      completed
+    }
+  }
+`;
+
+export const DELETE_WINTER_TASK = gql`
+  mutation DeleteWinterTask($_id: ID!) {
+    deleteWinterTask(_id: $_id) {
+      _id
+    }
+  }
+`;
+
+export const ADD_SPRING_TASK = gql`
+  mutation AddSpringTask($name: String!) {
+    addSpringTask(name: $name) {
+      _id
+      name
+      completed
+    }
+  }
+`;
+
+export const TOGGLE_SPRING_TASK = gql`
+  mutation ToggleSpringTask($_id: ID!, $initials: String!, $dateCompleted: String!) {
+    toggleSpringTask(_id: $_id, initials: $initials, dateCompleted: $dateCompleted) {
+      _id
+      name
+      completed
+      initials
+      dateCompleted
+    }
+  }
+`;
+
+export const UNCHECK_ALL_SPRING_TASKS = gql`
+  mutation UncheckAllSpringTasks {
+    uncheckAllSpringTasks {
+      _id
+      name
+      completed
+    }
+  }
+`;
+
+export const DELETE_SPRING_TASK = gql`
+  mutation DeleteSpringTask($_id: ID!) {
+    deleteSpringTask(_id: $_id) {
+      _id
+    }
+  }
+`;
