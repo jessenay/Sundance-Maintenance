@@ -74,12 +74,14 @@ const typeDefs = gql`
 
   type WorkOrder {
     _id: ID!
-    job: String
+    job: String!
     personnel: [String]
     toolsRequired: [String]
     partsUsed: [Part]
     timeWorked: String
+    dateCompleted: String
   }
+  
 
   type Procedure {
     _id: ID!
@@ -156,7 +158,7 @@ const typeDefs = gql`
     addComponent(name: String!, liftId: ID!): Component
     addComponentsToLift(liftId: ID!, components: [String!]!): Lift
     addTowersToLift(liftId: ID!, towerNames: [String!]!): Lift
-    addWorkOrder(job: String!, personnel: [String], toolsRequired: [String], partsUsed: [PartInput], timeWorked: String): WorkOrder
+    addWorkOrder(job: String!, personnel: [String], toolsRequired: [String], partsUsed: [PartInput], timeWorked: String, dateCompleted: String): WorkOrder
     addProcedure(name: String!, description: String!, componentId: ID!): Procedure
     addTodo(job: String!): Todo
     removeTodo(_id: ID!): Todo

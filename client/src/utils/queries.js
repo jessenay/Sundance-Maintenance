@@ -149,6 +149,7 @@ export const GET_WORK_ORDERS = gql`
         cost
       }
       timeWorked
+      dateCompleted
     }
   }
 `;

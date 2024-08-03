@@ -18,19 +18,23 @@ const workOrderSchema = new mongoose.Schema({
   },
   personnel: {
     type: [String],
-    required: false  // Made optional
+    required: false
   },
   toolsRequired: {
     type: [String],
-    required: false  // Made optional
+    required: false
   },
   partsUsed: {
     type: [partSchema],
-    required: false  // Made optional
+    required: false
   },
   timeWorked: {
     type: String,
-    required: false  // Made optional
+    required: false
+  },
+  dateCompleted: {
+    type: Date,
+    required: false  // Set to true if the date is mandatory
   }
 });
 

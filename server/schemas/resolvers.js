@@ -237,13 +237,14 @@ const resolvers = {
     deleteTowerService: async (_, { _id }) => {
       return TowerService.findByIdAndDelete(_id);
     },
-    addWorkOrder: async (_, { job, personnel, toolsRequired, partsUsed, timeWorked }) => {
+    addWorkOrder: async (_, { job, personnel, toolsRequired, partsUsed, timeWorked, dateCompleted }) => {
       const newWorkOrder = new WorkOrder({
         job,
         personnel,
         toolsRequired,
         partsUsed,
-        timeWorked
+        timeWorked,
+        dateCompleted: new Date(dateCompleted)  // Convert string to Date object
       });
       await newWorkOrder.save();
       return newWorkOrder;

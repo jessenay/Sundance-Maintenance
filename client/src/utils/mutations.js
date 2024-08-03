@@ -63,20 +63,21 @@ mutation AddTowerService($towerId: ID!, $dateCompleted: String!, $uphillOrDownhi
 `;
 
 export const ADD_WORK_ORDER = gql`
-  mutation AddWorkOrder($job: String!, $personnel: [String]!, $toolsRequired: [String]!, $partsUsed: [PartInput]!, $timeWorked: String!) {
-    addWorkOrder(job: $job, personnel: $personnel, toolsRequired: $toolsRequired, partsUsed: $partsUsed, timeWorked: $timeWorked) {
+mutation AddWorkOrder($job: String!, $personnel: [String]!, $toolsRequired: [String]!, $partsUsed: [PartInput]!, $timeWorked: String!, $dateCompleted: String!) {
+  addWorkOrder(job: $job, personnel: $personnel, toolsRequired: $toolsRequired, partsUsed: $partsUsed, timeWorked: $timeWorked, dateCompleted: $dateCompleted) {
+    _id
+    job
+    personnel
+    toolsRequired
+    partsUsed {
       _id
-      job
-      personnel
-      toolsRequired
-      partsUsed {
-        _id
-        name
-        cost
-      }
-      timeWorked
+      name
+      cost
     }
+    timeWorked
+    dateCompleted
   }
+}
 `;
 
 export const ADD_TODO = gql`

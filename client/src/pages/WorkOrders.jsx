@@ -4,14 +4,24 @@ import { GET_WORK_ORDERS, DELETE_WORK_ORDER } from '../utils/queries';
 import AuthService from '../utils/auth';
 import './WorkOrders.css';
 import { FaTrash } from 'react-icons/fa';
-import WorkOrderForm from '../components/WorkOrder/WorkOrderForm'; // Assuming you have a WorkOrderForm component
+import WorkOrderForm from '../components/WorkOrder/WorkOrderForm';
+
+function formatDate(dateString) {
+  console.log('Raw dateString:', dateString); // Debug log
+  const date = new Date(parseInt(dateString));
+  console.log('Parsed date:', date); // Debug log
+  if (!isNaN(date.getTime())) {
+    return date.toLocaleDateString();
+  }
+  return 'Invalid date';
+}
 
 const WorkOrders = () => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [deleteWorkOrderId, setDeleteWorkOrderId] = useState(null);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const [confirmationInput, setConfirmationInput] = useState('');
-  const [showForm, setShowForm] = useState(false); // State to toggle form visibility
+  const [showForm, setShowForm] = useState(false);
 
   const { loading, error, data, refetch } = useQuery(GET_WORK_ORDERS);
   const [deleteWorkOrder] = useMutation(DELETE_WORK_ORDER, {
@@ -45,8 +55,16 @@ const WorkOrders = () => {
     setShowForm(!showForm);
   };
 
+  const handleFinishWorkOrder = () => {
+    console.log("Work order processing finished.");
+    setShowForm(false);
+    refetch();
+  };
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
+
+  console.log('Fetched work orders:', data.workOrders); // Debug log
 
   return (
     <div>
@@ -54,20 +72,20 @@ const WorkOrders = () => {
       <button className='add-service1' onClick={toggleForm}>
         {showForm ? "Hide Form" : "Add Work Order"}
       </button>
-      {showForm && <WorkOrderForm refetch={refetch} setShowForm={setShowForm} />}
+      {showForm && <WorkOrderForm refetch={refetch} setShowForm={setShowForm} handleFinishWorkOrder={handleFinishWorkOrder} />}
       <ul className="service-list1">
         {data.workOrders.map((workOrder) => (
           <li key={workOrder._id} className="service-item1">
             <div className="service-content1">
-              <p className="date-completed">Date: {new Date(workOrder.date).toLocaleDateString()}</p>
+              <p className="date-completed">Date: {formatDate(workOrder.dateCompleted)}</p>
               <p>Job: {workOrder.job}</p>
-              <p>Personnel: {workOrder.personnel}</p>
-              <p>Tools Required: {workOrder.toolsRequired}</p>
+              <p>Personnel: {workOrder.personnel.join(', ')}</p>
+              <p>Tools Required: {workOrder.toolsRequired.join(', ')}</p>
               <p>Parts Used:</p>
               <ul>
                 {workOrder.partsUsed.map((part, index) => (
                   <li key={`${part.name}-${index}`}>
-                    {part.name}: {part.cost}
+                    {part.name}: ${part.cost.toFixed(2)}
                   </li>
                 ))}
               </ul>

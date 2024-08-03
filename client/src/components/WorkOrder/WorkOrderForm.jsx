@@ -17,7 +17,7 @@ const WorkOrderForm = ({ refetch, setShowForm, handleFinishWorkOrder, todo }) =>
     toolsRequired: [''],
     partsUsed: [{ name: '', cost: 0 }],
     timeWorked: '',
-    date: '' // New date field
+    dateCompleted: '' // Initialized with dateCompleted instead of date
   });
 
   useEffect(() => {
@@ -38,10 +38,8 @@ const WorkOrderForm = ({ refetch, setShowForm, handleFinishWorkOrder, todo }) =>
         toolsRequired: [''],
         partsUsed: [{ name: '', cost: 0 }],
         timeWorked: '',
-        date: '' // Reset date field
+        dateCompleted: '' // Reset dateCompleted field
       });
-      setShowForm(false);
-      refetch();
       handleFinishWorkOrder();
     },
     onError: (err) => {
@@ -63,9 +61,10 @@ const WorkOrderForm = ({ refetch, setShowForm, handleFinishWorkOrder, todo }) =>
 
   const handleChange = (e, field, index, subField = null) => {
     const { value } = e.target;
+    console.log(`Handling change for ${field} - New value: ${value}`); // Debug log
     setWorkOrder((prev) => {
       const newState = { ...prev };
-      if (field === 'job' || field === 'timeWorked' || field === 'date') {
+      if (field === 'job' || field === 'timeWorked' || field === 'dateCompleted') {
         newState[field] = value;
       } else if (subField) {
         newState[field][index][subField] = value;
@@ -85,7 +84,7 @@ const WorkOrderForm = ({ refetch, setShowForm, handleFinishWorkOrder, todo }) =>
         toolsRequired: workOrder.toolsRequired,
         partsUsed: workOrder.partsUsed.map(part => ({ name: part.name, cost: parseFloat(part.cost) })),
         timeWorked: workOrder.timeWorked,
-        date: workOrder.date // Include date in the submission
+        dateCompleted: workOrder.dateCompleted // Include dateCompleted in the submission
       }
     });
   };
@@ -174,14 +173,14 @@ const WorkOrderForm = ({ refetch, setShowForm, handleFinishWorkOrder, todo }) =>
         </div>
 
         <div className="form-group">
-          <label className='label' htmlFor='date'>{formatLabel('date')}</label>
+          <label className='label' htmlFor='dateCompleted'>{formatLabel('dateCompleted')}</label>
           <input
             className="input"
-            id='date'
-            name='date'
+            id='dateCompleted'
+            name='dateCompleted'
             type="date" // Date picker input type
-            value={workOrder.date}
-            onChange={(e) => handleChange(e, 'date')}
+            value={workOrder.dateCompleted}
+            onChange={(e) => handleChange(e, 'dateCompleted')}
           />
         </div>
 
