@@ -80,6 +80,7 @@ const typeDefs = gql`
     partsUsed: [Part]
     timeWorked: String
     dateCompleted: String
+    lift: Lift
   }
   
 
@@ -138,7 +139,7 @@ const typeDefs = gql`
     annualServices(componentId: ID!, month: Int, year: Int): [AnnualService]
     services(componentId: ID!, month: Int, year: Int): [Service]
     towerServices(towerId: ID!, month: Int, year: Int): [TowerService]
-    workOrders: [WorkOrder]
+    workOrders(liftId: ID): [WorkOrder]
     procedures(componentId: ID!): [Procedure]
     todos: [Todo]
     winterTasks: [WinterTask]
@@ -158,7 +159,7 @@ const typeDefs = gql`
     addComponent(name: String!, liftId: ID!): Component
     addComponentsToLift(liftId: ID!, components: [String!]!): Lift
     addTowersToLift(liftId: ID!, towerNames: [String!]!): Lift
-    addWorkOrder(job: String!, personnel: [String], toolsRequired: [String], partsUsed: [PartInput], timeWorked: String, dateCompleted: String): WorkOrder
+    addWorkOrder(job: String!, personnel: [String], toolsRequired: [String], partsUsed: [PartInput], timeWorked: String, dateCompleted: String, lift: ID!): WorkOrder
     addProcedure(name: String!, description: String!, componentId: ID!): Procedure
     addTodo(job: String!): Todo
     removeTodo(_id: ID!): Todo

@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { Schema } = mongoose;
 
 const partSchema = new mongoose.Schema({
   name: {
@@ -34,7 +35,12 @@ const workOrderSchema = new mongoose.Schema({
   },
   dateCompleted: {
     type: Date,
-    required: false  // Set to true if the date is mandatory
+    required: false
+  },
+  lift: {
+    type: Schema.Types.ObjectId,
+    ref: 'Lift',
+    required: true
   }
 });
 

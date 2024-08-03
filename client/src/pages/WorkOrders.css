@@ -9,142 +9,174 @@
   margin-top: 20px; /* Add space above the service list */
 }
   
-  .service-item1 {
-    border: 1px solid #ddd;
-    padding: 15px;
-    background-color: #fff;
-    border-radius: 8px;
-    display: flex;
-    flex-direction: column;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    position: relative; /* Make sure the delete icon is positioned correctly */
-  }
+.service-item1 {
+  border: 1px solid #ddd;
+  padding: 15px;
+  background-color: #fff;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  position: relative; /* Make sure the delete icon is positioned correctly */
+}
   
-  .service-item1:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-  }
+.service-item1:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
   
-  .add-service1 {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin: 20px auto; /* Center the button and add margin */
-  }
+.add-service1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin: 20px auto; /* Center the button and add margin */
+}
   
-  .add-service1:hover {
-    background-color: #0056b3;
-  }
+.add-service1:hover {
+  background-color: #0056b3;
+}
   
-  .date-completed, .completed-by, .test-values {
-    font-weight: bold;
-    color: #333;
-  }
+.date-completed, .completed-by, .test-values {
+  font-weight: bold;
+  color: #333;
+}
   
-  p {
-    word-wrap: break-word;
-    margin: 5px 0;
-  }
+p {
+  word-wrap: break-word;
+  margin: 5px 0;
+}
   
-  h2 {
-    text-align: center;
-    color: #333;
-    margin-top: 20px;
-    font-family: 'Arial', sans-serif;
-  }
+h2 {
+  text-align: center;
+  color: #333;
+  margin-top: 20px;
+  font-family: 'Arial', sans-serif;
+}
   
-  label {
-    font-weight: bold;
-    margin-right: 10px;
-    color: #555;
+label {
+  font-weight: bold;
+  margin-right: 10px;
+  color: #555;
+}
+  
+select {
+  padding: 5px 10px;
+  margin: 0 10px 20px 0;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+  
+select:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+  
+button {
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+  
+button:focus {
+  outline: none;
+}
+  
+.delete-service {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+  
+.delete-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  color: red;
+}
+  
+.delete-confirmation {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+  
+.delete-confirmation p {
+  margin-bottom: 10px;
+}
+  
+.delete-confirmation input {
+  margin-bottom: 10px;
+  padding: 5px;
+  width: calc(100% - 10px);
+}
+  
+.delete-confirmation button {
+  margin-right: 10px;
+  padding: 5px 10px;
+}
+
+/* Styles for the filter container */
+.filter-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 10px;
+}
+
+.filter-container label {
+  font-size: 16px;
+  color: #333;
+}
+
+.filter-container select {
+  padding: 8px 12px;
+  border: 1px solid #007bff;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.filter-container select:focus {
+  border-color: #0056b3;
+  box-shadow: 0 0 5px rgba(0, 86, 179, 0.5);
+}
+  
+/* Responsive styles for the services page */
+@media (max-width: 768px) {
+  .service-item {
+    padding: 10px;
   }
   
   select {
-    padding: 5px 10px;
-    margin: 0 10px 20px 0;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-  }
-  
-  button {
-    padding: 10px 20px;
-    border-radius: 5px;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  button:focus {
-    outline: none;
-  }
-  
-  .delete-service {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-  }
-  
-  .delete-icon {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    cursor: pointer;
-    color: red;
-  }
-  
-  .delete-confirmation {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: white;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    z-index: 1000;
-  }
-  
-  .delete-confirmation p {
     margin-bottom: 10px;
   }
   
-  .delete-confirmation input {
-    margin-bottom: 10px;
-    padding: 5px;
-    width: calc(100% - 10px);
+  .add-service {
+    width: 100%;
+    text-align: center;
   }
+}
   
-  .delete-confirmation button {
-    margin-right: 10px;
-    padding: 5px 10px;
+@media (max-width: 480px) {
+  .service-item {
+    padding: 8px;
   }
-  
-  /* Responsive styles for the services page */
-  @media (max-width: 768px) {
-    .service-item {
-      padding: 10px;
-    }
-  
-    select {
-      margin-bottom: 10px;
-    }
-  
-    .add-service {
-      width: 100%;
-      text-align: center;
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .service-item {
-      padding: 8px;
-    }
-  }
-  
+}

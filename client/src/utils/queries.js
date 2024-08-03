@@ -138,18 +138,61 @@ export const FETCH_SERVICES_BY_TOWER_ID = gql`
 `;
 
 export const GET_WORK_ORDERS = gql`
-  query GetWorkOrders {
-    workOrders {
+  query getWorkOrders($liftId: ID) {
+    workOrders(liftId: $liftId) {
       _id
       job
       personnel
       toolsRequired
       partsUsed {
+        _id
         name
         cost
       }
       timeWorked
       dateCompleted
+      lift {
+        _id
+        name
+      }
+    }
+  }
+`;
+
+export const ADD_WORK_ORDER = gql`
+  mutation addWorkOrder(
+    $job: String!,
+    $personnel: [String],
+    $toolsRequired: [String],
+    $partsUsed: [PartInput],
+    $timeWorked: String,
+    $dateCompleted: String,
+    $lift: ID!
+  ) {
+    addWorkOrder(
+      job: $job,
+      personnel: $personnel,
+      toolsRequired: $toolsRequired,
+      partsUsed: $partsUsed,
+      timeWorked: $timeWorked,
+      dateCompleted: $dateCompleted,
+      lift: $lift
+    ) {
+      _id
+      job
+      personnel
+      toolsRequired
+      partsUsed {
+        _id
+        name
+        cost
+      }
+      timeWorked
+      dateCompleted
+      lift {
+        _id
+        name
+      }
     }
   }
 `;

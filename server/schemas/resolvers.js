@@ -113,8 +113,9 @@ const resolvers = {
         throw new Error(error);
       }
     },
-    workOrders: async () => {
-      return await WorkOrder.find({});
+    workOrders: async (_, { liftId }) => {
+      const filter = liftId ? { lift: new ObjectId(liftId) } : {};
+      return await WorkOrder.find(filter).populate('lift');
     },
     procedures: async (_, { componentId }) => {
       return await Procedure.find({ component: new ObjectId(componentId) });
@@ -237,17 +238,18 @@ const resolvers = {
     deleteTowerService: async (_, { _id }) => {
       return TowerService.findByIdAndDelete(_id);
     },
-    addWorkOrder: async (_, { job, personnel, toolsRequired, partsUsed, timeWorked, dateCompleted }) => {
+    addWorkOrder: async (_, { job, personnel, toolsRequired, partsUsed, timeWorked, dateCompleted, lift }) => {
       const newWorkOrder = new WorkOrder({
         job,
         personnel,
         toolsRequired,
         partsUsed,
         timeWorked,
-        dateCompleted: new Date(dateCompleted)  // Convert string to Date object
+        dateCompleted: new Date(dateCompleted),
+        lift
       });
       await newWorkOrder.save();
-      return newWorkOrder;
+      return newWorkOrder.populate('lift');
     },
     addTodo: async (_, { job }) => {
       const newTodo = new Todo({

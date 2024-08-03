@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { useMutation } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { ADD_WORK_ORDER } from '../../utils/mutations';
+import { GET_LIFTS } from '../../utils/queries'; // Query to fetch lifts
 import './WorkOrderForm.css';
 
 function formatLabel(text) {
@@ -10,8 +11,9 @@ function formatLabel(text) {
     .join(' ');
 }
 
-const WorkOrderForm = ({ refetch, setShowForm, handleFinishWorkOrder, todo }) => {
+const WorkOrderForm = ({ refetch, setShowForm, handleFinishWorkOrder = () => {}, todo }) => {
   const [workOrder, setWorkOrder] = useState({
+    lift: '', // New lift field
     job: '',
     personnel: [''],
     toolsRequired: [''],
@@ -19,6 +21,8 @@ const WorkOrderForm = ({ refetch, setShowForm, handleFinishWorkOrder, todo }) =>
     timeWorked: '',
     dateCompleted: '' // Initialized with dateCompleted instead of date
   });
+
+  const { loading: liftsLoading, error: liftsError, data: liftsData } = useQuery(GET_LIFTS);
 
   useEffect(() => {
     if (todo) {
@@ -33,6 +37,7 @@ const WorkOrderForm = ({ refetch, setShowForm, handleFinishWorkOrder, todo }) =>
     onCompleted: () => {
       alert('Work order added successfully!');
       setWorkOrder({
+        lift: '',
         job: '',
         personnel: [''],
         toolsRequired: [''],
@@ -40,6 +45,8 @@ const WorkOrderForm = ({ refetch, setShowForm, handleFinishWorkOrder, todo }) =>
         timeWorked: '',
         dateCompleted: '' // Reset dateCompleted field
       });
+      setShowForm(false);
+      refetch();
       handleFinishWorkOrder();
     },
     onError: (err) => {
@@ -63,15 +70,15 @@ const WorkOrderForm = ({ refetch, setShowForm, handleFinishWorkOrder, todo }) =>
     const { value } = e.target;
     console.log(`Handling change for ${field} - New value: ${value}`); // Debug log
     setWorkOrder((prev) => {
-      const newState = { ...prev };
-      if (field === 'job' || field === 'timeWorked' || field === 'dateCompleted') {
-        newState[field] = value;
-      } else if (subField) {
-        newState[field][index][subField] = value;
-      } else {
-        newState[field][index] = value;
-      }
-      return newState;
+        const newState = { ...prev };
+        if (field === 'lift' || field === 'job' || field === 'timeWorked' || field === 'dateCompleted') {
+            newState[field] = value;
+        } else if (subField) {
+            newState[field][index][subField] = value;
+        } else {
+            newState[field][index] = value;
+        }
+        return newState;
     });
   };
 
@@ -79,6 +86,7 @@ const WorkOrderForm = ({ refetch, setShowForm, handleFinishWorkOrder, todo }) =>
     e.preventDefault();
     await addWorkOrder({
       variables: {
+        lift: workOrder.lift,
         job: workOrder.job,
         personnel: workOrder.personnel,
         toolsRequired: workOrder.toolsRequired,
@@ -89,9 +97,28 @@ const WorkOrderForm = ({ refetch, setShowForm, handleFinishWorkOrder, todo }) =>
     });
   };
 
+  if (liftsLoading) return <p>Loading lifts...</p>;
+  if (liftsError) return <p>Error loading lifts: {liftsError.message}</p>;
+
   return (
     <div className="work-order-form-container">
       <form className="work-order-form" onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label className='label' htmlFor='lift'>{formatLabel('lift')}</label>
+          <select
+            className="input"
+            id='lift'
+            name='lift'
+            value={workOrder.lift}
+            onChange={(e) => handleChange(e, 'lift')}
+          >
+            <option value="">Select Lift</option>
+            {liftsData.lifts.map(lift => (
+              <option key={lift._id} value={lift._id}>{lift.name}</option>
+            ))}
+          </select>
+        </div>
+        
         <div className="form-group">
           <label className='label' htmlFor='job'>{formatLabel('job')}</label>
           <input
@@ -104,6 +131,19 @@ const WorkOrderForm = ({ refetch, setShowForm, handleFinishWorkOrder, todo }) =>
             onChange={(e) => handleChange(e, 'job')}
           />
         </div>
+
+        <div className="form-group">
+          <label className='label' htmlFor='dateCompleted'>{formatLabel('dateCompleted')}</label>
+          <input
+            className="input"
+            id='dateCompleted'
+            name='dateCompleted'
+            type="date"
+            value={workOrder.dateCompleted}
+            onChange={(e) => handleChange(e, 'dateCompleted')}
+          />
+        </div>
+
         {workOrder.personnel.map((person, index) => (
           <div className="form-group" key={index}>
             <label className='label'>{formatLabel('personnel')}</label>
@@ -172,24 +212,11 @@ const WorkOrderForm = ({ refetch, setShowForm, handleFinishWorkOrder, todo }) =>
           />
         </div>
 
-        <div className="form-group">
-          <label className='label' htmlFor='dateCompleted'>{formatLabel('dateCompleted')}</label>
-          <input
-            className="input"
-            id='dateCompleted'
-            name='dateCompleted'
-            type="date" // Date picker input type
-            value={workOrder.dateCompleted}
-            onChange={(e) => handleChange(e, 'dateCompleted')}
-          />
-        </div>
-
         <div className="button-group">
           <button className="submit-button" type="submit">Submit</button>
           <button className="close-button" type="button" onClick={() => setShowForm(false)}>Close</button>
         </div>
       </form>
-      {loading && <div>Loading...</div>}
       {error && <div>Error! {error.message}</div>}
     </div>
   );

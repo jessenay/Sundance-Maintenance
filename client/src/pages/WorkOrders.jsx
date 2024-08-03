@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
-import { GET_WORK_ORDERS, DELETE_WORK_ORDER } from '../utils/queries';
+import { GET_WORK_ORDERS, GET_LIFTS, DELETE_WORK_ORDER } from '../utils/queries';
 import AuthService from '../utils/auth';
 import './WorkOrders.css';
 import { FaTrash } from 'react-icons/fa';
@@ -22,8 +22,13 @@ const WorkOrders = () => {
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const [confirmationInput, setConfirmationInput] = useState('');
   const [showForm, setShowForm] = useState(false);
+  const [selectedLift, setSelectedLift] = useState('');
 
-  const { loading, error, data, refetch } = useQuery(GET_WORK_ORDERS);
+  const { loading, error, data, refetch } = useQuery(GET_WORK_ORDERS, {
+    variables: { liftId: selectedLift }
+  });
+  const { loading: liftsLoading, error: liftsError, data: liftsData } = useQuery(GET_LIFTS);
+
   const [deleteWorkOrder] = useMutation(DELETE_WORK_ORDER, {
     onCompleted: () => {
       refetch();
@@ -55,24 +60,30 @@ const WorkOrders = () => {
     setShowForm(!showForm);
   };
 
-  const handleFinishWorkOrder = () => {
-    console.log("Work order processing finished.");
-    setShowForm(false);
+  const handleLiftChange = (e) => {
+    setSelectedLift(e.target.value);
     refetch();
   };
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error.message}</p>;
-
-  console.log('Fetched work orders:', data.workOrders); // Debug log
+  if (loading || liftsLoading) return <p>Loading...</p>;
+  if (error || liftsError) return <p>Error: {error ? error.message : liftsError.message}</p>;
 
   return (
     <div>
       <h2>Work Orders</h2>
+      <div className="filter-container">
+        <label htmlFor="liftFilter">Filter by Lift:</label>
+        <select id="liftFilter" value={selectedLift} onChange={handleLiftChange}>
+          <option value="">All Lifts</option>
+          {liftsData && liftsData.lifts.map(lift => (
+            <option key={lift._id} value={lift._id}>{lift.name}</option>
+          ))}
+        </select>
+      </div>
       <button className='add-service1' onClick={toggleForm}>
         {showForm ? "Hide Form" : "Add Work Order"}
       </button>
-      {showForm && <WorkOrderForm refetch={refetch} setShowForm={setShowForm} handleFinishWorkOrder={handleFinishWorkOrder} />}
+      {showForm && <WorkOrderForm refetch={refetch} setShowForm={setShowForm} />}
       <ul className="service-list1">
         {data.workOrders.map((workOrder) => (
           <li key={workOrder._id} className="service-item1">
@@ -90,6 +101,7 @@ const WorkOrders = () => {
                 ))}
               </ul>
               <p>Time Worked: {workOrder.timeWorked}</p>
+              <p>Lift: {workOrder.lift ? workOrder.lift.name : 'No Lift Assigned'}</p>
             </div>
             {isAdmin && (
               <div className="delete-icon" onClick={() => handleDeleteClick(workOrder._id)}>
