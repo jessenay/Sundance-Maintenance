@@ -29,7 +29,7 @@
   background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
 }
 
-.lift-name {
+.details-lift-name {
   color: white;
   font-size: 3em;
   text-align: center;
@@ -97,7 +97,7 @@
     width: 100%;
   }
 
-  .lift-name {
+  .details-lift-name {
     font-size: 2em;
   }
 

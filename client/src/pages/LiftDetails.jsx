@@ -47,7 +47,7 @@ const LiftDetails = () => {
           <div className="image-container">
             <img src={liftImage} alt={liftName} className="lift-image" />
             <div className="overlay">
-              <h1 className='lift-name'>{liftName}</h1> {/* Display the lift name */}
+              <h1 className='details-lift-name'>{liftName}</h1> {/* Display the lift name */}
             </div>
           </div>
         </>
