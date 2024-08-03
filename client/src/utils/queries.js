@@ -320,3 +320,103 @@ export const DELETE_TOWER_SERVICE = gql`
     }
   }
 `;
+
+export const ADD_SUMMER_TASK = gql`
+  mutation AddSummerTask($name: String!) {
+    addSummerTask(name: $name) {
+      _id
+      name
+      completed
+    }
+  }
+`;
+
+export const TOGGLE_SUMMER_TASK = gql`
+  mutation ToggleSummerTask($_id: ID!, $initials: String!, $dateCompleted: String!) {
+    toggleSummerTask(_id: $_id, initials: $initials, dateCompleted: $dateCompleted) {
+      _id
+      name
+      completed
+    }
+  }
+`;
+
+export const UNCHECK_ALL_SUMMER_TASKS = gql`
+  mutation UncheckAllSummerTasks {
+    uncheckAllSummerTasks {
+      _id
+      name
+      completed
+    }
+  }
+`;
+
+export const DELETE_SUMMER_TASK = gql`
+  mutation DeleteSummerTask($_id: ID!) {
+    deleteSummerTask(_id: $_id) {
+      _id
+    }
+  }
+`;
+
+export const GET_SUMMER_TASKS = gql`
+  query GetSummerTasks {
+    summerTasks {
+      _id
+      name
+      completed
+      initials
+      dateCompleted
+    }
+  }
+`;
+
+export const GET_FALL_TASKS = gql`
+  query GetFallTasks {
+    fallTasks {
+      _id
+      name
+      completed
+      initials
+      dateCompleted
+    }
+  }
+`;
+
+export const ADD_FALL_TASK = gql`
+  mutation AddFallTask($name: String!) {
+    addFallTask(name: $name) {
+      _id
+      name
+      completed
+    }
+  }
+`;
+
+export const TOGGLE_FALL_TASK = gql`
+  mutation ToggleFallTask($_id: ID!, $initials: String!, $dateCompleted: String!) {
+    toggleFallTask(_id: $_id, initials: $initials, dateCompleted: $dateCompleted) {
+      _id
+      name
+      completed
+    }
+  }
+`;
+
+export const UNCHECK_ALL_FALL_TASKS = gql`
+  mutation UncheckAllFallTasks {
+    uncheckAllFallTasks {
+      _id
+      name
+      completed
+    }
+  }
+`;
+
+export const DELETE_FALL_TASK = gql`
+  mutation DeleteFallTask($_id: ID!) {
+    deleteFallTask(_id: $_id) {
+      _id
+    }
+  }
+`;

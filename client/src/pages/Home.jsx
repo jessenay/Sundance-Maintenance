@@ -103,10 +103,10 @@ const Home = () => {
             <button onClick={() => navigate("/spring-checklist")} className="maintNav-buttons">
               Spring Checklist
             </button>
-            <button onClick={() => navigate("/work-orders")} className="maintNav-buttons">
+            <button onClick={() => navigate("/summer-checklist")} className="maintNav-buttons">
               Summer Checklist
             </button>
-            <button onClick={() => navigate("/work-orders")} className="maintNav-buttons">
+            <button onClick={() => navigate("/fall-checklist")} className="maintNav-buttons">
               Fall Checklist
             </button>
             <button onClick={() => navigate("/work-orders")} className="maintNav-buttons">

@@ -190,3 +190,9 @@
   font-size: 16px;
   width: 80%;
 }
+
+/* Styling for completed tasks */
+.task-item.completed label {
+  text-decoration: line-through;
+  background-color: #d4edda;
+}

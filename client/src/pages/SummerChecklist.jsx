@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
-import { GET_SPRING_TASKS, ADD_SPRING_TASK, TOGGLE_SPRING_TASK, UNCHECK_ALL_SPRING_TASKS, DELETE_SPRING_TASK } from '../utils/queries';
+import { GET_SUMMER_TASKS, ADD_SUMMER_TASK, TOGGLE_SUMMER_TASK, UNCHECK_ALL_SUMMER_TASKS, DELETE_SUMMER_TASK } from '../utils/queries';
 import { FaTrashAlt } from 'react-icons/fa';
 import AuthService from '../utils/auth';
 import './WinterChecklist.css';
 
-const SpringChecklist = () => {
+const SummerChecklist = () => {
   const [newTask, setNewTask] = useState('');
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [deleteTaskId, setDeleteTaskId] = useState(null);
@@ -14,23 +14,23 @@ const SpringChecklist = () => {
   const [dateCompleted, setDateCompleted] = useState('');
   const [taskToComplete, setTaskToComplete] = useState(null);
 
-  const { data, refetch } = useQuery(GET_SPRING_TASKS);
-  const [addTask] = useMutation(ADD_SPRING_TASK, {
+  const { data, refetch } = useQuery(GET_SUMMER_TASKS);
+  const [addTask] = useMutation(ADD_SUMMER_TASK, {
     onCompleted: () => {
       setNewTask('');
       refetch();
     }
   });
-  const [toggleTask] = useMutation(TOGGLE_SPRING_TASK, {
+  const [toggleTask] = useMutation(TOGGLE_SUMMER_TASK, {
     onCompleted: () => refetch()
   });
-  const [uncheckAllTasks] = useMutation(UNCHECK_ALL_SPRING_TASKS, {
+  const [uncheckAllTasks] = useMutation(UNCHECK_ALL_SUMMER_TASKS, {
     onCompleted: () => {
       setShowConfirmation(false);
       refetch();
     }
   });
-  const [deleteTask] = useMutation(DELETE_SPRING_TASK, {
+  const [deleteTask] = useMutation(DELETE_SUMMER_TASK, {
     onCompleted: () => {
       setShowDeleteConfirmation(false);
       refetch();
@@ -86,7 +86,7 @@ const SpringChecklist = () => {
 
   return (
     <div className="winter-checklist-page">
-      <h1>Spring Checklist</h1>
+      <h1>Summer Checklist</h1>
       <div className="add-task">
         <input
           type="text"
@@ -97,7 +97,7 @@ const SpringChecklist = () => {
         <button onClick={handleAddTask}>Add New Task</button>
       </div>
       <ul className="task-list">
-        {data?.springTasks.map(task => (
+        {data?.summerTasks.map(task => (
           <li key={task._id} className={`task-item ${task.completed ? 'completed' : ''}`}>
             <label>
               <input
@@ -157,4 +157,4 @@ const SpringChecklist = () => {
   );
 };
 
-export default SpringChecklist;
+export default SummerChecklist;

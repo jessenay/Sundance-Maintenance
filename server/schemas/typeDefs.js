@@ -108,6 +108,22 @@ const typeDefs = gql`
     dateCompleted: String
   }
 
+  type SummerTask {
+    _id: ID!
+    name: String!
+    completed: Boolean!
+    initials: String
+    dateCompleted: String
+  }
+
+  type FallTask {
+    _id: ID!
+    name: String!
+    completed: Boolean!
+    initials: String
+    dateCompleted: String
+  }
+
   type Query {
     profiles: [Profile]
     profile: Profile
@@ -125,6 +141,8 @@ const typeDefs = gql`
     todos: [Todo]
     winterTasks: [WinterTask]
     springTasks: [SpringTask]
+    summerTasks: [SummerTask]
+    fallTasks: [FallTask]
   }
 
   type Mutation {
@@ -146,14 +164,22 @@ const typeDefs = gql`
     toggleWinterTask(_id: ID!, initials: String, dateCompleted: String): WinterTask
     uncheckAllWinterTasks: [WinterTask]
     deleteWinterTask(_id: ID!): WinterTask
-    deleteAnnualService(_id: ID!): AnnualService
-    deleteService(_id: ID!): Service
-    deleteWorkOrder(_id: ID!): WorkOrder
-    deleteTowerService(_id: ID!): TowerService
     addSpringTask(name: String!): SpringTask
     toggleSpringTask(_id: ID!, initials: String, dateCompleted: String): SpringTask
     uncheckAllSpringTasks: [SpringTask]
     deleteSpringTask(_id: ID!): SpringTask
+    addSummerTask(name: String!): SummerTask
+    toggleSummerTask(_id: ID!, initials: String, dateCompleted: String): SummerTask
+    uncheckAllSummerTasks: [SummerTask]
+    deleteSummerTask(_id: ID!): SummerTask
+    addFallTask(name: String!): FallTask
+    toggleFallTask(_id: ID!, initials: String, dateCompleted: String): FallTask
+    uncheckAllFallTasks: [FallTask]
+    deleteFallTask(_id: ID!): FallTask
+    deleteAnnualService(_id: ID!): AnnualService
+    deleteService(_id: ID!): Service
+    deleteWorkOrder(_id: ID!): WorkOrder
+    deleteTowerService(_id: ID!): TowerService
   }
 `;
 

@@ -23,6 +23,8 @@ import Procedures from "./pages/Procedures.jsx";
 import WinterChecklist from "./pages/WinterChecklist.jsx";
 import CreateAccount from "./pages/CreateAccount.jsx";
 import SpringChecklist from "./pages/SpringChecklist.jsx";
+import SummerChecklist from "./pages/SummerChecklist.jsx";
+import FallChecklist from "./pages/FallChecklist.jsx";
 
 const router = createBrowserRouter([
   {
@@ -52,6 +54,14 @@ const router = createBrowserRouter([
       {
         path: "spring-checklist",
         element: <SpringChecklist />,
+      },
+      {
+        path: "summer-checklist",
+        element: <SummerChecklist />,
+      },
+      {
+        path: "fall-checklist",
+        element: <FallChecklist />,
       },
       {
         path: "create-account",

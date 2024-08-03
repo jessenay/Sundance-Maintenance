@@ -9,10 +9,12 @@ const WorkOrder = require('../models/WorkOrder');
 const Procedure = require('../models/Procedure');
 const Todo = require('../models/ToDo');
 const WinterTask = require('../models/WinterTask');
+const SpringTask = require('../models/SpringTask');
+const SummerTask = require('../models/SummerTask');
+const FallTask = require('../models/FallTask');
 const { signToken, isAdmin } = require('../utils/auth');
 const { Types: { ObjectId } } = require('mongoose');
 const { AuthenticationError } = require('apollo-server');
-const SpringTask = require('../models/SpringTask');
 
 const resolvers = {
   Query: {
@@ -122,6 +124,12 @@ const resolvers = {
     },
     springTasks: async () => {
       return await SpringTask.find({});
+    },
+    summerTasks: async () => {
+      return await SummerTask.find({});
+    },
+    fallTasks: async () => {
+      return await FallTask.find({});
     },
   },
   Mutation: {
@@ -261,30 +269,8 @@ const resolvers = {
       await newTask.save();
       return newTask;
     },
-    addSpringTask: async (_, { name }) => {
-      const newTask = new SpringTask({ name, completed: false });
-      await newTask.save();
-      return newTask;
-    },
     toggleWinterTask: async (_, { _id, initials, dateCompleted }) => {
       const task = await WinterTask.findById(_id);
-      if (!task) {
-        throw new Error('Task not found');
-      }
-      if (!task.completed) {
-        task.completed = true;
-        task.initials = initials;
-        task.dateCompleted = dateCompleted;
-      } else {
-        task.completed = false;
-        task.initials = null;
-        task.dateCompleted = null;
-      }
-      await task.save();
-      return task;
-    },
-    toggleSpringTask: async (_, { _id, initials, dateCompleted }) => {
-      const task = await SpringTask.findById(_id);
       if (!task) {
         throw new Error('Task not found');
       }
@@ -304,15 +290,95 @@ const resolvers = {
       await WinterTask.updateMany({ completed: true }, { completed: false, initials: null, dateCompleted: null });
       return WinterTask.find({});
     },
+    deleteWinterTask: async (_, { _id }) => {
+      return WinterTask.findByIdAndDelete(_id);
+    },
+    addSpringTask: async (_, { name }) => {
+      const newTask = new SpringTask({ name, completed: false });
+      await newTask.save();
+      return newTask;
+    },
+    toggleSpringTask: async (_, { _id, initials, dateCompleted }) => {
+      const task = await SpringTask.findById(_id);
+      if (!task) {
+        throw new Error('Task not found');
+      }
+      if (!task.completed) {
+        task.completed = true;
+        task.initials = initials;
+        task.dateCompleted = dateCompleted;
+      } else {
+        task.completed = false;
+        task.initials = null;
+        task.dateCompleted = null;
+      }
+      await task.save();
+      return task;
+    },
     uncheckAllSpringTasks: async () => {
       await SpringTask.updateMany({ completed: true }, { completed: false, initials: null, dateCompleted: null });
       return SpringTask.find({});
     },
-    deleteWinterTask: async (_, { _id }) => {
-      return WinterTask.findByIdAndDelete(_id);
-    },
     deleteSpringTask: async (_, { _id }) => {
       return SpringTask.findByIdAndDelete(_id);
+    },
+    addSummerTask: async (_, { name }) => {
+      const newTask = new SummerTask({ name, completed: false });
+      await newTask.save();
+      return newTask;
+    },
+    toggleSummerTask: async (_, { _id, initials, dateCompleted }) => {
+      const task = await SummerTask.findById(_id);
+      if (!task) {
+        throw new Error('Task not found');
+      }
+      if (!task.completed) {
+        task.completed = true;
+        task.initials = initials;
+        task.dateCompleted = dateCompleted;
+      } else {
+        task.completed = false;
+        task.initials = null;
+        task.dateCompleted = null;
+      }
+      await task.save();
+      return task;
+    },
+    uncheckAllSummerTasks: async () => {
+      await SummerTask.updateMany({ completed: true }, { completed: false, initials: null, dateCompleted: null });
+      return SummerTask.find({});
+    },
+    deleteSummerTask: async (_, { _id }) => {
+      return SummerTask.findByIdAndDelete(_id);
+    },
+    addFallTask: async (_, { name }) => {
+      const newTask = new FallTask({ name, completed: false });
+      await newTask.save();
+      return newTask;
+    },
+    toggleFallTask: async (_, { _id, initials, dateCompleted }) => {
+      const task = await FallTask.findById(_id);
+      if (!task) {
+        throw new Error('Task not found');
+      }
+      if (!task.completed) {
+        task.completed = true;
+        task.initials = initials;
+        task.dateCompleted = dateCompleted;
+      } else {
+        task.completed = false;
+        task.initials = null;
+        task.dateCompleted = null;
+      }
+      await task.save();
+      return task;
+    },
+    uncheckAllFallTasks: async () => {
+      await FallTask.updateMany({ completed: true }, { completed: false, initials: null, dateCompleted: null });
+      return FallTask.find({});
+    },
+    deleteFallTask: async (_, { _id }) => {
+      return FallTask.findByIdAndDelete(_id);
     },
     deleteAnnualService: async (parent, { _id }, context) => {
       if (context.user.role !== 'admin') {
