@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useOutletContext } from "react-router-dom";
 import { useQuery, useMutation } from '@apollo/client';
 import AuthService from "../utils/auth";
 import ServiceForm from "../components/Services/ServiceForm";
@@ -18,6 +18,7 @@ const formatDate = (dateString) => {
 const Electrical = () => {
     const navigate = useNavigate();
     const { componentId, liftId } = useParams();
+    const { liftName } = useOutletContext(); // Retrieve liftName from context
     const [showForm, setShowForm] = useState(false);
     const [month, setMonth] = useState(new Date().getMonth() + 1);
     const [year, setYear] = useState(new Date().getFullYear());
@@ -93,26 +94,29 @@ const Electrical = () => {
     };
 
     return (
-        <div>
-            <button className='add-service' onClick={() => setShowForm(!showForm)}>
-                {showForm ? "Hide Form" : "Add Service"}
-            </button>
-            <button className='add-service' onClick={handleViewProcedures}>
-                View Procedures
-            </button>
+        <div className="electrical-container">
+            <h1 className="lift-name">{liftName}</h1> {/* Display the lift name */}
+            <div className="button-group">
+                <button className='add-service' onClick={() => setShowForm(!showForm)}>
+                    {showForm ? "Hide Form" : "Add Service"}
+                </button>
+                <button className='view-procedures' onClick={handleViewProcedures}>
+                    View Procedures
+                </button>
+            </div>
             {showForm && <ServiceForm componentId={componentId} refetch={refetch} setShowForm={setShowForm} />}
             {!showForm && (
                 <>
                     <h2>Electrical Services</h2>
-                    <div style={{ textAlign: 'center', marginBottom: '20px' }}>
-                        <label>Month:</label>
-                        <select value={monthNames[month - 1]} onChange={handleMonthChange}>
+                    <div className="filter-container">
+                        <label className="date-picker">Month:</label>
+                        <select className="date-picker-select" value={monthNames[month - 1]} onChange={handleMonthChange}>
                             {monthNames.map((m, index) => (
                                 <option key={index} value={m}>{m}</option>
                             ))}
                         </select>
-                        <label>Year:</label>
-                        <select value={year} onChange={handleYearChange}>
+                        <label className="date-picker">Year:</label>
+                        <select className="date-picker-select" value={year} onChange={handleYearChange}>
                             {Array.from({ length: 10 }, (_, i) => new Date().getFullYear() - i).map((y) => (
                                 <option key={y} value={y}>{y}</option>
                             ))}
@@ -141,9 +145,11 @@ const Electrical = () => {
             {showDeleteConfirmation && (
                 <div className="delete-confirmation">
                     <p>Are you sure you want to delete this service? Type 'delete' to confirm:</p>
-                    <input type="text" onChange={(e) => setDeleteInput(e.target.value)} />
-                    <button onClick={confirmDelete}>Delete</button>
-                    <button onClick={() => setShowDeleteConfirmation(false)}>Cancel</button>
+                    <input type="text" value={deleteInput} onChange={(e) => setDeleteInput(e.target.value)} />
+                    <div className="confirmation-buttons">
+                        <button onClick={confirmDelete} disabled={deleteInput !== 'delete'}>Delete</button>
+                        <button onClick={() => setShowDeleteConfirmation(false)}>Cancel</button>
+                    </div>
                 </div>
             )}
         </div>

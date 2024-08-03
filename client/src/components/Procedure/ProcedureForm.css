@@ -1,0 +1,76 @@
+.procedure-form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+    max-width: 500px;
+  }
+  
+  .procedure-annualForm {
+    width: 100%;
+  }
+  
+  .procedure-form-group {
+    margin-bottom: 15px;
+  }
+  
+  .procedure-label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+    color: #555;
+  }
+  
+  .procedure-input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+  }
+  
+  .procedure-description-input {
+    resize: vertical;
+  }
+  
+  .procedure-button-group {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .procedure-submit-button, .procedure-close-button {
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .procedure-submit-button {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .procedure-submit-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .procedure-close-button {
+    background-color: #dc3545;
+    color: white;
+  }
+  
+  .procedure-close-button:hover {
+    background-color: #c82333;
+  }
+  
+  .procedure-loading, .procedure-error {
+    margin-top: 10px;
+    color: #dc3545;
+  }
+  

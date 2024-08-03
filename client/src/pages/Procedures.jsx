@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useOutletContext } from "react-router-dom";
 import { useQuery } from '@apollo/client';
 import AuthService from "../utils/auth";
 import ProcedureForm from "../components/Procedure/ProcedureForm";
 import { GET_PROCEDURES } from "../utils/queries";
+import "../pages/Services.css"; // Make sure this file has the relevant styles
 
 const Procedures = () => {
     const navigate = useNavigate();
     const { componentId } = useParams();
+    const { liftName } = useOutletContext(); // Retrieve liftName from context
     const [showForm, setShowForm] = useState(false);
 
     useEffect(() => {
@@ -36,20 +38,25 @@ const Procedures = () => {
     };
 
     return (
-        <div>
-            <button className='add-service' onClick={() => setShowForm(!showForm)}>
-                {showForm ? "Hide Form" : "Add Procedure"}
-            </button>
+        <div className="procedures-container">
+            <h1 className="lift-name">{liftName}</h1> {/* Display the lift name */}
+            <div className="button-group">
+                <button className='add-service' onClick={() => setShowForm(!showForm)}>
+                    {showForm ? "Hide Form" : "Add Procedure"}
+                </button>
+                <button className='view-procedures' onClick={handleGoBack}>
+                    Go Back
+                </button>
+            </div>
             {showForm && <ProcedureForm componentId={componentId} refetch={refetch} setShowForm={setShowForm} />}
-            <button className='add-service' onClick={handleGoBack}>
-                Go Back
-            </button>
-            <h2>Procedures</h2>
+            {!showForm && <h2>Procedures</h2>}
             <ul className="service-list">
                 {reversedProcedures.map(procedure => (
                     <li key={procedure._id} className="service-item">
-                        <p className="name">Name: {procedure.name}</p>
-                        <p className="description">Description: {procedure.description}</p>
+                        <div className="service-content">
+                            <p className="name">Name: {procedure.name}</p>
+                            <p className="description">Description: {procedure.description}</p>
+                        </div>
                     </li>
                 ))}
             </ul>

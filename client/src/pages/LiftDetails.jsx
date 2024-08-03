@@ -37,6 +37,8 @@ const LiftDetails = () => {
   // Check if the current path includes a component route (excluding the main lift page)
   const isComponentPage = location.pathname !== `/lift/${liftId}`;
 
+  console.log("LiftDetails - liftName:", liftName);
+
   return (
     <div className="lift-details-container">
       {!isComponentPage && (
@@ -50,7 +52,7 @@ const LiftDetails = () => {
           </div>
         </>
       )}
-      <Outlet /> {/* Outlet for nested routes */}
+      <Outlet context={{ liftName }} /> {/* Pass liftName to nested routes */}
     </div>
   );
 };

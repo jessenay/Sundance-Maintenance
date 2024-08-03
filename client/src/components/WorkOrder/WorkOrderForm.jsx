@@ -212,7 +212,7 @@ const WorkOrderForm = ({ refetch, setShowForm, handleFinishWorkOrder = () => {},
           />
         </div>
 
-        <div className="button-group">
+        <div className="work-order-button-group">
           <button className="submit-button" type="submit">Submit</button>
           <button className="close-button" type="button" onClick={() => setShowForm(false)}>Close</button>
         </div>

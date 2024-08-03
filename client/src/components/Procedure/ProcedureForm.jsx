@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { ADD_PROCEDURE } from '../../utils/mutations';
+import './ProcedureForm.css'; // Import the CSS file
 
 const ProcedureForm = ({ componentId, refetch, setShowForm }) => {
     const [procedure, setProcedure] = useState({
@@ -45,12 +46,12 @@ const ProcedureForm = ({ componentId, refetch, setShowForm }) => {
     };
 
     return (
-        <div className='form-container'>
-            <form className="annualForm" onSubmit={handleSubmit}>
-                <div>
-                    <label className='label' htmlFor='name'>Name</label>
+        <div className='procedure-form-container'>
+            <form className="procedure-annualForm" onSubmit={handleSubmit}>
+                <div className="procedure-form-group">
+                    <label className='procedure-label' htmlFor='name'>Name</label>
                     <input
-                        className="input"
+                        className="procedure-input"
                         id='name'
                         name='name'
                         type="text"
@@ -59,10 +60,10 @@ const ProcedureForm = ({ componentId, refetch, setShowForm }) => {
                         required
                     />
                 </div>
-                <div>
-                    <label className='label' htmlFor='description'>Description</label>
+                <div className="procedure-form-group">
+                    <label className='procedure-label' htmlFor='description'>Description</label>
                     <textarea
-                        className="input description-input"
+                        className="procedure-input procedure-description-input"
                         id='description'
                         name='description'
                         value={procedure.description}
@@ -71,7 +72,10 @@ const ProcedureForm = ({ componentId, refetch, setShowForm }) => {
                         required
                     />
                 </div>
-                <button className="button" type="submit">Submit</button>
+                <div className="procedure-button-group">
+                    <button className="procedure-submit-button" type="submit">Submit</button>
+                    <button className="procedure-close-button" type="button" onClick={() => setShowForm(false)}>Close</button>
+                </div>
             </form>
             {loading && <div>Loading...</div>}
             {error && <div>Error! {error.message}</div>}

@@ -24,10 +24,14 @@
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
-.add-service {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.lift-name {
+  text-align: center;
+  color: #333;
+  margin-top: 20px;
+}
+
+.add-service, .view-procedures {
+  display: inline-block;
   padding: 10px 20px;
   background-color: #007bff;
   color: white;
@@ -35,10 +39,10 @@
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  margin: 20px auto; /* Center the button and add margin */
+  margin: 10px; /* Adjust margin for closer spacing */
 }
 
-.add-service:hover {
+.add-service:hover, .view-procedures:hover {
   background-color: #0056b3;
 }
 
@@ -84,7 +88,42 @@ button:focus {
   outline: none;
 }
 
-/* Responsive styles for the services page */
+.button-group {
+  text-align: center; /* Center the button group */
+}
+
+.delete-icon {
+  cursor: pointer;
+  color: red;
+}
+
+.delete-confirmation {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+.delete-confirmation p {
+  margin-bottom: 10px;
+}
+
+.delete-confirmation input {
+  margin-bottom: 10px;
+  padding: 5px;
+  width: calc(100% - 10px);
+}
+
+.confirmation-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
 @media (max-width: 768px) {
   .service-item {
     padding: 10px;
@@ -94,7 +133,7 @@ button:focus {
       margin-bottom: 10px;
   }
 
-  .add-service {
+  .add-service, .view-procedures {
       width: 100%;
       text-align: center;
   }

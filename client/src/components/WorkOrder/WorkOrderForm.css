@@ -78,7 +78,7 @@
     transform: translateY(-2px); /* Lift button on hover */
   }
   
-  .button-group {
+  .work-order-button-group {
     display: flex;
     justify-content: space-between;
   }
