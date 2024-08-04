@@ -3,33 +3,15 @@ import { useMutation } from '@apollo/client';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import { ADD_SERVICE } from '../../utils/mutations';
+import { handleFormSubmit } from '../../utils/submitHandler';
 import './ServiceForm.css';
-
-function formatLabel(text) {
-    return text.replace(/_/g, ' ')
-               .split(/(?=[A-Z])/)
-               .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-               .join(' ');
-}
 
 const ServiceForm = ({ componentId, refetch, setShowForm }) => {
     const [service, setService] = useState({
         dateCompleted: '', reason: '', workDescription: '', partsUsed: '', completedBy: ''
     });
 
-    const [addService, { loading, error }] = useMutation(ADD_SERVICE, {
-        onCompleted: () => {
-            alert('Service added successfully!');
-            setService({
-                dateCompleted: '', reason: '', workDescription: '', partsUsed: '', completedBy: ''
-            });
-            setShowForm(false);
-            refetch();
-        },
-        onError: (err) => {
-            alert(`Error! ${err.message}`);
-        },
-    });
+    const [addService, { error }] = useMutation(ADD_SERVICE);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -53,9 +35,35 @@ const ServiceForm = ({ componentId, refetch, setShowForm }) => {
             return;
         }
 
-        await addService({
-            variables: { ...service, componentId, dateCompleted: service.dateCompleted.toISOString() }
-        });
+        const formData = {
+            componentId,
+            dateCompleted: service.dateCompleted ? service.dateCompleted.toISOString() : '',
+            reason: service.reason,
+            workDescription: service.workDescription,
+            partsUsed: service.partsUsed,
+            completedBy: service.completedBy
+        };
+
+        try {
+            const query = `
+                mutation AddService($componentId: ID!, $dateCompleted: String!, $reason: String!, $workDescription: String!, $partsUsed: String!, $completedBy: String!) {
+                    addService(componentId: $componentId, dateCompleted: $dateCompleted, reason: $reason, workDescription: $workDescription, partsUsed: $partsUsed, completedBy: $completedBy) {
+                        _id
+                    }
+                }
+            `;
+
+            const result = await handleFormSubmit('/graphql', query, formData);
+            console.log('Submission result:', result);
+            alert('Service added successfully!');
+            setService({
+                dateCompleted: '', reason: '', workDescription: '', partsUsed: '', completedBy: ''
+            });
+            setShowForm(false);
+            refetch();
+        } catch (error) {
+            console.error('Submit failed; saving offline', error);
+        }
     };
 
     return (

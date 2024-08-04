@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 import { GET_WINTER_TASKS, ADD_WINTER_TASK, TOGGLE_WINTER_TASK, UNCHECK_ALL_WINTER_TASKS, DELETE_WINTER_TASK } from '../utils/queries';
+import { handleFormSubmit as handleSubmitUtility } from '../utils/submitHandler';
 import { FaTrashAlt } from 'react-icons/fa';
 import AuthService from '../utils/auth';
 import './WinterChecklist.css';
@@ -39,23 +40,52 @@ const WinterChecklist = () => {
 
   const isAdmin = AuthService.loggedIn() && AuthService.getProfile().data.role === 'admin';
 
-  const handleAddTask = () => {
+  const handleAddTask = async () => {
     if (newTask) {
-      addTask({ variables: { name: newTask } });
+      const formData = { name: newTask };
+      const query = `
+        mutation AddWinterTask($name: String!) {
+          addWinterTask(name: $name) {
+            _id
+          }
+        }
+      `;
+      await handleSubmitUtility('/graphql', query, formData);
+      setNewTask(''); // Clear the text box
+      refetch();
     }
   };
 
-  const handleToggleTask = (taskId, completed) => {
+  const handleToggleTask = async (taskId, completed) => {
+    const query = `
+      mutation ToggleWinterTask($_id: ID!, $initials: String!, $dateCompleted: String!) {
+        toggleWinterTask(_id: $_id, initials: $initials, dateCompleted: $dateCompleted) {
+          _id
+        }
+      }
+    `;
+
     if (completed) {
-      toggleTask({ variables: { _id: taskId, initials: '', dateCompleted: '' } });
+      const formData = { _id: taskId, initials: '', dateCompleted: '' };
+      await handleSubmitUtility('/graphql', query, formData);
+      refetch();
     } else {
       setTaskToComplete(taskId);
     }
   };
 
-  const handleCompleteTask = () => {
+  const handleCompleteTask = async () => {
     if (initials && dateCompleted) {
-      toggleTask({ variables: { _id: taskToComplete, initials, dateCompleted } });
+      const formData = { _id: taskToComplete, initials, dateCompleted };
+      const query = `
+        mutation ToggleWinterTask($_id: ID!, $initials: String!, $dateCompleted: String!) {
+          toggleWinterTask(_id: $_id, initials: $initials, dateCompleted: $dateCompleted) {
+            _id
+          }
+        }
+      `;
+      await handleSubmitUtility('/graphql', query, formData);
+      refetch();
       setInitials('');
       setDateCompleted('');
       setTaskToComplete(null);
@@ -64,8 +94,17 @@ const WinterChecklist = () => {
     }
   };
 
-  const handleUncheckAll = () => {
-    uncheckAllTasks();
+  const handleUncheckAll = async () => {
+    const query = `
+      mutation {
+        uncheckAllWinterTasks {
+          _id
+        }
+      }
+    `;
+    await handleSubmitUtility('/graphql', query, {});
+    setShowConfirmation(false); // Hide the confirmation dialog
+    refetch();
   };
 
   const handleDeleteTask = (taskId) => {
@@ -73,8 +112,18 @@ const WinterChecklist = () => {
     setShowDeleteConfirmation(true);
   };
 
-  const confirmDeleteTask = () => {
-    deleteTask({ variables: { _id: deleteTaskId } });
+  const confirmDeleteTask = async () => {
+    const formData = { _id: deleteTaskId };
+    const query = `
+      mutation DeleteWinterTask($_id: ID!) {
+        deleteWinterTask(_id: $_id) {
+          _id
+        }
+      }
+    `;
+    await handleSubmitUtility('/graphql', query, formData);
+    setShowDeleteConfirmation(false); // Hide the confirmation dialog
+    refetch();
     setDeleteTaskId(null);
   };
 

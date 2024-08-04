@@ -109,7 +109,7 @@ const TowerServices = () => {
       <button className="toggle-form-button" onClick={() => setShowForm(!showForm)}>
         {showForm ? 'Hide Form' : 'Add New Service'}
       </button>
-      {showForm && <TowerServicesForm towerId={towerId} onClose={() => setShowForm(false)} />}
+      {showForm && <TowerServicesForm towerId={towerId} refetch={refetch} onClose={() => setShowForm(false)} />}
       <ul className="service-list">
         {reversedServices.map(service => (
           <li key={service._id} className="service-item">

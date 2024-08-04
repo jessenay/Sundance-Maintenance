@@ -261,8 +261,8 @@ const resolvers = {
     removeTodo: async (_, { _id }) => {
       return await Todo.findByIdAndDelete(_id);
     },
-    addProcedure: async (_, { description, componentId }) => {
-      const newProcedure = new Procedure({ description, component: new ObjectId(componentId) });
+    addProcedure: async (_, { name, description, componentId }) => {
+      const newProcedure = new Procedure({ name, description, component: new ObjectId(componentId) });
       await newProcedure.save();
       await Component.findByIdAndUpdate(componentId, { $push: { procedures: newProcedure._id } });
       return newProcedure;

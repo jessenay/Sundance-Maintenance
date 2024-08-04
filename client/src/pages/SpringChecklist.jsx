@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
 import { GET_SPRING_TASKS, ADD_SPRING_TASK, TOGGLE_SPRING_TASK, UNCHECK_ALL_SPRING_TASKS, DELETE_SPRING_TASK } from '../utils/queries';
+import { handleFormSubmit as handleSubmitUtility } from '../utils/submitHandler';
 import { FaTrashAlt } from 'react-icons/fa';
 import AuthService from '../utils/auth';
 import './WinterChecklist.css';
@@ -39,23 +40,52 @@ const SpringChecklist = () => {
 
   const isAdmin = AuthService.loggedIn() && AuthService.getProfile().data.role === 'admin';
 
-  const handleAddTask = () => {
+  const handleAddTask = async () => {
     if (newTask) {
-      addTask({ variables: { name: newTask } });
+      const formData = { name: newTask };
+      const query = `
+        mutation AddSpringTask($name: String!) {
+          addSpringTask(name: $name) {
+            _id
+          }
+        }
+      `;
+      await handleSubmitUtility('/graphql', query, formData);
+      setNewTask(''); // Clear the text box
+      refetch();
     }
   };
 
-  const handleToggleTask = (taskId, completed) => {
+  const handleToggleTask = async (taskId, completed) => {
+    const query = `
+      mutation ToggleSpringTask($_id: ID!, $initials: String!, $dateCompleted: String!) {
+        toggleSpringTask(_id: $_id, initials: $initials, dateCompleted: $dateCompleted) {
+          _id
+        }
+      }
+    `;
+
     if (completed) {
-      toggleTask({ variables: { _id: taskId, initials: '', dateCompleted: '' } });
+      const formData = { _id: taskId, initials: '', dateCompleted: '' };
+      await handleSubmitUtility('/graphql', query, formData);
+      refetch();
     } else {
       setTaskToComplete(taskId);
     }
   };
 
-  const handleCompleteTask = () => {
+  const handleCompleteTask = async () => {
     if (initials && dateCompleted) {
-      toggleTask({ variables: { _id: taskToComplete, initials, dateCompleted } });
+      const formData = { _id: taskToComplete, initials, dateCompleted };
+      const query = `
+        mutation ToggleSpringTask($_id: ID!, $initials: String!, $dateCompleted: String!) {
+          toggleSpringTask(_id: $_id, initials: $initials, dateCompleted: $dateCompleted) {
+            _id
+          }
+        }
+      `;
+      await handleSubmitUtility('/graphql', query, formData);
+      refetch();
       setInitials('');
       setDateCompleted('');
       setTaskToComplete(null);
@@ -64,8 +94,17 @@ const SpringChecklist = () => {
     }
   };
 
-  const handleUncheckAll = () => {
-    uncheckAllTasks();
+  const handleUncheckAll = async () => {
+    const query = `
+      mutation {
+        uncheckAllSpringTasks {
+          _id
+        }
+      }
+    `;
+    await handleSubmitUtility('/graphql', query, {});
+    setShowConfirmation(false); // Hide the confirmation dialog
+    refetch();
   };
 
   const handleDeleteTask = (taskId) => {
@@ -73,8 +112,18 @@ const SpringChecklist = () => {
     setShowDeleteConfirmation(true);
   };
 
-  const confirmDeleteTask = () => {
-    deleteTask({ variables: { _id: deleteTaskId } });
+  const confirmDeleteTask = async () => {
+    const formData = { _id: deleteTaskId };
+    const query = `
+      mutation DeleteSpringTask($_id: ID!) {
+        deleteSpringTask(_id: $_id) {
+          _id
+        }
+      }
+    `;
+    await handleSubmitUtility('/graphql', query, formData);
+    setShowDeleteConfirmation(false); // Hide the confirmation dialog
+    refetch();
     setDeleteTaskId(null);
   };
 

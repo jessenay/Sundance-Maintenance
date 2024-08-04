@@ -25,6 +25,7 @@
 }
 
 .lift-name {
+  font-size: 3em;
   text-align: center;
   color: #333;
   margin-top: 20px;
@@ -59,7 +60,7 @@ p {
 h2 {
   text-align: center;
   color: #333;
-  margin-top: 20px;
+  /* margin-top: 20px; */
   font-family: 'Arial', sans-serif;
 }
 

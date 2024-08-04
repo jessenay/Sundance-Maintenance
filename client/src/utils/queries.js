@@ -228,6 +228,7 @@ export const GET_PROCEDURES = gql`
   query GetProcedures($componentId: ID!) {
     procedures(componentId: $componentId) {
       _id
+      name
       description
     }
   }

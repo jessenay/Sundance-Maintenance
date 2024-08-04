@@ -27,6 +27,11 @@ const Procedures = () => {
         notifyOnNetworkStatusChange: true,
     });
 
+    useEffect(() => {
+        console.log("Component ID:", componentId);
+        console.log("Procedures data:", data);
+    }, [data, componentId]);
+
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error.message}</p>;
     if (!data || !data.procedures) return <p>No data found</p>;

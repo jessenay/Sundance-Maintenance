@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
-import { ADD_TOWER_SERVICE } from '../../utils/queries';
+import { ADD_TOWER_SERVICE } from '../../utils/mutations';
 import './TowerServicesCard.css';
 
-const TowerServicesForm = ({ towerId, onClose }) => {
+const TowerServicesForm = ({ towerId, refetch, onClose }) => {
   const [formData, setFormData] = useState({
     dateCompleted: '',
     uphillOrDownhill: '',
@@ -15,12 +15,14 @@ const TowerServicesForm = ({ towerId, onClose }) => {
   });
 
   const [addTowerService, { loading, error }] = useMutation(ADD_TOWER_SERVICE, {
-    variables: {
-      ...formData,
-      towerId
-    },
     onCompleted: () => {
-      onClose(); // close the form upon completion
+      if (typeof refetch === 'function') {
+        refetch();
+      }
+      onClose();
+    },
+    onError: (err) => {
+      console.error('Mutation error:', err);
     }
   });
 
@@ -33,9 +35,18 @@ const TowerServicesForm = ({ towerId, onClose }) => {
     setFormData(prev => ({ ...prev, dateCompleted: date }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    addTowerService();
+
+    const submissionData = {
+      ...formData,
+      towerId,
+      dateCompleted: formData.dateCompleted.toISOString(),
+    };
+
+    addTowerService({
+      variables: submissionData
+    });
   };
 
   return (

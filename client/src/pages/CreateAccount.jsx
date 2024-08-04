@@ -10,8 +10,8 @@ const CreateAccount = () => {
     role: 'user',
   });
   const [createAccount, { error }] = useMutation(CREATE_ACCOUNT);
-  const [confirmationMessage, setConfirmationMessage] = useState(null); // State for confirmation message
-  const [isError, setIsError] = useState(false); // State to track if the message is an error
+  const [confirmationMessage, setConfirmationMessage] = useState(null);
+  const [isError, setIsError] = useState(false);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -23,9 +23,10 @@ const CreateAccount = () => {
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
+    const formData = { ...formState };
     try {
       await createAccount({
-        variables: { ...formState },
+        variables: formData,
       });
       setFormState({
         username: '',
@@ -33,11 +34,11 @@ const CreateAccount = () => {
         role: 'user',
       });
       setConfirmationMessage('Account successfully created!');
-      setIsError(false); // Set isError to false for success message
+      setIsError(false);
     } catch (e) {
       console.error(e);
       setConfirmationMessage('Failed to create account. Please try again.');
-      setIsError(true); // Set isError to true for error message
+      setIsError(true);
     }
   };
 

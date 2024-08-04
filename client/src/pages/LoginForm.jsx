@@ -4,6 +4,7 @@ import { useMutation } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
 import auth from '../utils/auth';
 import { LOGIN_USER } from '../utils/mutations';
+import { handleFormSubmit as handleSubmitUtility } from '../utils/submitHandler';
 import './LoginForm.css';
 
 const LoginForm = () => {
@@ -18,6 +19,20 @@ const LoginForm = () => {
     setUserFormData({ ...userFormData, [name]: value });
   };
 
+  const handleOfflineLogin = () => {
+    const storedData = JSON.parse(localStorage.getItem('loginData'));
+    if (
+      storedData &&
+      storedData.username === userFormData.username &&
+      storedData.password === userFormData.password
+    ) {
+      auth.login(storedData.token);
+      navigate('/home');
+    } else {
+      setShowAlert(true);
+    }
+  };
+
   const handleFormSubmit = async (event) => {
     event.preventDefault();
     const form = event.currentTarget;
@@ -27,13 +42,28 @@ const LoginForm = () => {
       event.stopPropagation();
     }
 
+    if (!navigator.onLine) {
+      handleOfflineLogin();
+      return;
+    }
+
     try {
+      const formData = { ...userFormData };
+      const query = `
+        mutation LoginUser($username: String!, $password: String!) {
+          login(username: $username, password: $password) {
+            token
+          }
+        }
+      `;
+      await handleSubmitUtility('/graphql', query, formData);
       const { data } = await login({
-        variables: { ...userFormData },
+        variables: formData,
       });
 
       auth.login(data.login.token);
-      navigate('/home'); // Navigate to the home page upon successful login
+      localStorage.setItem('loginData', JSON.stringify({ ...userFormData, token: data.login.token })); // Store login data
+      navigate('/home');
     } catch (err) {
       console.error(err);
       setShowAlert(true);

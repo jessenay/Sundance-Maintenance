@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { useMutation, useQuery } from '@apollo/client';
-import { ADD_WORK_ORDER } from '../../utils/mutations';
-import { GET_LIFTS } from '../../utils/queries'; // Query to fetch lifts
+import { useQuery } from '@apollo/client';
+import { GET_LIFTS } from '../../utils/queries';
+import { handleFormSubmit } from '../../utils/submitHandler';
 import './WorkOrderForm.css';
 
 function formatLabel(text) {
@@ -21,6 +21,8 @@ const WorkOrderForm = ({ refetch, setShowForm, handleFinishWorkOrder = () => {},
     timeWorked: '',
     dateCompleted: '' // Initialized with dateCompleted instead of date
   });
+  const [submissionError, setSubmissionError] = useState(null); // State for submission error
+  const [submissionSuccess, setSubmissionSuccess] = useState(false); // State for submission success
 
   const { loading: liftsLoading, error: liftsError, data: liftsData } = useQuery(GET_LIFTS);
 
@@ -32,27 +34,6 @@ const WorkOrderForm = ({ refetch, setShowForm, handleFinishWorkOrder = () => {},
       }));
     }
   }, [todo]);
-
-  const [addWorkOrder, { loading, error }] = useMutation(ADD_WORK_ORDER, {
-    onCompleted: () => {
-      alert('Work order added successfully!');
-      setWorkOrder({
-        lift: '',
-        job: '',
-        personnel: [''],
-        toolsRequired: [''],
-        partsUsed: [{ name: '', cost: 0 }],
-        timeWorked: '',
-        dateCompleted: '' // Reset dateCompleted field
-      });
-      setShowForm(false);
-      refetch();
-      handleFinishWorkOrder();
-    },
-    onError: (err) => {
-      alert(`Error! ${err.message}`);
-    },
-  });
 
   const handleAddField = (field) => {
     setWorkOrder((prev) => {
@@ -68,33 +49,64 @@ const WorkOrderForm = ({ refetch, setShowForm, handleFinishWorkOrder = () => {},
 
   const handleChange = (e, field, index, subField = null) => {
     const { value } = e.target;
-    console.log(`Handling change for ${field} - New value: ${value}`); // Debug log
     setWorkOrder((prev) => {
-        const newState = { ...prev };
-        if (field === 'lift' || field === 'job' || field === 'timeWorked' || field === 'dateCompleted') {
-            newState[field] = value;
-        } else if (subField) {
-            newState[field][index][subField] = value;
-        } else {
-            newState[field][index] = value;
-        }
-        return newState;
+      const newState = { ...prev };
+      if (field === 'lift' || field === 'job' || field === 'timeWorked' || field === 'dateCompleted') {
+        newState[field] = value;
+      } else if (subField) {
+        newState[field][index][subField] = value;
+      } else {
+        newState[field][index] = value;
+      }
+      return newState;
     });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await addWorkOrder({
-      variables: {
-        lift: workOrder.lift,
-        job: workOrder.job,
-        personnel: workOrder.personnel,
-        toolsRequired: workOrder.toolsRequired,
-        partsUsed: workOrder.partsUsed.map(part => ({ name: part.name, cost: parseFloat(part.cost) })),
-        timeWorked: workOrder.timeWorked,
-        dateCompleted: workOrder.dateCompleted // Include dateCompleted in the submission
+    const formData = {
+      lift: workOrder.lift,
+      job: workOrder.job,
+      personnel: workOrder.personnel,
+      toolsRequired: workOrder.toolsRequired,
+      partsUsed: workOrder.partsUsed.map(part => ({ name: part.name, cost: parseFloat(part.cost) })),
+      timeWorked: workOrder.timeWorked,
+      dateCompleted: workOrder.dateCompleted
+    };
+
+    const query = `
+      mutation AddWorkOrder(
+        $lift: ID!, $job: String!, $personnel: [String!]!, $toolsRequired: [String!]!, $partsUsed: [PartInput!]!, $timeWorked: String!, $dateCompleted: String!
+      ) {
+        addWorkOrder(
+          lift: $lift, job: $job, personnel: $personnel, toolsRequired: $toolsRequired, partsUsed: $partsUsed, timeWorked: $timeWorked, dateCompleted: $dateCompleted
+        ) {
+          _id
+        }
       }
-    });
+    `;
+
+    try {
+      const result = await handleFormSubmit('/graphql', query, formData);
+      console.log('Submission result:', result);
+      setSubmissionSuccess(true); // Set submission success state
+      setSubmissionError(null); // Clear any previous error
+      setWorkOrder({
+        lift: '',
+        job: '',
+        personnel: [''],
+        toolsRequired: [''],
+        partsUsed: [{ name: '', cost: 0 }],
+        timeWorked: '',
+        dateCompleted: '' // Reset dateCompleted field
+      });
+      setShowForm(false);
+      refetch();
+      handleFinishWorkOrder();
+    } catch (error) {
+      console.error('Submit failed; saving offline', error);
+      setSubmissionError(error.message); // Set submission error state
+    }
   };
 
   if (liftsLoading) return <p>Loading lifts...</p>;
@@ -217,7 +229,8 @@ const WorkOrderForm = ({ refetch, setShowForm, handleFinishWorkOrder = () => {},
           <button className="close-button" type="button" onClick={() => setShowForm(false)}>Close</button>
         </div>
       </form>
-      {error && <div>Error! {error.message}</div>}
+      {submissionError && <div className="error-message">Error! {submissionError}</div>}
+      {submissionSuccess && <div className="success-message">Work order added successfully!</div>}
     </div>
   );
 };
