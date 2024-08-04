@@ -1,3 +1,6 @@
+// Import idb library for IndexedDB (make sure to include the idb library in your project)
+import { openDB } from 'idb';
+
 const CACHE_NAME = 'sundance-lift-maintenance-cache-v1';
 const urlsToCache = [
   '/',
@@ -43,7 +46,11 @@ self.addEventListener('sync', (event) => {
 });
 
 const syncForms = async () => {
-  const forms = await getFromLocalStorage('formSubmissions');
+  const db = await openDB('formSubmissions', 1);
+  const tx = db.transaction('submissions', 'readonly');
+  const store = tx.objectStore('submissions');
+  const forms = await store.getAll();
+  
   for (const form of forms) {
     try {
       await fetch('/graphql', {
@@ -51,19 +58,20 @@ const syncForms = async () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
       });
-      removeFromLocalStorage('formSubmissions', form);
+      await db.delete('submissions', form.id); // Remove from IndexedDB after successful submission
     } catch (error) {
       console.error('Sync failed for form', form, error);
     }
   }
 };
 
-const getFromLocalStorage = async (key) => {
-  return JSON.parse(localStorage.getItem(key)) || [];
-};
-
-const removeFromLocalStorage = (key, form) => {
-  const existingData = JSON.parse(localStorage.getItem(key)) || [];
-  const updatedData = existingData.filter((item) => item !== form);
-  localStorage.setItem(key, JSON.stringify(updatedData));
-};
+// Initialize IndexedDB
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+    openDB('formSubmissions', 1, {
+      upgrade(db) {
+        db.createObjectStore('submissions', { keyPath: 'id', autoIncrement: true });
+      },
+    })
+  );
+});
