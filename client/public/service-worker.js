@@ -1,6 +1,4 @@
-import { openDB } from 'idb';
-
-const CACHE_NAME = 'sundance-lift-maintenance-cache-v3';
+const CACHE_NAME = 'sundance-lift-maintenance-cache-v2'; // Change the version number on each deployment
 const urlsToCache = [
   '/',
   '/index.html',
@@ -24,13 +22,23 @@ const urlsToCache = [
   '/workbox-c46461b8.js',
 ];
 
-
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(urlsToCache).catch((error) => {
-        console.error('Failed to cache', error);
-      });
+      return Promise.all(
+        urlsToCache.map(url => {
+          return fetch(url).then(response => {
+            if (!response.ok) {
+              throw new Error(`Failed to fetch ${url}: ${response.statusText}`);
+            }
+            return cache.put(url, response);
+          }).catch(error => {
+            console.error('Failed to cache', url, error);
+          });
+        })
+      );
+    }).catch(error => {
+      console.error('Failed to open cache', error);
     })
   );
 });
@@ -38,10 +46,7 @@ self.addEventListener('install', (event) => {
 self.addEventListener('fetch', (event) => {
   event.respondWith(
     caches.match(event.request).then((response) => {
-      return response || fetch(event.request);
-    }).catch((error) => {
-      console.error('Fetch failed; returning offline page instead.', error);
-      return caches.match('/index.html');
+      return response || fetch(event.request).catch(() => caches.match('/index.html'));
     })
   );
 });
