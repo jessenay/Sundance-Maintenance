@@ -1,4 +1,4 @@
-const CACHE_NAME = 'sundance-lift-maintenance-cache-v2'; // Change the version number on each deployment
+const CACHE_NAME = 'sundance-lift-maintenance-cache-v2';
 const urlsToCache = [
   '/',
   '/index.html',
@@ -25,20 +25,9 @@ const urlsToCache = [
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      return Promise.all(
-        urlsToCache.map(url => {
-          return fetch(url).then(response => {
-            if (!response.ok) {
-              throw new Error(`Failed to fetch ${url}: ${response.statusText}`);
-            }
-            return cache.put(url, response);
-          }).catch(error => {
-            console.error('Failed to cache', url, error);
-          });
-        })
-      );
-    }).catch(error => {
-      console.error('Failed to open cache', error);
+      return cache.addAll(urlsToCache).catch(error => {
+        console.error('Failed to cache', error);
+      });
     })
   );
 });
