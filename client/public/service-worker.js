@@ -1,26 +1,6 @@
-const CACHE_NAME = 'sundance-lift-maintenance-cache-v2';
-const urlsToCache = [
-  '/',
-  '/index.html',
-  '/assets/images/flatheadPicture.png',
-  '/assets/images/jakesPicture.png',
-  '/assets/images/outlawPicture.png',
-  '/assets/images/redsPicture.png',
-  '/assets/images/stairwayPicture.png',
-  '/assets/images/sundancePicture.png',
-  '/assets/images/wildwoodPicture.png',
-  '/assets/index-1a97e031.css',
-  '/assets/index-e53f8e79.js',
-  '/icons/icon-192x192.png',
-  '/icons/icon-512x512.png',
-  '/manifest.json',
-  '/manifest.webmanifest',
-  '/registerSW.js',
-  '/service-worker.js',
-  '/sw.js',
-  '/vite.svg',
-  '/workbox-c46461b8.js',
-];
+import { precacheAndRoute, cleanupOutdatedCaches } from 'workbox-precaching';
+import { registerRoute } from 'workbox-routing';
+import { CacheFirst } from 'workbox-strategies';
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
@@ -92,3 +72,32 @@ const removeFromIndexedDB = async (key, id) => {
   await tx.objectStore(key).delete(id);
   await tx.done;
 };
+
+precacheAndRoute(self.__WB_MANIFEST || []);
+cleanupOutdatedCaches();
+
+registerRoute(
+  new RegExp('https://fonts.(googleapis|gstatic).com/(.*)'),
+  new CacheFirst({
+    cacheName: 'google-fonts-cache',
+    plugins: [
+      new ExpirationPlugin({
+        maxEntries: 20,
+        maxAgeSeconds: 60 * 60 * 24 * 365, // 1 year
+      }),
+    ],
+  })
+);
+
+registerRoute(
+  /\.(?:png|jpg|jpeg|svg|gif)$/,
+  new CacheFirst({
+    cacheName: 'images-cache',
+    plugins: [
+      new ExpirationPlugin({
+        maxEntries: 50,
+        maxAgeSeconds: 30 * 24 * 60 * 60, // 30 days
+      }),
+    ],
+  })
+);
