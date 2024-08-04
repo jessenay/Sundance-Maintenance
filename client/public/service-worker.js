@@ -2,9 +2,24 @@ const CACHE_NAME = 'sundance-lift-maintenance-cache-v2'; // Change the version n
 const urlsToCache = [
   '/',
   '/index.html',
+  '/assets/images/flatheadPicture.png',
+  '/assets/images/jakesPicture.png',
+  '/assets/images/outlawPicture.png',
+  '/assets/images/redsPicture.png',
+  '/assets/images/stairwayPicture.png',
+  '/assets/images/sundancePicture.png',
+  '/assets/images/wildwoodPicture.png',
+  '/assets/index-1a97e031.css',
+  '/assets/index-e53f8e79.js',
   '/icons/icon-192x192.png',
   '/icons/icon-512x512.png',
-  // Add more assets to cache here
+  '/manifest.json',
+  '/manifest.webmanifest',
+  '/registerSW.js',
+  '/service-worker.js',
+  '/sw.js',
+  '/vite.svg',
+  '/workbox-c46461b8.js',
 ];
 
 self.addEventListener('install', (event) => {
