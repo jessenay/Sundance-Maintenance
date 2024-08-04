@@ -1,7 +1,4 @@
-// Import idb library for IndexedDB (make sure to include the idb library in your project)
-import { openDB } from 'idb';
-
-const CACHE_NAME = 'sundance-lift-maintenance-cache-v1';
+const CACHE_NAME = 'sundance-lift-maintenance-cache-v2'; // Change the version number on each deployment
 const urlsToCache = [
   '/',
   '/index.html',
@@ -39,6 +36,21 @@ self.addEventListener('fetch', (event) => {
   );
 });
 
+self.addEventListener('activate', (event) => {
+  const cacheWhitelist = [CACHE_NAME];
+  event.waitUntil(
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames.map((cacheName) => {
+          if (!cacheWhitelist.includes(cacheName)) {
+            return caches.delete(cacheName);
+          }
+        })
+      );
+    })
+  );
+});
+
 self.addEventListener('sync', (event) => {
   if (event.tag === 'sync-forms') {
     event.waitUntil(syncForms());
@@ -46,32 +58,33 @@ self.addEventListener('sync', (event) => {
 });
 
 const syncForms = async () => {
-  const db = await openDB('formSubmissions', 1);
-  const tx = db.transaction('submissions', 'readonly');
-  const store = tx.objectStore('submissions');
-  const forms = await store.getAll();
-  
+  const forms = await getFromIndexedDB('formSubmissions');
   for (const form of forms) {
     try {
       await fetch('/graphql', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ query: form.query, variables: form.formData }),
       });
-      await db.delete('submissions', form.id); // Remove from IndexedDB after successful submission
+      await removeFromIndexedDB('formSubmissions', form.id);
     } catch (error) {
       console.error('Sync failed for form', form, error);
     }
   }
 };
 
-// Initialize IndexedDB
-self.addEventListener('activate', (event) => {
-  event.waitUntil(
-    openDB('formSubmissions', 1, {
-      upgrade(db) {
-        db.createObjectStore('submissions', { keyPath: 'id', autoIncrement: true });
-      },
-    })
-  );
-});
+const getFromIndexedDB = async (key) => {
+  const db = await openDB('sundance-maintenance-db', 1);
+  const tx = db.transaction(key, 'readonly');
+  const store = tx.objectStore(key);
+  const forms = await store.getAll();
+  await tx.done;
+  return forms;
+};
+
+const removeFromIndexedDB = async (key, id) => {
+  const db = await openDB('sundance-maintenance-db', 1);
+  const tx = db.transaction(key, 'readwrite');
+  await tx.objectStore(key).delete(id);
+  await tx.done;
+};
