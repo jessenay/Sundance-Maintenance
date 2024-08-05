@@ -4,7 +4,6 @@ import { VitePWA } from 'vite-plugin-pwa';
 import fs from 'fs';
 import path from 'path';
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     react(),
@@ -47,6 +46,13 @@ export default defineConfig({
       },
     }),
   ],
+  build: {
+    rollupOptions: {
+      input: {
+        main: path.resolve(__dirname, 'index.html')
+      }
+    }
+  },
   server: {
     port: 3000,
     open: true,

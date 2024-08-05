@@ -16,7 +16,6 @@ const urlsToCache = [
   '/manifest.webmanifest',
   '/registerSW.js',
   '/service-worker.js',
-  '/sw.js',
   '/vite.svg',
   '/workbox-c46461b8.js',
 ];
@@ -91,13 +90,3 @@ const removeFromIndexedDB = async (key, id) => {
   await tx.objectStore(key).delete(id);
   await tx.done;
 };
-
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/service-worker.js', { scope: '/' }).then(registration => {
-      console.log('Service Worker registered with scope:', registration.scope);
-    }).catch(error => {
-      console.log('Service Worker registration failed:', error);
-    });
-  });
-}
