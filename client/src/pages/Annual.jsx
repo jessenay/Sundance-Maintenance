@@ -104,7 +104,7 @@ const Annual = () => {
     if (error) return <p>Error: {error.message}</p>;
     if (!data || !data.annualServices) return <p>No data found</p>;
 
-    const reversedServices = [...data.annualServices].reverse();
+    const services = data.annualServices;
 
     const handleViewProcedures = () => {
         navigate(`/lift/${liftId}/procedures/${componentId}`);
@@ -143,7 +143,7 @@ const Annual = () => {
                 </>
             )}
             <ul className="service-list">
-    {reversedServices.map(service => {
+    {services.map(service => {
         const formattedDate = formatDate(service.dateCompleted);
         console.log("Original dateCompleted value:", service.dateCompleted);
         console.log("Formatted date to be rendered:", formattedDate);

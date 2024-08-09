@@ -93,7 +93,7 @@ const EmergencyDrive = () => {
     if (error) return <p>Error: {error.message}</p>;
     if (!data || !data.services) return <p>No data found</p>;
 
-    const reversedServices = [...data.services].reverse();
+    const services = data.services;
 
     const handleViewProcedures = () => {
         navigate(`/lift/${liftId}/procedures/${componentId}`);
@@ -131,7 +131,7 @@ const EmergencyDrive = () => {
                 </>
             )}
             <ul className="service-list">
-                {reversedServices.map(service => (
+                {services.map(service => (
                     <li key={service._id} className="service-item">
                         <div className="service-content">
                             <p className="date-completed">Date Completed: {formatDate(service.dateCompleted)}</p>

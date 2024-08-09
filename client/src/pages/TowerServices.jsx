@@ -86,7 +86,7 @@ const TowerServices = () => {
   if (error) return <p>Error loading services: {error.message}</p>;
   if (!data || !data.tower || !data.tower.services) return <p>No services found for this tower.</p>;
 
-  const reversedServices = [...data.tower.services].reverse();
+  const services = data.tower.services;
 
   return (
     <div className="tower-services-container">
@@ -111,7 +111,7 @@ const TowerServices = () => {
       </button>
       {showForm && <TowerServicesForm towerId={towerId} refetch={refetch} onClose={() => setShowForm(false)} />}
       <ul className="service-list">
-        {reversedServices.map(service => (
+        {services.map(service => (
           <li key={service._id} className="service-item">
             <div className="service-content">
               <p className="date-completed">Date Completed: {formatDate(service.dateCompleted)}</p>
