@@ -7,13 +7,30 @@ import { GET_ANNUAL_SERVICES, DELETE_ANNUAL_SERVICE } from '../utils/queries';
 import "../pages/Services.css";
 import { FaTrash } from 'react-icons/fa'; // Importing delete icon
 
-const formatDate = (dateString) => {
-    const date = new Date(dateString);
+
+const formatDate = (dateInput) => {
+    if (!dateInput) return 'Invalid Date';
+
+    // Ensure dateInput is treated as a number
+    const timestamp = Number(dateInput);
+
+    // Directly create a Date object from the timestamp
+    const date = new Date(timestamp);
+
+    // Check if the date is valid
+    if (isNaN(date.getTime())) {
+        console.log("Invalid date:", dateInput);
+        return 'Invalid Date';
+    }
+
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
     const year = date.getFullYear();
+
     return `${month}/${day}/${year}`;
 };
+
+
 
 const Annual = () => {
     const navigate = useNavigate();
@@ -93,6 +110,7 @@ const Annual = () => {
         navigate(`/lift/${liftId}/procedures/${componentId}`);
     };
 
+
     return (
         <div className="annual-container">
             <h1 className="lift-name">{liftName}</h1> {/* Display the lift name */}
@@ -125,24 +143,30 @@ const Annual = () => {
                 </>
             )}
             <ul className="service-list">
-                {reversedServices.map(service => (
-                    <li key={service._id} className="service-item">
-                        <div className="service-content">
-                            <p className="date-completed">Date Completed: {formatDate(service.dateCompleted)}</p>
-                            <p>Task: {service.task}</p>
-                            <p className="completed-by">Completed By: {service.completedBy}</p>
-                            <p className="test-values">Test Values: {service.testValues}</p>
-                            <p>Notes: {service.notes}</p>
-                            <p>Procedure Locations: {service.procedureLocations}</p>
-                        </div>
-                        {isAdmin && (
-                            <div className="delete-icon" onClick={() => handleDelete(service._id)}>
-                                <FaTrash />
-                            </div>
-                        )}
-                    </li>
-                ))}
-            </ul>
+    {reversedServices.map(service => {
+        const formattedDate = formatDate(service.dateCompleted);
+        console.log("Original dateCompleted value:", service.dateCompleted);
+        console.log("Formatted date to be rendered:", formattedDate);
+
+        return (
+            <li key={service._id} className="service-item">
+                <div className="service-content">
+                    <p className="date-completed">Date Completed: {formattedDate}</p>
+                    <p>Task: {service.task}</p>
+                    <p className="completed-by">Completed By: {service.completedBy}</p>
+                    <p className="test-values">Test Values: {service.testValues}</p>
+                    <p>Notes: {service.notes}</p>
+                    <p>Procedure Locations: {service.procedureLocations}</p>
+                </div>
+                {isAdmin && (
+                    <div className="delete-icon" onClick={() => handleDelete(service._id)}>
+                        <FaTrash />
+                    </div>
+                )}
+            </li>
+        );
+    })}
+</ul>
             {showDeleteConfirmation && (
                 <div className="delete-confirmation">
                     <p>Are you sure you want to delete this service? Type 'delete' to confirm:</p>

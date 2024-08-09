@@ -87,25 +87,29 @@ const LoginForm = () => {
 
             <Form.Group>
               <Form.Label className='email' htmlFor='username'>Username</Form.Label>
-              <Form.Control className='form-input login-form-input'
+              <Form.Control
+                className='form-input login-form-input'
                 type='text'
                 placeholder='Your username'
                 name='username'
                 onChange={handleInputChange}
                 value={userFormData.username}
                 required
+                onFocus={() => console.log('Username input focused')}
               />
             </Form.Group>
 
             <Form.Group>
               <Form.Label className='email' htmlFor='password'>Password</Form.Label>
-              <Form.Control className='form-input login-form-input'
+              <Form.Control
+                className='form-input login-form-input'
                 type='password'
                 placeholder='Your password'
                 name='password'
                 onChange={handleInputChange}
                 value={userFormData.password}
                 required
+                onFocus={() => console.log('Password input focused')}
               />
             </Form.Group>
 

@@ -1,5 +1,4 @@
-// Import idb library for IndexedDB (make sure to include the idb library in your project)
-import { openDB } from 'idb';
+import { saveSubmission } from './idb';
 
 export const handleFormSubmit = async (url, query, formData) => {
   try {
@@ -23,10 +22,7 @@ export const handleFormSubmit = async (url, query, formData) => {
     console.error('Submit failed; saving offline', error);
 
     // Save form submission to IndexedDB
-    const db = await openDB('formSubmissions', 1);
-    const tx = db.transaction('submissions', 'readwrite');
-    const store = tx.objectStore('submissions');
-    await store.add({ query, variables: formData });
+    await saveSubmission({ query, variables: formData });
 
     // Register sync event
     if ('serviceWorker' in navigator && 'SyncManager' in window) {

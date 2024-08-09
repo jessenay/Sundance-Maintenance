@@ -10,13 +10,13 @@ const urlsToCache = [
   '/assets/images/sundancePicture.png',
   '/assets/images/wildwoodPicture.png',
   '/assets/index-1a97e031.css',
-  '/assets/index-e53f8e79.js',
+  '/assets/main-e53f8e79.js',
   '/icons/icon-192x192.png',
   '/icons/icon-512x512.png',
   '/manifest.webmanifest',
   '/registerSW.js',
   '/service-worker.js',
-  '/vite.svg',
+  '/sw.js',
   '/workbox-c46461b8.js',
 ];
 
@@ -60,33 +60,17 @@ self.addEventListener('sync', (event) => {
 });
 
 const syncForms = async () => {
-  const forms = await getFromIndexedDB('formSubmissions');
+  const forms = await getAllSubmissions();
   for (const form of forms) {
     try {
       await fetch('/graphql', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query: form.query, variables: form.formData }),
+        body: JSON.stringify({ query: form.query, variables: form.variables }),
       });
-      await removeFromIndexedDB('formSubmissions', form.id);
+      await deleteSubmission(form.id);
     } catch (error) {
       console.error('Sync failed for form', form, error);
     }
   }
-};
-
-const getFromIndexedDB = async (key) => {
-  const db = await openDB('sundance-maintenance-db', 1);
-  const tx = db.transaction(key, 'readonly');
-  const store = tx.objectStore(key);
-  const forms = await store.getAll();
-  await tx.done;
-  return forms;
-};
-
-const removeFromIndexedDB = async (key, id) => {
-  const db = await openDB('sundance-maintenance-db', 1);
-  const tx = db.transaction(key, 'readwrite');
-  await tx.objectStore(key).delete(id);
-  await tx.done;
 };
