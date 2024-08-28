@@ -1,6 +1,7 @@
 const { fetchDataForPDF } = require('./utils/dataFetcher');
 const { generatePDF } = require('./utils/pdfGenerator');
 const { sendEmailWithAttachment } = require('./utils/emailService');
+const { filterByMonthAndYear } = require('./utils/pdfGeneration');
 require('dotenv').config();
 
 (async () => {
@@ -13,10 +14,13 @@ require('dotenv').config();
     // Fetch the data
     const data = await fetchDataForPDF(month, year);
     
-    console.log('Data fetched:', data);
+    console.log('Data fetched:', JSON.stringify(data, null, 2));
+    
+    // Apply filtering
+    const filteredData = filterByMonthAndYear(data, month, year);
     
     // Generate the PDF
-    const pdfPath = await generatePDF(data, month, year);
+    const pdfPath = await generatePDF(filteredData, month, year);
     
     console.log('PDF generated at:', pdfPath);
 

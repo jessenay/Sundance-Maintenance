@@ -3,22 +3,20 @@ const client = require('./apolloClient');
 
 async function fetchDataForPDF(month, year) {
   try {
-    console.log(`Running query with month: ${month}, year: ${year}`);
-    
-    const query = gql`
-      query FetchData($month: Int!, $year: Int!) {
+    const servicesQuery = gql`
+      query FetchServices {
         lifts {
           name
           components {
             name
-            services(month: $month, year: $year) {
+            services {
               dateCompleted
               reason
               workDescription
               partsUsed
               completedBy
             }
-            annualServices(month: $month, year: $year) {
+            annualServices {
               task
               dateCompleted
               completedBy
@@ -29,7 +27,7 @@ async function fetchDataForPDF(month, year) {
           }
           towers {
             name
-            services(month: $month, year: $year) {
+            services {
               dateCompleted
               uphillOrDownhill
               workDescription
@@ -37,7 +35,7 @@ async function fetchDataForPDF(month, year) {
               completedBy
             }
           }
-          workOrders(month: $month, year: $year) {
+          workOrders {
             job
             dateCompleted
             personnel
@@ -53,14 +51,12 @@ async function fetchDataForPDF(month, year) {
     `;
 
     const { data } = await client.query({
-      query,
-      variables: { month, year }, // Ensure month and year are passed correctly
+      query: servicesQuery,
     });
 
-    console.log('Query successful:', data);
     return data.lifts;
   } catch (error) {
-    console.error('Error fetching data:', error.networkError ? error.networkError.result : error.message);
+    console.error('Error fetching data:', error);
     throw error;
   }
 }

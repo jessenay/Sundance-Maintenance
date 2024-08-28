@@ -20,7 +20,7 @@ async function sendEmailWithAttachment({ to, subject, body, attachments }) {
             attachments,
         };
 
-        console.log('Sending email...');
+        console.log('Sending email with the following options:', mailOptions);
         const info = await transporter.sendMail(mailOptions);
         console.log('Email sent:', info.response);
         console.log('Full info:', info);

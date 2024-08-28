@@ -1,12 +1,19 @@
 const { generatePDF } = require('./pdfGenerator');
 const { fetchDataForPDF } = require('./dataFetcher');
-const { sendEmailWithAttachment } = require('./emailService'); // Importing the email function
+const { sendEmailWithAttachment } = require('./emailService');
 
+// Define the generateAndSendMonthlyReport function
 async function generateAndSendMonthlyReport(month, year) {
   try {
       const fetchedData = await fetchDataForPDF(month, year);
-      const pdfPath = await generatePDF(fetchedData, month, year);
+      
+      // Apply filtering on the client side
+      const filteredData = filterByMonthAndYear(fetchedData, month, year);
+      
+      // Generate the PDF with filtered data
+      const pdfPath = await generatePDF(filteredData, month, year);
 
+      // Send the PDF via email
       await sendEmailWithAttachment({
           to: 'jessenay26@gmail.com',
           subject: `Monthly Maintenance Report for ${month}/${year}`,
@@ -25,54 +32,58 @@ async function generateAndSendMonthlyReport(month, year) {
   }
 }
 
+// Filtering function to filter services by month and year
 function filterByMonthAndYear(data, month, year) {
   return data.map(lift => {
-    const filteredComponents = lift.components.map(component => {
-      const filteredServices = component.services.filter(service => {
-        const serviceDate = new Date(service.dateCompleted);
-        return (
-          serviceDate.getMonth() + 1 === month && 
-          serviceDate.getFullYear() === year
-        );
+      const filteredComponents = lift.components.map(component => {
+          const filteredServices = component.services.filter(service => {
+              const serviceDate = new Date(service.dateCompleted);
+              return (
+                  serviceDate.getMonth() + 1 === month && 
+                  serviceDate.getFullYear() === year
+              );
+          });
+
+          const filteredAnnualServices = component.annualServices.filter(annualService => {
+              const serviceDate = new Date(annualService.dateCompleted);
+              return (
+                  serviceDate.getMonth() + 1 === month && 
+                  serviceDate.getFullYear() === year
+              );
+          });
+
+          return {
+              ...component,
+              services: filteredServices,
+              annualServices: filteredAnnualServices
+          };
       });
 
-      const filteredAnnualServices = component.annualServices.filter(annualService => {
-        const serviceDate = new Date(annualService.dateCompleted);
-        return (
-          serviceDate.getMonth() + 1 === month && 
-          serviceDate.getFullYear() === year
-        );
+      const filteredTowers = lift.towers.map(tower => {
+          const filteredTowerServices = tower.services.filter(service => {
+              const serviceDate = new Date(service.dateCompleted);
+              return (
+                  serviceDate.getMonth() + 1 === month && 
+                  serviceDate.getFullYear() === year
+              );
+          });
+
+          return {
+              ...tower,
+              services: filteredTowerServices
+          };
       });
 
       return {
-        ...component,
-        services: filteredServices,
-        annualServices: filteredAnnualServices,
+          ...lift,
+          components: filteredComponents,
+          towers: filteredTowers
       };
-    });
-
-    const filteredTowers = lift.towers.map(tower => {
-      const filteredTowerServices = tower.services.filter(service => {
-        const serviceDate = new Date(service.dateCompleted);
-        return (
-          serviceDate.getMonth() + 1 === month && 
-          serviceDate.getFullYear() === year
-        );
-      });
-
-      return {
-        ...tower,
-        services: filteredTowerServices,
-      };
-    });
-
-    return {
-      ...lift,
-      components: filteredComponents,
-      towers: filteredTowers,
-    };
   });
 }
 
-
-module.exports = { generateAndSendMonthlyReport };
+// Export the functions for use in other files
+module.exports = { 
+  generateAndSendMonthlyReport,
+  filterByMonthAndYear
+};

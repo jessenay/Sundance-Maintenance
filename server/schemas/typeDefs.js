@@ -12,7 +12,7 @@ const typeDefs = gql`
     name: String!
     components: [Component]
     towers: [Tower]
-    workOrders(month: Int, year: Int): [WorkOrder]
+    workOrders(month: Int, year: Int): [WorkOrder] 
   }
 
   type Todo {
@@ -23,11 +23,11 @@ const typeDefs = gql`
   type Component {
     _id: ID!
     name: String!
-    services(month: Int, year: Int): [Service]
-    annualServices(month: Int, year: Int): [AnnualService]
-    procedures: [Procedure]
+    services(month: Int, year: Int): [Service] 
+    annualServices(month: Int, year: Int): [AnnualService] 
+    procedures: [Procedure]  # Add this line if procedures are needed
   }
-  
+
   type Service {
     _id: ID!
     component: ID!
@@ -71,7 +71,7 @@ const typeDefs = gql`
   type Tower {
     _id: ID!
     name: String!
-    services(month: Int, year: Int): [TowerService]
+    services(month: Int, year: Int): [TowerService]  
   }
 
   type WorkOrder {
@@ -84,6 +84,7 @@ const typeDefs = gql`
     dateCompleted: String
     lift: Lift
   }
+  
 
   type Procedure {
     _id: ID!
@@ -140,7 +141,7 @@ const typeDefs = gql`
     annualServices(componentId: ID!, month: Int, year: Int): [AnnualService]
     services(componentId: ID!, month: Int, year: Int): [Service]
     towerServices(towerId: ID!, month: Int, year: Int): [TowerService]
-    workOrders(liftId: ID, month: Int, year: Int): [WorkOrder]
+    workOrders(liftId: ID): [WorkOrder]
     procedures(componentId: ID!): [Procedure]
     todos: [Todo]
     winterTasks: [WinterTask]
