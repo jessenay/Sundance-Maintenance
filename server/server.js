@@ -7,11 +7,11 @@ const { typeDefs, resolvers } = require('./schemas');
 const { authMiddleware } = require('./utils/auth');
 require('dotenv').config();
 
+// Import the cron tasks to ensure they are initialized
+require('./utils/cronTasks');
+
 const app = express();
 const PORT = process.env.PORT || 3001;
-
-console.log('Starting server...');
-console.log('Environment variables:', process.env);
 
 const server = new ApolloServer({
   typeDefs,
@@ -40,7 +40,6 @@ async function startApolloServer() {
   db.once('open', () => {
     app.listen(PORT, () => {
       console.log(`🌍 Now listening on localhost:${PORT}`);
-      console.log(`JWT Secret: ${process.env.SECRET ? 'Loaded' : 'Not Loaded'}`);
     });
   });
 }

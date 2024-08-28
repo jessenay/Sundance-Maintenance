@@ -31,10 +31,25 @@ const resolvers = {
       return await Todo.find({});
     },
     lifts: async () => {
-      return await Lift.find({});
+      return await Lift.find({}).populate({
+        path: 'components',
+        populate: [
+          { path: 'services' },
+          { path: 'annualServices' }
+        ]
+      }).populate({
+        path: 'towers',
+        populate: { path: 'services' }
+      });
     },
     lift: async (_, { _id }) => {
-      return await Lift.findById(_id).populate('components').populate({
+      return await Lift.findById(_id).populate({
+        path: 'components',
+        populate: [
+          { path: 'services' },
+          { path: 'annualServices' } // Ensure that this path is populated
+        ]
+      }).populate({
         path: 'towers',
         populate: { path: 'services' }
       });
@@ -43,7 +58,7 @@ const resolvers = {
       return await Component.find({});
     },
     component: async (_, { _id }) => {
-      const component = await Component.findById(_id).populate('services').populate('procedures');
+      const component = await Component.findById(_id).populate('services').populate('procedures').populate('annualServices');
       if (!component) {
         return null;
       }
@@ -56,66 +71,40 @@ const resolvers = {
       return await Tower.find({});
     },
     annualServices: async (_, { componentId, month, year }) => {
-      try {
-        const filter = { component: new ObjectId(componentId) };
-
-        if (month && year) {
-          const start = new Date(year, month - 1, 1);
-          const end = new Date(year, month, 0);
-          filter.dateCompleted = { $gte: start, $lt: end };
-        } else if (year) {
-          const start = new Date(year, 0, 1);
-          const end = new Date(year, 11, 31);
-          filter.dateCompleted = { $gte: start, $lt: end };
-        }
-
-        return await AnnualService.find(filter).sort({ dateCompleted: -1 });
-      } catch (error) {
-        console.error('Error fetching annual services:', error);
-        throw new Error(error);
+      const filter = { component: new ObjectId(componentId) };
+      if (month && year) {
+        const start = new Date(year, month - 1, 1);
+        const end = new Date(year, month, 0);
+        filter.dateCompleted = { $gte: start, $lt: end };
       }
+      return await AnnualService.find(filter).sort({ dateCompleted: -1 });
     },
     towerServices: async (_, { towerId, month, year }) => {
       const filter = { tower: new ObjectId(towerId) };
       if (month && year) {
         const start = new Date(year, month - 1, 1);
         const end = new Date(year, month, 0);
-        filter.dateCompleted = { $gte: start.toISOString(), $lt: end.toISOString() };
-      } else if (year) {
-        const start = new Date(year, 0, 1);
-        const end = new Date(year, 11, 31);
-        filter.dateCompleted = { $gte: start.toISOString(), $lt: end.toISOString() };
+        filter.dateCompleted = { $gte: start, $lt: end };
       }
-      return TowerService.find(filter).sort({ dateCompleted: -1 });
+      return await TowerService.find(filter).sort({ dateCompleted: -1 });
     },
     services: async (_, { componentId, month, year }) => {
-      try {
-        const filter = { component: new ObjectId(componentId) };
-
-        if (month && year) {
-          const start = new Date(year, month - 1, 1);
-          const end = new Date(year, month, 0);
-          filter.dateCompleted = { $gte: start.toISOString(), $lt: end.toISOString() };
-        } else if (year) {
-          const start = new Date(year, 0, 1);
-          const end = new Date(year, 11, 31);
-          filter.dateCompleted = { $gte: start.toISOString(), $lt: end.toISOString() };
-        }
-
-        console.log('Filter:', filter);
-
-        const services = await Service.find(filter).sort({ dateCompleted: -1 });
-        console.log('Services:', services);
-
-        return services;
-      } catch (error) {
-        console.error('Error fetching services:', error);
-        throw new Error(error);
+      const filter = { component: new ObjectId(componentId) };
+      if (month && year) {
+        const start = new Date(year, month - 1, 1);
+        const end = new Date(year, month, 0);
+        filter.dateCompleted = { $gte: start, $lt: end };
       }
+      return await Service.find(filter).sort({ dateCompleted: -1 });
     },
-    workOrders: async (_, { liftId }) => {
-      const filter = liftId ? { lift: new ObjectId(liftId) } : {};
-      return await WorkOrder.find(filter).populate('lift');
+    workOrders: async (_, { liftId, month, year }) => {
+      const filter = { lift: new ObjectId(liftId) };
+      if (month && year) {
+        const start = new Date(year, month - 1, 1);
+        const end = new Date(year, month, 0);
+        filter.dateCompleted = { $gte: start, $lt: end };
+      }
+      return await WorkOrder.find(filter).sort({ dateCompleted: -1 });
     },
     procedures: async (_, { componentId }) => {
       return await Procedure.find({ component: new ObjectId(componentId) });
@@ -180,7 +169,7 @@ const resolvers = {
         procedureLocations
       });
       await newAnnualService.save();
-      await Component.findByIdAndUpdate(componentId, { $push: { services: newAnnualService._id } });
+      await Component.findByIdAndUpdate(componentId, { $push: { annualServices: newAnnualService._id } }); // Add to annualServices instead of services
       return newAnnualService;
     },
     addLift: async (_, { name }) => {
@@ -411,18 +400,56 @@ const resolvers = {
   },
   Lift: {
     components: async (lift) => {
-      return await Component.find({ _id: { $in: lift.components } });
+      return await Component.find({ _id: { $in: lift.components } }).populate([
+        { path: 'services' },
+        { path: 'annualServices' }
+      ]);
     },
     towers: async (lift) => {
       return await Tower.find({ _id: { $in: lift.towers } });
+    },
+    workOrders: async (lift, { month, year }) => {
+      const filter = { lift: lift._id };
+      if (month && year) {
+        const start = new Date(year, month - 1, 1);
+        const end = new Date(year, month, 0);
+        filter.dateCompleted = { $gte: start, $lt: end };
+      }
+      return await WorkOrder.find(filter);
     }
   },
   Component: {
-    services: async (component) => {
-      return await Service.find({ _id: { $in: component.services } });
+    services: async (component, { month, year }) => {
+      const filter = { component: component._id };
+      if (month && year) {
+        const start = new Date(year, month - 1, 1);
+        const end = new Date(year, month, 0);
+        filter.dateCompleted = { $gte: start, $lt: end };
+      }
+      return await Service.find(filter).sort({ dateCompleted: -1 });
+    },
+    annualServices: async (component, { month, year }) => {
+      const filter = { component: component._id };
+      if (month && year) {
+        const start = new Date(year, month - 1, 1);
+        const end = new Date(year, month, 0);
+        filter.dateCompleted = { $gte: start, $lt: end };
+      }
+      return await AnnualService.find(filter).sort({ dateCompleted: -1 });
     },
     procedures: async (component) => {
       return await Procedure.find({ component: component._id });
+    }
+  },
+  Tower: {
+    services: async (tower, { month, year }) => {
+      const filter = { tower: tower._id };
+      if (month && year) {
+        const start = new Date(year, month - 1, 1);
+        const end = new Date(year, month, 0);
+        filter.dateCompleted = { $gte: start, $lt: end };
+      }
+      return await TowerService.find(filter).sort({ dateCompleted: -1 });
     }
   }
 };
